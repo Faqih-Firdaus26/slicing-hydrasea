@@ -491,17 +491,26 @@
         position: fixed;
         left: 200px;
         top: 85px;
-        background-color: rgba(33, 37, 41, 0.5);
+        background-color: rgba(33, 37, 41, 0.6);
         border-radius: 5px;
         padding: 15px;
         display: none;
         z-index: 2000;
         min-width: 280px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 320px;
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .filter-modal::-webkit-scrollbar {
+        display: none;
       }
 
       .filter-modal.visible {
-        display: block;
+        display: block !important;
       }
 
       .filter-header {
@@ -527,6 +536,16 @@
         padding: 2px;
         cursor: pointer;
         color: white;
+      }
+
+      .filter-content {
+        max-height: 300px;
+        overflow-y: auto;
+        color: white;
+      }
+
+      .filter-content.hidden {
+        display: none;
       }
 
       .filter-row {
@@ -1135,6 +1154,171 @@
       /* Pastikan ukuran modal konsisten */
       .bookmark-modal {
         min-height: 150px;
+      }
+
+      /* Gaya untuk popup ENC */
+      .enc-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 320px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 320px;
+        max-height: 80vh; /* Batasi tinggi maksimum */
+        overflow-y: auto; /* Tambahkan scroll jika terlalu panjang */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+      }
+
+      .enc-modal::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      .enc-modal.visible {
+        display: block;
+      }
+
+      .enc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .enc-title {
+        font-weight: bold;
+        color: white;
+      }
+
+      .enc-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .enc-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .enc-search-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 15px;
+      }
+
+      .enc-active-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        font-size: 12px;
+      }
+
+      .enc-active-cell input {
+        padding: 4px 8px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+        width: 160px;
+      }
+
+      .enc-trash-btn {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .enc-search {
+        position: relative;
+        margin-top: 10px;
+      }
+
+      .enc-search input {
+        padding: 4px 28px 4px 8px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(52, 58, 64, 0.8);
+        color: white;
+        width: 140px;
+      }
+
+      .enc-search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      .enc-table {
+        width: 100%;
+        border-collapse: collapse;
+        color: white;
+        font-size: 12px;
+      }
+
+      .enc-table th,
+      .enc-table td {
+        padding: 8px 5px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .enc-table th {
+        font-weight: bold;
+      }
+
+      .enc-view-btn {
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .enc-view-btn:hover {
+        opacity: 0.8;
+      }
+
+      /* Pastikan ukuran modal konsisten */
+      .enc-modal {
+        min-height: 150px;
+      }
+
+      /* Gaya untuk ENC chevron icon */
+      .enc-chevron-icon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      .enc-chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+
+      /* Gaya untuk ENC content hidden */
+      .enc-content.hidden {
+        display: none;
       }
     </style>
   </head>
@@ -1950,6 +2134,104 @@
           </svg>
 
           <span class="nav-text">ENC</span>
+
+          <!-- ENC Modal -->
+          <div class="enc-modal" id="encModal">
+            <div class="enc-header">
+              <div class="enc-title">Electronic Navigational Chart (ENC)</div>
+              <div class="enc-controls">
+                <button
+                  class="enc-control-btn"
+                  id="collapseEncBtn"
+                  title="Collapse"
+                >
+                  <i
+                    class="bi bi-chevron-down enc-chevron-icon"
+                    id="encCollapseIcon"
+                  ></i>
+                </button>
+                <button class="enc-control-btn" id="closeEncBtn" title="Close">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="enc-search-container">
+              <div class="enc-active-cell">
+                <span>Active Cell</span>
+                <input type="text" id="encActiveCell" />
+                <button class="enc-trash-btn" title="Clear">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+
+              <div class="enc-search">
+                <input type="text" placeholder="Search" />
+                <button class="enc-search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <table class="enc-table">
+              <thead>
+                <tr>
+                  <th>Cell ID</th>
+                  <th>Band</th>
+                  <th>Title</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ID100066</td>
+                  <td>Overview</td>
+                  <td>
+                    Palembang, Bangka Belitung, Lampung, Pulau Jawa, Laut Jawa
+                  </td>
+                  <td>
+                    <button class="enc-view-btn" title="View">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13.7811 0.220343C13.6788 0.118118 13.5492 0.0476272 13.4078 0.0173556C13.2665 -0.0129161 13.1193 -0.00167774 12.9842 0.0497177L0.483266 4.78128H0.480766C0.336629 4.83672 0.213118 4.9353 0.127104 5.06356C0.0410898 5.19182 -0.00323491 5.3435 0.000183888 5.49789C0.00360268 5.65229 0.0545983 5.80186 0.146206 5.92619C0.237813 6.05051 0.365566 6.14353 0.512016 6.19253L0.524828 6.19659L4.81545 8.02878C4.89914 8.05419 4.98803 8.0572 5.07324 8.03751C5.15845 8.01782 5.23701 7.97613 5.30108 7.91659L12.1873 1.50003C12.2078 1.47951 12.2322 1.46323 12.259 1.45213C12.2858 1.44102 12.3146 1.43531 12.3436 1.43531C12.3726 1.43531 12.4013 1.44102 12.4281 1.45213C12.455 1.46323 12.4793 1.47951 12.4998 1.50003C12.5203 1.52055 12.5366 1.54491 12.5477 1.57172C12.5588 1.59853 12.5645 1.62726 12.5645 1.65628C12.5645 1.6853 12.5588 1.71403 12.5477 1.74084C12.5366 1.76765 12.5203 1.79201 12.4998 1.81253L6.08295 8.69566C6.02342 8.75972 5.98172 8.83828 5.96204 8.92349C5.94235 9.00871 5.94536 9.09759 5.97077 9.18128L7.80358 13.4744C7.80545 13.4807 7.80733 13.4863 7.80952 13.4922C7.90952 13.7819 8.16264 13.9863 8.46858 14H8.49983C8.65427 14.0009 8.80542 13.9553 8.9336 13.8691C9.06178 13.783 9.16108 13.6603 9.21858 13.5169L13.9495 1.01941C14.0016 0.88418 14.0135 0.736748 13.9836 0.594939C13.9537 0.453131 13.8834 0.32302 13.7811 0.220343Z"
+                          fill="#1E1E1E"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>ID100066</td>
+                  <td>Overview</td>
+                  <td>
+                    Palembang, Bangka Belitung, Lampung, Pulau Jawa, Laut Jawa
+                  </td>
+                  <td>
+                    <button class="enc-view-btn" title="View">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13.7811 0.220343C13.6788 0.118118 13.5492 0.0476272 13.4078 0.0173556C13.2665 -0.0129161 13.1193 -0.00167774 12.9842 0.0497177L0.483266 4.78128H0.480766C0.336629 4.83672 0.213118 4.9353 0.127104 5.06356C0.0410898 5.19182 -0.00323491 5.3435 0.000183888 5.49789C0.00360268 5.65229 0.0545983 5.80186 0.146206 5.92619C0.237813 6.05051 0.365566 6.14353 0.512016 6.19253L0.524828 6.19659L4.81545 8.02878C4.89914 8.05419 4.98803 8.0572 5.07324 8.03751C5.15845 8.01782 5.23701 7.97613 5.30108 7.91659L12.1873 1.50003C12.2078 1.47951 12.2322 1.46323 12.259 1.45213C12.2858 1.44102 12.3146 1.43531 12.3436 1.43531C12.3726 1.43531 12.4013 1.44102 12.4281 1.45213C12.455 1.46323 12.4793 1.47951 12.4998 1.50003C12.5203 1.52055 12.5366 1.54491 12.5477 1.57172C12.5588 1.59853 12.5645 1.62726 12.5645 1.65628C12.5645 1.6853 12.5588 1.71403 12.5477 1.74084C12.5366 1.76765 12.5203 1.79201 12.4998 1.81253L6.08295 8.69566C6.02342 8.75972 5.98172 8.83828 5.96204 8.92349C5.94235 9.00871 5.94536 9.09759 5.97077 9.18128L7.80358 13.4744C7.80545 13.4807 7.80733 13.4863 7.80952 13.4922C7.90952 13.7819 8.16264 13.9863 8.46858 14H8.49983C8.65427 14.0009 8.80542 13.9553 8.9336 13.8691C9.06178 13.783 9.16108 13.6603 9.21858 13.5169L13.9495 1.01941C14.0016 0.88418 14.0135 0.736748 13.9836 0.594939C13.9537 0.453131 13.8834 0.32302 13.7811 0.220343Z"
+                          fill="#1E1E1E"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="nav-item" data-item="logout">
           <!-- <i class="bi bi-box-arrow-right nav-icon"></i> -->
@@ -2162,7 +2444,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -2298,100 +2580,42 @@
           // Tutup modal geofence jika terbuka
           geofenceModal.classList.remove("visible");
           geofenceDetailModal.classList.remove("visible");
+          bookmarkModal.classList.remove("visible");
+          bookmarkDetailModal.classList.remove("visible");
+          encModal.classList.remove("visible");
 
-          // Hanya tampilkan popup jika menu sudah expanded
-          if (navMenu.classList.contains("expanded")) {
-            const isVisible = filterModal.classList.contains("visible");
-
-            // Tutup semua modal yang terbuka
-            document
-              .querySelectorAll(".control-modal, .filter-modal")
-              .forEach((modal) => {
-                modal.classList.remove("visible");
-              });
-
-            // Jika modal sebelumnya tidak visible, tampilkan
-            if (!isVisible) {
-              filterModal.classList.add("visible");
-              activeModal = filterModal;
-
-              // Update posisi modal relatif terhadap menu item
-              const filterItemRect = filterItem.getBoundingClientRect();
-              filterModal.style.top = `${filterItemRect.top}px`;
-              filterModal.style.left = `${filterItemRect.right + 10}px`;
-            } else {
-              activeModal = null;
-            }
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(showFilterModal, 300);
+          } else {
+            showFilterModal();
           }
         });
 
-        // Event listener untuk nav items (expand menu)
-        navItems.forEach((item) => {
-          const icon = item.querySelector(".nav-icon");
-          const itemType = item.getAttribute("data-item");
+        // Fungsi untuk menampilkan filter modal
+        function showFilterModal() {
+          // Tutup semua modal yang terbuka
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
 
-          // Tambahkan event listener pada seluruh item navigasi
-          item.addEventListener("click", function (e) {
-            // Ambil nama item yang sedang diklik
-            const clickedItemType = this.getAttribute("data-item");
+          filterModal.classList.add("visible");
+          activeModal = filterModal;
 
-            // Jika item yang diklik bukan filter, geofence, atau bookmark,
-            // atau jika kita meng-klik item yang berbeda, tutup semua modal
-            if (
-              clickedItemType !== "filter" &&
-              clickedItemType !== "geofence" &&
-              clickedItemType !== "bookmark"
-            ) {
-              // Tutup semua modal popup
-              document
-                .querySelectorAll(
-                  ".filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal"
-                )
-                .forEach((modal) => {
-                  modal.classList.remove("visible");
-                });
-              activeModal = null;
-            } else if (clickedItemType === "filter") {
-              // Tutup geofence dan bookmark modal jika filter yang diklik
-              document
-                .querySelectorAll(
-                  ".geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal"
-                )
-                .forEach((modal) => {
-                  modal.classList.remove("visible");
-                });
-            } else if (clickedItemType === "geofence") {
-              // Tutup filter dan bookmark modal jika geofence yang diklik
-              document
-                .querySelectorAll(
-                  ".filter-modal, .bookmark-modal, .bookmark-detail-modal"
-                )
-                .forEach((modal) => {
-                  modal.classList.remove("visible");
-                });
-            } else if (clickedItemType === "bookmark") {
-              // Tutup filter dan geofence modal jika bookmark yang diklik
-              document
-                .querySelectorAll(
-                  ".filter-modal, .geofence-modal, .geofence-detail-modal"
-                )
-                .forEach((modal) => {
-                  modal.classList.remove("visible");
-                });
-            }
-          });
+          // Update posisi modal relatif terhadap menu item
+          const filterItemRect = filterItem.getBoundingClientRect();
+          filterModal.style.top = `${filterItemRect.top}px`;
+          filterModal.style.left = `${filterItemRect.right + 10}px`;
+        }
 
-          // Event listener pada icon (hanya untuk expand menu)
-          icon.addEventListener("click", function (e) {
-            e.stopPropagation();
-            if (!navMenu.classList.contains("expanded")) {
-              navMenu.classList.add("expanded");
-              menuState = "expanded";
-            }
-          });
-        });
-
-        // Event listener untuk tombol close
+        // Event listener untuk tombol close filter
         closeFilterBtn.addEventListener("click", function (e) {
           e.stopPropagation();
           filterModal.classList.remove("visible");
@@ -2671,7 +2895,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -2816,6 +3040,120 @@
             input.addEventListener("input", function (e) {
               e.stopPropagation();
             });
+          });
+
+        // Fungsi untuk mencegah event input dan textarea keluar dari popup
+        preventPopupClose();
+
+        // Handle ENC modal
+        const encItem = document.querySelector('[data-item="enc"]');
+        const encIcon = encItem.querySelector(".nav-icon");
+        const encModal = document.getElementById("encModal");
+        const closeEncBtn = document.getElementById("closeEncBtn");
+        const collapseEncBtn = document.getElementById("collapseEncBtn");
+        const encCollapseIcon = document.getElementById("encCollapseIcon");
+        const encContent = document.querySelector(".enc-search-container");
+        const encTable = document.querySelector(".enc-table");
+
+        // Event listener untuk tombol collapse ENC
+        collapseEncBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (
+            encContent.classList.contains("hidden") &&
+            encTable.classList.contains("hidden")
+          ) {
+            encContent.classList.remove("hidden");
+            encTable.classList.remove("hidden");
+            encCollapseIcon.classList.remove("rotated");
+          } else {
+            encContent.classList.add("hidden");
+            encTable.classList.add("hidden");
+            encCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Fungsi untuk menampilkan ENC modal
+        function showEncModal() {
+          // Tutup semua modal yang terbuka
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
+
+          encModal.classList.add("visible");
+          activeModal = encModal;
+
+          // Update posisi modal relatif terhadap menu item
+          positioning(encItem, encModal);
+        }
+
+        // Event listener untuk icon ENC (hanya untuk expand)
+        encIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Event listener untuk item ENC (untuk menampilkan popup)
+        encItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Tutup modal filter dan geofence jika terbuka
+          filterModal.classList.remove("visible");
+          geofenceModal.classList.remove("visible");
+          geofenceDetailModal.classList.remove("visible");
+          bookmarkModal.classList.remove("visible");
+          bookmarkDetailModal.classList.remove("visible");
+
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(showEncModal, 300);
+          } else {
+            // Toggle visibility ENC modal
+            if (encModal.classList.contains("visible")) {
+              encModal.classList.remove("visible");
+              activeModal = null;
+            } else {
+              showEncModal();
+            }
+          }
+        });
+
+        // Event listener untuk tombol close ENC
+        closeEncBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          encModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol view di tabel ENC
+        document.querySelectorAll(".enc-view-btn").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const row = this.closest("tr");
+            const cellId = row.cells[0].textContent;
+            const title = row.cells[2].textContent;
+
+            // Tampilkan cell yang dipilih di input active cell
+            document.getElementById("encActiveCell").value =
+              cellId + " - " + title;
+          });
+        });
+
+        // Event listener untuk tombol trash (hapus active cell)
+        document
+          .querySelector(".enc-trash-btn")
+          .addEventListener("click", function (e) {
+            e.stopPropagation();
+            document.getElementById("encActiveCell").value = "";
           });
       });
     </script>
