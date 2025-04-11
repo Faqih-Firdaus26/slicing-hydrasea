@@ -481,7 +481,6 @@
           width: 200px;
         }
 
-        /* Memastikan control navigation tetap terlihat di layar kecil */
         .right-controls {
           gap: 3px;
         }
@@ -905,6 +904,237 @@
 
       .filter-modal.content-hidden {
         min-height: 50px;
+      }
+
+      /* Gaya untuk popup Bookmark */
+      .bookmark-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 320px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 320px;
+      }
+
+      .bookmark-modal.visible {
+        display: block;
+      }
+
+      .bookmark-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .bookmark-title {
+        font-weight: bold;
+        color: white;
+      }
+
+      .bookmark-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .bookmark-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .bookmark-search {
+        position: relative;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .bookmark-search input {
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: transparent;
+        color: white;
+        width: 150px;
+      }
+
+      .bookmark-search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      .bookmark-list {
+        margin-bottom: 10px;
+        max-height: 150px;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .bookmark-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      .bookmark-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .bookmark-item-name {
+        flex-grow: 1;
+        color: white;
+      }
+
+      .bookmark-item-actions {
+        display: flex;
+        gap: 5px;
+      }
+
+      .bookmark-btn {
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .bookmark-btn.btn-danger {
+        background-color: #cc0000;
+      }
+
+      .bookmark-btn:hover {
+        opacity: 0.8;
+      }
+
+      /* Modal detail bookmark */
+      .bookmark-detail-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 320px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 260px;
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .bookmark-detail-modal::-webkit-scrollbar {
+        display: none;
+      }
+
+      .bookmark-detail-modal.visible {
+        display: block;
+      }
+
+      .bookmark-detail-content {
+        max-height: 250px;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .bookmark-detail-content::-webkit-scrollbar {
+        display: none;
+      }
+
+      .bookmark-input-group {
+        margin-bottom: 10px;
+      }
+
+      .bookmark-input-label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+        font-size: 12px;
+      }
+
+      .bookmark-input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+        box-sizing: border-box;
+      }
+
+      .bookmark-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+
+      .bookmark-action-btn {
+        padding: 5px 15px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      .bookmark-action-btn:hover {
+        opacity: 0.8;
+      }
+
+      .bookmark-action-btn.btn-cancel {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .bookmark-action-btn.btn-submit {
+        background-color: #0d6efd;
+        color: white;
+      }
+
+      /* Animasi tanda panah */
+      .bookmark-chevron-icon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      .bookmark-chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+
+      /* Gaya untuk content hidden */
+      .bookmark-content.hidden {
+        display: none;
+      }
+
+      /* Pastikan ukuran modal konsisten */
+      .bookmark-modal {
+        min-height: 150px;
       }
     </style>
   </head>
@@ -1476,6 +1706,192 @@
           </svg>
 
           <span class="nav-text">Bookmark</span>
+
+          <!-- Bookmark Modal - Daftar Bookmark -->
+          <div class="bookmark-modal" id="bookmarkModal">
+            <div class="bookmark-header">
+              <div class="bookmark-title">Bookmark</div>
+              <div class="bookmark-controls">
+                <button
+                  class="bookmark-control-btn"
+                  id="addBookmarkBtn"
+                  title="Add Bookmark"
+                >
+                  <i class="bi bi-plus"></i>
+                </button>
+                <button
+                  class="bookmark-control-btn"
+                  id="collapseBookmarkBtn"
+                  title="Collapse/Expand"
+                >
+                  <i
+                    class="bi bi-chevron-down bookmark-chevron-icon"
+                    id="bookmarkCollapseIcon"
+                  ></i>
+                </button>
+                <button
+                  class="bookmark-control-btn"
+                  id="closeBookmarkBtn"
+                  title="Close"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="bookmark-content" id="bookmarkContent">
+              <div class="bookmark-search">
+                <input type="text" placeholder="Search" />
+                <button class="bookmark-search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+
+              <div class="bookmark-list">
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">ANUGRAH BUANA IX</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">CNTO NUSANTARA</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">Indonesia</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">Marunda</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bookmark Detail Modal - Form Input -->
+          <div class="bookmark-detail-modal" id="bookmarkDetailModal">
+            <div class="bookmark-header">
+              <div class="bookmark-title">Bookmark</div>
+              <div class="bookmark-controls">
+                <button
+                  class="bookmark-control-btn"
+                  id="collapseBookmarkDetailBtn"
+                  title="Collapse/Expand"
+                >
+                  <i
+                    class="bi bi-chevron-down bookmark-chevron-icon"
+                    id="bookmarkDetailCollapseIcon"
+                  ></i>
+                </button>
+                <button
+                  class="bookmark-control-btn"
+                  id="closeBookmarkDetailBtn"
+                  title="Close"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="bookmark-input-group">
+              <label class="bookmark-input-label">Name *</label>
+              <input
+                type="text"
+                class="bookmark-input"
+                id="bookmarkName"
+                placeholder="Enter bookmark name"
+              />
+            </div>
+
+            <div class="bookmark-actions">
+              <button class="bookmark-action-btn btn-cancel">Cancel</button>
+              <button class="bookmark-action-btn btn-submit">Submit</button>
+            </div>
+
+            <div class="bookmark-detail-content" id="bookmarkDetailContent">
+              <div class="bookmark-search">
+                <input type="text" placeholder="Search" />
+                <button class="bookmark-search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+
+              <div class="bookmark-list">
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">ANUGRAH BUANA IX</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">CNTO NUSANTARA</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">Indonesia</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="bookmark-item">
+                  <div class="bookmark-item-name">Marunda</div>
+                  <div class="bookmark-item-actions">
+                    <button class="bookmark-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="bookmark-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="nav-item" data-item="anomaly">
           <!-- <i class="bi bi-exclamation-circle nav-icon"></i> -->
@@ -1712,6 +2128,35 @@
           "geofenceDetailContent"
         );
 
+        // Handle bookmark modal
+        const bookmarkItem = document.querySelector('[data-item="bookmark"]');
+        const bookmarkIcon = bookmarkItem.querySelector(".nav-icon");
+        const bookmarkModal = document.getElementById("bookmarkModal");
+        const bookmarkDetailModal = document.getElementById(
+          "bookmarkDetailModal"
+        );
+        const closeBookmarkBtn = document.getElementById("closeBookmarkBtn");
+        const closeBookmarkDetailBtn = document.getElementById(
+          "closeBookmarkDetailBtn"
+        );
+        const addBookmarkBtn = document.getElementById("addBookmarkBtn");
+        const collapseBookmarkBtn = document.getElementById(
+          "collapseBookmarkBtn"
+        );
+        const bookmarkCollapseIcon = document.getElementById(
+          "bookmarkCollapseIcon"
+        );
+        const bookmarkContent = document.getElementById("bookmarkContent");
+        const collapseBookmarkDetailBtn = document.getElementById(
+          "collapseBookmarkDetailBtn"
+        );
+        const bookmarkDetailCollapseIcon = document.getElementById(
+          "bookmarkDetailCollapseIcon"
+        );
+        const bookmarkDetailContent = document.getElementById(
+          "bookmarkDetailContent"
+        );
+
         // Fungsi untuk menampilkan geofence modal
         function showGeofenceModal() {
           // Tutup semua modal yang terbuka
@@ -1887,13 +2332,52 @@
 
           // Tambahkan event listener pada seluruh item navigasi
           item.addEventListener("click", function (e) {
-            // Jika item yang diklik bukan filter atau geofence, tutup semua modal
-            if (itemType !== "filter" && itemType !== "geofence") {
-              // Tutup semua modal yang terbuka
-              filterModal.classList.remove("visible");
-              geofenceModal.classList.remove("visible");
-              geofenceDetailModal.classList.remove("visible");
+            // Ambil nama item yang sedang diklik
+            const clickedItemType = this.getAttribute("data-item");
+
+            // Jika item yang diklik bukan filter, geofence, atau bookmark,
+            // atau jika kita meng-klik item yang berbeda, tutup semua modal
+            if (
+              clickedItemType !== "filter" &&
+              clickedItemType !== "geofence" &&
+              clickedItemType !== "bookmark"
+            ) {
+              // Tutup semua modal popup
+              document
+                .querySelectorAll(
+                  ".filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal"
+                )
+                .forEach((modal) => {
+                  modal.classList.remove("visible");
+                });
               activeModal = null;
+            } else if (clickedItemType === "filter") {
+              // Tutup geofence dan bookmark modal jika filter yang diklik
+              document
+                .querySelectorAll(
+                  ".geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal"
+                )
+                .forEach((modal) => {
+                  modal.classList.remove("visible");
+                });
+            } else if (clickedItemType === "geofence") {
+              // Tutup filter dan bookmark modal jika geofence yang diklik
+              document
+                .querySelectorAll(
+                  ".filter-modal, .bookmark-modal, .bookmark-detail-modal"
+                )
+                .forEach((modal) => {
+                  modal.classList.remove("visible");
+                });
+            } else if (clickedItemType === "bookmark") {
+              // Tutup filter dan geofence modal jika bookmark yang diklik
+              document
+                .querySelectorAll(
+                  ".filter-modal, .geofence-modal, .geofence-detail-modal"
+                )
+                .forEach((modal) => {
+                  modal.classList.remove("visible");
+                });
             }
           });
 
@@ -2181,6 +2665,158 @@
             }
           });
         });
+
+        // Fungsi untuk menampilkan bookmark modal
+        function showBookmarkModal() {
+          // Tutup semua modal yang terbuka
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
+
+          bookmarkModal.classList.add("visible");
+          activeModal = bookmarkModal;
+
+          // Update posisi modal relatif terhadap menu item
+          const bookmarkItemRect = bookmarkItem.getBoundingClientRect();
+          bookmarkModal.style.top = `${bookmarkItemRect.top}px`;
+          bookmarkModal.style.left = `${bookmarkItemRect.right + 10}px`;
+        }
+
+        // Event listener untuk icon bookmark (hanya untuk expand)
+        bookmarkIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Event listener untuk item bookmark (untuk menampilkan popup)
+        bookmarkItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Tutup modal filter dan geofence jika terbuka
+          filterModal.classList.remove("visible");
+          geofenceModal.classList.remove("visible");
+          geofenceDetailModal.classList.remove("visible");
+
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(showBookmarkModal, 300);
+          } else {
+            // Toggle visibility bookmark modal
+            if (bookmarkModal.classList.contains("visible")) {
+              bookmarkModal.classList.remove("visible");
+              activeModal = null;
+            } else if (bookmarkDetailModal.classList.contains("visible")) {
+              bookmarkDetailModal.classList.remove("visible");
+              activeModal = null;
+            } else {
+              showBookmarkModal();
+            }
+          }
+        });
+
+        // Event listener untuk tombol close bookmark
+        closeBookmarkBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          bookmarkModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol close bookmark detail
+        closeBookmarkDetailBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          bookmarkDetailModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol add bookmark
+        addBookmarkBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          // Sembunyikan bookmark modal saat detail modal ditampilkan
+          bookmarkModal.classList.remove("visible");
+          bookmarkDetailModal.classList.add("visible");
+
+          // Gunakan fungsi positioning untuk meletakkan modal detail
+          positioning(bookmarkItem, bookmarkDetailModal);
+
+          // Atur fokus pada input nama bookmark
+          setTimeout(function () {
+            document.getElementById("bookmarkName").focus();
+          }, 100);
+        });
+
+        // Event listener untuk tombol collapse bookmark
+        collapseBookmarkBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (bookmarkContent.classList.contains("hidden")) {
+            bookmarkContent.classList.remove("hidden");
+            bookmarkCollapseIcon.classList.remove("rotated");
+          } else {
+            bookmarkContent.classList.add("hidden");
+            bookmarkCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Event listener untuk tombol collapse bookmark detail
+        collapseBookmarkDetailBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (bookmarkDetailContent.classList.contains("hidden")) {
+            bookmarkDetailContent.classList.remove("hidden");
+            bookmarkDetailCollapseIcon.classList.remove("rotated");
+          } else {
+            bookmarkDetailContent.classList.add("hidden");
+            bookmarkDetailCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Event listener untuk tombol delete pada bookmark item
+        document.querySelectorAll(".bookmark-btn.btn-danger").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            // Hapus baris item yang berisi tombol ini
+            const bookmarkItem = this.closest(".bookmark-item");
+            if (bookmarkItem) {
+              bookmarkItem.remove();
+            }
+          });
+        });
+
+        // Event listener untuk form cancel button pada bookmark detail
+        document
+          .querySelector(
+            ".bookmark-detail-modal .bookmark-action-btn.btn-cancel"
+          )
+          .addEventListener("click", function (e) {
+            e.stopPropagation();
+            bookmarkDetailModal.classList.remove("visible");
+            showBookmarkModal();
+          });
+
+        // Event listener untuk input pada bookmark detail modal
+        document
+          .querySelectorAll("#bookmarkDetailModal input")
+          .forEach((input) => {
+            input.addEventListener("click", function (e) {
+              e.stopPropagation();
+            });
+
+            input.addEventListener("focus", function (e) {
+              e.stopPropagation();
+            });
+
+            input.addEventListener("input", function (e) {
+              e.stopPropagation();
+            });
+          });
       });
     </script>
   </body>
