@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hydrasea Map</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        /* font-family: ; */
+      }
+      .map-container {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        background-color: skyblue;
+      }
+      .top-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 10px;
+        z-index: 1000;
+      }
+      .left-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .brand-container {
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 5px 15px;
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+      }
+      .hamburger-container {
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        width: 40px;
+      }
+      .brand {
+        font-weight: bold;
+        color: white;
+        font-size: 1rem;
+      }
+      .hamburger-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1rem;
+        padding: 0;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+      }
+      /* Fixed hamburger/X icon display */
+      .hamburger-btn .bi-list {
+        display: block;
+      }
+      .hamburger-btn .bi-x-lg {
+        display: none;
+      }
+      .hamburger-btn.active .bi-list {
+        display: none;
+      }
+      .hamburger-btn.active .bi-x-lg {
+        display: block;
+      }
+      .right-controls {
+        display: flex;
+        gap: 10px;
+        flex: 1;
+        justify-content: flex-end;
+      }
+      .search-container {
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        width: 500px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        padding: 5px 15px;
+        margin-left: auto;
+      }
+      .search-input {
+        border: none;
+        background: transparent;
+        flex-grow: 1;
+        outline: none;
+        color: white;
+      }
+      .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .search-icon {
+        color: white;
+      }
+      .controls-container {
+        position: fixed;
+        bottom: 20px;
+        right: 70px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 5px 10px;
+        display: flex;
+        z-index: 1000;
+      }
+      .zoom-controls {
+        position: fixed;
+        bottom: 20px;
+        right: 120px;
+        background-color: rgba(243, 244, 248, 0.7);
+        border-radius: 5px;
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        z-index: 1000;
+      }
+      .zoom-btn {
+        background: none;
+        border: none;
+        color: #1a3b5c;
+        font-size: 1.2rem;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+      .zoom-btn:hover {
+        background-color: rgba(175, 176, 179, 0.8);
+      }
+      .control-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        margin: 0 5px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      /* Navigation Menu Styles */
+      .nav-menu {
+        position: absolute;
+        top: 85px;
+        left: 10px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        width: 50px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease, width 0.3s ease;
+      }
+
+      .nav-menu::-webkit-scrollbar {
+        display: none;
+      }
+      .nav-menu.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        color: white;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      .nav-item:hover {
+        background-color: rgba(52, 58, 64, 0.9);
+      }
+      .nav-icon {
+        font-size: 0.8rem;
+        min-width: 30px;
+        text-align: center;
+        flex-shrink: 0;
+        color: white;
+      }
+      .nav-text {
+        margin-left: 10px;
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        position: absolute;
+        left: 40px;
+        pointer-events: none;
+        font-size: 0.8rem;
+      }
+      .nav-menu.expanded {
+        width: 180px;
+      }
+      .nav-menu.expanded .nav-text {
+        opacity: 1;
+        transform: translateX(0);
+        position: static;
+        pointer-events: auto;
+      }
+
+      .control-modal {
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        margin-bottom: 10px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        display: none;
+        z-index: 1001;
+        color: white;
+      }
+
+      .control-modal {
+        width: 220px;
+      }
+      /* Larger size for layer modal */
+      #layerModal {
+        width: 280px;
+      }
+      .control-modal.visible {
+        display: block;
+      }
+      .modal-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: white;
+      }
+      .modal-content {
+        max-height: none;
+      }
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+      .checkbox-item input[type="checkbox"] {
+        margin-right: 8px;
+        flex-shrink: 0;
+      }
+      .checkbox-item label {
+        margin-right: 5px;
+        flex: 1;
+        min-width: 100px;
+      }
+      .hours-input {
+        width: 50px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        flex-shrink: 0;
+        margin-right: 5px;
+      }
+      .dropdown-select {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 2px;
+        width: 120px;
+        margin-top: 5px;
+        margin-left: 25px;
+      }
+
+      .with-hours {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+
+      /* Custom zoom control position */
+      .leaflet-control-zoom {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        margin: 0 !important;
+      }
+
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+        .search-container {
+          width: 200px;
+          height: 30px;
+          padding: 5px 10px;
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+
+        .search-input {
+          width: 100%;
+          padding-right: 25px;
+        }
+
+        .search-icon {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .brand {
+          font-size: 0.8rem;
+        }
+
+        .brand-container {
+          padding: 5px 10px;
+        }
+
+        .hamburger-container {
+          width: 35px;
+        }
+
+        .control-btn {
+          font-size: 1rem;
+          margin: 0 3px;
+          padding: 5px;
+        }
+
+        .controls-container {
+          right: 20px;
+          padding: 5px;
+          gap: 5px;
+          display: flex;
+          flex-wrap: nowrap;
+          overflow-x: visible;
+          position: fixed;
+          bottom: 20px;
+          z-index: 1000;
+        }
+
+        .control-modal {
+          width: 180px;
+          padding: 8px;
+          right: 0;
+          position: absolute;
+          bottom: 100%;
+          margin-bottom: 10px;
+        }
+
+        #layerModal {
+          width: 220px;
+        }
+
+        .checkbox-item {
+          margin-bottom: 6px;
+        }
+
+        .checkbox-item label {
+          font-size: 0.8rem;
+          min-width: 80px;
+        }
+
+        .hours-input {
+          width: 40px;
+        }
+
+        .dropdown-select {
+          width: 100px;
+          margin-left: 15px;
+        }
+
+        .nav-menu {
+          width: 40px;
+        }
+
+        .nav-menu.expanded {
+          width: 160px;
+        }
+
+        .nav-icon {
+          font-size: 0.7rem;
+          min-width: 25px;
+          /* color: white; */
+        }
+
+        .nav-text {
+          font-size: 0.7rem;
+          left: 35px;
+        }
+
+        .modal-title {
+          font-size: 0.9rem;
+          margin-bottom: 8px;
+        }
+
+        /* Memastikan control navigation tetap terlihat */
+        .right-controls {
+          display: flex;
+          gap: 5px;
+          flex-wrap: nowrap;
+          overflow-x: visible;
+          position: relative;
+          z-index: 1000;
+        }
+
+        /* Memastikan control button tetap terlihat */
+        .control-btn svg {
+          width: 20px;
+          height: 20px;
+          display: block;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .search-container {
+          width: 150px;
+          height: 28px;
+        }
+
+        .controls-container {
+          right: 10px;
+          gap: 3px;
+          padding: 3px;
+          bottom: 15px;
+        }
+
+        .control-btn {
+          padding: 3px;
+        }
+
+        .control-btn svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        .control-modal {
+          width: 160px;
+          right: 0;
+        }
+
+        #layerModal {
+          width: 200px;
+        }
+
+        /* Memastikan control navigation tetap terlihat di layar kecil */
+        .right-controls {
+          gap: 3px;
+        }
+      }
+
+      /* Filter Modal Styles */
+      .filter-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 280px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .filter-modal.visible {
+        display: block;
+      }
+
+      .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .filter-title {
+        font-weight: bold;
+        color: white;
+      }
+
+      .filter-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .filter-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .filter-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: center;
+      }
+
+      .filter-row:not(:first-child) {
+        margin-top: 10px;
+        padding-top: 10px;
+        /* Menghapus garis pemisah */
+        /* border-top: 1px solid rgba(255, 255, 255, 0.2); */
+      }
+
+      .filter-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex: 1;
+      }
+
+      .filter-select {
+        padding: 4px 8px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(52, 58, 64, 0.8);
+        font-size: 12px;
+        color: white;
+        position: relative;
+        z-index: 1;
+      }
+
+      .filter-select option {
+        background-color: #343a40;
+        color: white;
+      }
+
+      .filter-select.type-select {
+        width: 100px;
+      }
+
+      .filter-select.operator-select {
+        width: 50px;
+      }
+
+      .filter-select.value-select {
+        width: 120px;
+      }
+
+      .filter-select.condition-select {
+        width: 70px;
+      }
+
+      /* Pastikan semua select di baris pertama dan baris berikutnya sejajar */
+      .filter-row:first-child .filter-group {
+        margin-left: 78px; /* Menyesuaikan dengan lebar condition-select + gap */
+      }
+
+      /* Gaya untuk panah dropdown */
+      .filter-dropdown-btn {
+        margin-left: 5px;
+      }
+
+      .filter-delete {
+        background: none;
+        border: none;
+        padding: 4px;
+        cursor: pointer;
+        color: #dc3545;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .filter-delete:hover {
+        color: #bd2130;
+      }
+
+      .filter-action {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 15px;
+      }
+
+      .filter-submit {
+        background-color: rgba(52, 152, 219, 0.8);
+        color: white;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .filter-submit:hover {
+        background-color: rgba(52, 152, 219, 1);
+      }
+
+      /* Animasi rotasi untuk icon chevron */
+      .rotate-icon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      .rotate-icon.rotated {
+        transform: rotate(180deg);
+      }
+
+      /* Gaya khusus saat content hidden */
+      .filter-content.hidden {
+        display: none;
+      }
+
+      /* Pastikan ukuran filter modal konsisten */
+      .filter-modal {
+        min-height: 150px;
+        transition: height 0.3s ease;
+      }
+
+      /* Pastikan tombol submit tetap terlihat meskipun filter content disembunyikan */
+      .filter-action {
+        margin-top: 15px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Gaya untuk popup Geofence */
+      .geofence-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 320px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 320px; /* Memastikan ukuran konsisten */
+      }
+
+      .geofence-modal.visible {
+        display: block;
+      }
+
+      .geofence-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .geofence-title {
+        font-weight: bold;
+        color: white;
+      }
+
+      .geofence-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .geofence-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .geofence-search {
+        position: relative;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .geofence-search input {
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: transparent;
+        color: white;
+        width: 150px;
+      }
+
+      .geofence-search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      .geofence-list {
+        margin-bottom: 10px;
+        max-height: 150px;
+        overflow-y: auto;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+      }
+
+      .geofence-list::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      .geofence-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .geofence-item-name {
+        flex-grow: 1;
+        color: white;
+      }
+
+      .geofence-item-actions {
+        display: flex;
+        gap: 5px;
+      }
+
+      .geofence-btn {
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .geofence-btn.btn-danger {
+        background-color: #cc0000;
+      }
+
+      .geofence-btn:hover {
+        opacity: 0.8;
+      }
+
+      /* Modal detail geofence */
+      .geofence-detail-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 320px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 320px; /* Memastikan ukuran konsisten */
+        max-height: 80vh; /* Batasi tinggi maksimum */
+        overflow-y: auto; /* Tambahkan scroll jika terlalu panjang */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+      }
+
+      .geofence-detail-modal::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      .geofence-detail-modal.visible {
+        display: block;
+      }
+
+      .geofence-detail-content {
+        max-height: 250px; /* Batasi tinggi konten daftar di dalam modal detail */
+        overflow-y: auto;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+      }
+
+      .geofence-detail-content::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+
+      .geofence-input-group {
+        margin-bottom: 10px;
+      }
+
+      .geofence-input-label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+        font-size: 12px;
+      }
+
+      .geofence-input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+        box-sizing: border-box; /* Pastikan padding termasuk dalam lebar */
+      }
+
+      .geofence-textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+        min-height: 60px;
+        resize: vertical;
+        box-sizing: border-box; /* Pastikan padding termasuk dalam lebar */
+        max-height: 120px; /* Batasi tinggi maksimum */
+      }
+
+      .geofence-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .geofence-action-btn {
+        padding: 5px 15px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      .geofence-action-btn:hover {
+        opacity: 0.8;
+      }
+
+      .geofence-action-btn.btn-cancel {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .geofence-action-btn.btn-submit {
+        background-color: #0d6efd;
+        color: white;
+      }
+
+      /* Animasi tanda panah */
+      .geofence-chevron-icon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      .geofence-chevron-icon.rotated {
+        transform: rotate(180deg);
+      }
+
+      /* Gaya untuk content hidden */
+      .geofence-content.hidden {
+        display: none;
+      }
+
+      /* Pastikan ukuran modal konsisten */
+      .geofence-modal {
+        min-height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="map-container">
+      <div class="top-bar">
+        <div class="left-controls">
+          <div class="brand-container">
+            <span class="brand">Hydrasea</span>
+          </div>
+
+          <!-- Hamburger in its own container, 5px below -->
+          <div class="hamburger-container">
+            <button class="hamburger-btn" id="hamburgerBtn">
+              <i class="bi bi-list"></i>
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Controls (Search and Buttons) -->
+        <div class="right-controls">
+          <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search" />
+            <i class="bi bi-search search-icon"></i>
+          </div>
+
+          <!-- Controls -->
+          <div class="controls-container">
+            <!-- Map Control -->
+            <button class="control-btn" id="mapControlBtn">
+              <!-- <i class="bi bi-layers"></i> -->
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 19 19"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.64331 0.193018C9.18654 -0.0630371 9.81362 -0.0630371 10.3569 0.193018L18.3266 3.94106C18.6365 4.08579 18.8334 4.40122 18.8334 4.75005C18.8334 5.09888 18.6365 5.41431 18.3266 5.55903L10.3569 9.30708C9.81362 9.56314 9.18654 9.56314 8.64331 9.30708L0.673519 5.55903C0.363623 5.4106 0.166748 5.09517 0.166748 4.75005C0.166748 4.40493 0.363623 4.08579 0.673519 3.94106L8.64331 0.193018ZM16.3871 7.77817L18.3266 8.69106C18.6365 8.83579 18.8334 9.15122 18.8334 9.50005C18.8334 9.84888 18.6365 10.1643 18.3266 10.309L10.3569 14.0571C9.81362 14.3131 9.18654 14.3131 8.64331 14.0571L0.673519 10.309C0.363623 10.1606 0.166748 9.84517 0.166748 9.50005C0.166748 9.15493 0.363623 8.83579 0.673519 8.69106L2.6131 7.77817L8.15477 10.3833C8.57658 10.5813 9.03557 10.6838 9.50008 10.6838C9.9646 10.6838 10.4236 10.5813 10.8454 10.3833L16.3871 7.77817ZM10.8454 15.1333L16.3871 12.5282L18.3266 13.4411C18.6365 13.5858 18.8334 13.9012 18.8334 14.25C18.8334 14.5989 18.6365 14.9143 18.3266 15.059L10.3569 18.8071C9.81362 19.0631 9.18654 19.0631 8.64331 18.8071L0.673519 15.059C0.363623 14.9106 0.166748 14.5952 0.166748 14.25C0.166748 13.9049 0.363623 13.5858 0.673519 13.4411L2.6131 12.5282L8.15477 15.1333C8.57658 15.3313 9.03557 15.4338 9.50008 15.4338C9.9646 15.4338 10.4236 15.3313 10.8454 15.1333Z"
+                  fill="white"
+                />
+              </svg>
+            </button>
+
+            <!-- Info Control -->
+            <button class="control-btn" id="infoControlBtn">
+              <!-- <i class="bi bi-info-circle"></i> -->
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 21"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M6.86458 2.81741C6.80229 4.39099 6.86458 14.2915 6.86458 14.2915C7.01919 14.2915 7.17061 14.3161 7.31883 14.3653L12.6146 16.1306V4.65645C12.4602 4.65641 12.3068 4.63149 12.1603 4.58266L6.86458 2.81741ZM6.41033 0.948659C6.7052 0.850447 7.02396 0.850447 7.31883 0.948659L12.6146 2.71391L17.6832 1.02437C17.8705 0.961968 18.0698 0.944949 18.265 0.974714C18.4601 1.00448 18.6453 1.08017 18.8055 1.19556C18.9656 1.31096 19.096 1.46274 19.186 1.63841C19.2759 1.81409 19.3229 2.00862 19.3229 2.20599V14.879C19.3229 15.1807 19.2279 15.4748 19.0514 15.7196C18.875 15.9643 18.6259 16.1473 18.3397 16.2427L13.0688 17.9993C12.7737 18.098 12.4555 18.098 12.1603 17.9993L6.86458 16.2341L1.79596 17.9236C1.60871 17.986 1.40932 18.003 1.2142 17.9733C1.01909 17.9435 0.833842 17.8678 0.673717 17.7524C0.513592 17.637 0.383174 17.4852 0.293207 17.3096C0.20324 17.1339 0.156299 16.9394 0.15625 16.742V4.06899C0.156278 3.76725 0.251257 3.47317 0.427729 3.22841C0.604202 2.98365 0.853219 2.80063 1.1395 2.70528L6.41033 0.948659Z"
+                  fill="white"
+                />
+              </svg>
+            </button>
+
+            <!-- Navigation Control -->
+            <button class="control-btn" id="navControlBtn">
+              <!-- <i class="bi bi-cursor"></i> -->
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 21 21"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1.75187 8.34578C1.73174 8.7054 1.93299 9.04053 2.26024 9.19103L8.82624 12.2028L11.838 18.7679C11.9815 19.0794 12.293 19.278 12.6334 19.278L12.6832 19.2763C12.8589 19.2664 13.0274 19.2039 13.167 19.0968C13.3065 18.9898 13.4105 18.8431 13.4655 18.676L18.3611 3.77303C18.4635 3.45978 18.3812 3.11415 18.1485 2.88053C17.9157 2.6469 17.571 2.56728 17.256 2.6679L2.35212 7.5644C2.18517 7.6193 2.03862 7.7232 1.93156 7.86257C1.82449 8.00194 1.76188 8.17032 1.75187 8.34578Z"
+                  fill="white"
+                />
+              </svg>
+            </button>
+
+            <!-- Map Modal -->
+            <div class="control-modal" id="mapModal">
+              <div class="modal-title">Map</div>
+              <div class="modal-content">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="openStreetMap" />
+                  <label for="openStreetMap">Open Street Map</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="bingRoad" />
+                  <label for="bingRoad">Bing Road</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="esri" />
+                  <label for="esri">Esri</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="bingAerial" />
+                  <label for="bingAerial">Bing Aerial</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="bingHybrid" />
+                  <label for="bingHybrid">Bing Hybrid</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="openLayerLocal" />
+                  <label for="openLayerLocal">OpenLayer Local</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Layer Modal -->
+            <div class="control-modal" id="layerModal">
+              <div class="modal-title">Layer</div>
+              <div class="modal-content">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="allVessel" />
+                  <label for="allVessel">All vessel</label>
+                  <div class="with-hours">
+                    <input type="text" class="hours-input" value="24" />
+                    <span>Hours</span>
+                  </div>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="prediction" />
+                  <label for="prediction">Prediction</label>
+                  <div class="with-hours">
+                    <input type="text" class="hours-input" value="24" />
+                    <span>Hours</span>
+                  </div>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="vesselLegend" />
+                  <label for="vesselLegend">Vessel Legend</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="eez" />
+                  <label for="eez">EEZ</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="territorial" />
+                  <label for="territorial">Territorial</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="polisiAir" />
+                  <label for="polisiAir">Polisi Air</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="antena" />
+                  <label for="antena">Antena</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="quakeAlerts" />
+                  <label for="quakeAlerts">Quake Alerts [Last 48 Hours]</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="ports" />
+                  <label for="ports">Ports</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="alert" />
+                  <label for="alert">Alert</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="alertSound" />
+                  <label for="alertSound">Alert Sound</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="sos" />
+                  <label for="sos">SOS</label>
+                  <select class="dropdown-select">
+                    <option>Last 24 Hours</option>
+                    <option>Last 48 Hours</option>
+                    <option>Last 7 Days</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation Modal -->
+            <div class="control-modal" id="navigationModal">
+              <div class="modal-title">Navigation</div>
+              <div class="modal-content">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="select" />
+                  <label for="select">Select</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="line" />
+                  <label for="line">Line</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="polygon" />
+                  <label for="polygon">Polygon</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="circle" />
+                  <label for="circle">Circle</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <div class="nav-menu" id="navMenu">
+        <div class="nav-item" data-item="filter">
+          <svg
+            class="nav-icon"
+            width="19"
+            height="18"
+            viewBox="0 0 19 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2.83953 0.375C1.15382 0.375 0.253949 2.31467 1.3637 3.55379L6.55978 9.36033V14.0312C6.55978 14.4836 6.77732 14.91 7.14724 15.1813L10.0884 17.3375C11.0563 18.0486 12.4401 17.372 12.4401 16.1875V9.36033L17.6362 3.55379C18.745 2.31467 17.8451 0.375 16.1604 0.375H2.83953Z"
+              fill="white"
+            />
+          </svg>
+          <span class="nav-text">Filter</span>
+
+          <!-- Filter Modal -->
+          <div class="filter-modal" id="filterModal">
+            <div class="filter-header">
+              <div class="filter-title">Filter</div>
+              <div class="filter-controls">
+                <button class="filter-control-btn" id="addFilterBtn">
+                  <i class="bi bi-plus"></i>
+                </button>
+                <button class="filter-control-btn" id="collapseFilterBtn">
+                  <i
+                    class="bi bi-chevron-down rotate-icon"
+                    id="collapseIcon"
+                  ></i>
+                </button>
+                <button class="filter-control-btn" id="closeFilterBtn">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+            <div class="filter-content" id="filterContent">
+              <div class="filter-row">
+                <div class="filter-group">
+                  <select class="filter-select type-select">
+                    <option>Type</option>
+                    <option>Vessel Type</option>
+                    <option>Flag</option>
+                    <option>Name</option>
+                  </select>
+                  <select class="filter-select operator-select">
+                    <option>=</option>
+                    <option>></option>
+                    <option><</option>
+                    <option>!=</option>
+                  </select>
+                  <select class="filter-select value-select">
+                    <option>Anti-Pollution</option>
+                    <option>Fishing Vessel</option>
+                    <option>Cargo</option>
+                    <option>Passenger</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="filter-action">
+              <button class="filter-submit">Submit</button>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item" data-item="antenna">
+          <!-- <i class="bi bi-broadcast nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="23"
+            height="24"
+            viewBox="0 0 23 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.5 3.13538C8.19756 3.13538 5.5104 5.835 5.5104 9.17767C5.50612 10.7608 6.12388 12.2824 7.23061 13.4145C7.36379 13.5509 7.4373 13.7347 7.43496 13.9254C7.43263 14.1161 7.35464 14.2981 7.21815 14.4312C7.08166 14.5644 6.89786 14.6379 6.70717 14.6356C6.51649 14.6333 6.33454 14.5553 6.20136 14.4188C4.83246 13.0178 4.06816 11.1354 4.0729 9.17671C4.0729 5.05204 7.39257 1.69788 11.5 1.69788C15.6074 1.69788 18.9271 5.05204 18.9271 9.17767C18.9315 11.1194 18.1802 12.9867 16.8321 14.3843C16.7675 14.4555 16.6893 14.5131 16.602 14.5535C16.5147 14.594 16.4202 14.6165 16.3241 14.6197C16.2279 14.623 16.1321 14.6069 16.0423 14.5724C15.9525 14.538 15.8705 14.4858 15.8012 14.4191C15.7319 14.3524 15.6768 14.2724 15.6389 14.184C15.6011 14.0956 15.5814 14.0004 15.581 13.9042C15.5807 13.808 15.5996 13.7128 15.6367 13.624C15.6738 13.5353 15.7284 13.4549 15.7971 13.3876C16.8872 12.2577 17.4943 10.7477 17.4896 9.17767C17.4896 5.835 14.8024 3.13538 11.5 3.13538Z"
+              fill="white"
+            />
+            <path
+              d="M11.5 5.83984C9.67914 5.83984 8.19373 7.32909 8.19373 9.17772C8.19373 10.0843 8.55023 10.9037 9.13098 11.5055C9.26327 11.6428 9.33562 11.8269 9.33212 12.0175C9.32861 12.2081 9.24954 12.3895 9.11229 12.5218C8.97504 12.6541 8.79086 12.7265 8.60026 12.723C8.40967 12.7195 8.22827 12.6404 8.09598 12.5031C7.23591 11.6098 6.75568 10.4178 6.75623 9.17772C6.75623 6.54518 8.87414 4.40234 11.5 4.40234C14.1258 4.40234 16.2437 6.54518 16.2437 9.17772C16.2445 10.4003 15.7779 11.5769 14.9394 12.4667C14.8746 12.5354 14.7969 12.5906 14.7108 12.6292C14.6246 12.6678 14.5317 12.6891 14.4373 12.6918C14.343 12.6945 14.249 12.6786 14.1607 12.645C14.0725 12.6114 13.9918 12.5608 13.9231 12.4959C13.8545 12.4311 13.7993 12.3534 13.7606 12.2673C13.722 12.1811 13.7007 12.0882 13.698 11.9938C13.6953 11.8995 13.7112 11.8055 13.7448 11.7173C13.7784 11.629 13.8291 11.5483 13.8939 11.4796C14.4593 10.8807 14.8062 10.0709 14.8062 9.17772C14.8062 7.32814 13.3208 5.83984 11.5 5.83984Z"
+              fill="white"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M10.8138 9.86771C10.6041 9.72214 10.4465 9.51333 10.3639 9.27179C10.2812 9.03025 10.278 8.76862 10.3547 8.52512C10.4313 8.28162 10.5838 8.069 10.7898 7.9183C10.9959 7.76761 11.2447 7.68674 11.5 7.68751C11.755 7.68739 12.0033 7.76863 12.2089 7.9194C12.4145 8.07017 12.5666 8.2826 12.6432 8.5258C12.7197 8.769 12.7167 9.03027 12.6345 9.27161C12.5523 9.51296 12.3952 9.72179 12.1862 9.86771L14.5724 17.0274L14.583 17.059L16.0157 21.3562C16.073 21.5363 16.0571 21.7317 15.9715 21.9001C15.8858 22.0686 15.7372 22.1965 15.5579 22.2562C15.3787 22.3159 15.1831 22.3026 15.0135 22.2192C14.8439 22.1358 14.714 21.9889 14.652 21.8105L13.3774 17.9896H9.62262L8.34804 21.8105C8.28594 21.9889 8.15606 22.1358 7.9865 22.2192C7.81693 22.3026 7.62134 22.3159 7.44205 22.2562C7.26276 22.1965 7.1142 22.0686 7.02853 21.9001C6.94287 21.7317 6.92699 21.5363 6.98433 21.3562L8.41703 17.059L8.42758 17.0274L10.8138 9.86771ZM11.5 12.3565L12.8992 16.5521H10.1008L11.5 12.3565Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Antenna</span>
+        </div>
+        <div class="nav-item" data-item="geofence">
+          <!-- <i class="bi bi-geo-alt nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="19"
+            height="20"
+            viewBox="0 0 19 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M14.1676 0.65625H4.46875C3.66416 0.656266 2.87562 0.881368 2.19228 1.30611C1.50893 1.73085 0.95804 2.33829 0.601875 3.05975L9.16938 8.51219L14.1676 0.65625ZM0.15625 5.33244V15.0312C0.156266 15.8358 0.381368 16.6244 0.806108 17.3077C1.23085 17.9911 1.83829 18.542 2.55975 18.8981L8.01219 10.3306L0.15625 5.33244ZM4.83244 19.3438H14.5312C15.675 19.3438 16.7719 18.8894 17.5806 18.0806C18.3894 17.2719 18.8438 16.175 18.8438 15.0312V4.96875C18.8439 4.16431 18.619 3.37588 18.1945 2.69255C17.77 2.00922 17.1629 1.45824 16.4417 1.10187L10.4099 10.5779L4.83244 19.3438Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Geofence</span>
+
+          <!-- Geofence Modal - Daftar Geofence -->
+          <div class="geofence-modal" id="geofenceModal">
+            <div class="geofence-header">
+              <div class="geofence-title">Geofence</div>
+              <div class="geofence-controls">
+                <button
+                  class="geofence-control-btn"
+                  id="addGeofenceBtn"
+                  title="Add Geofence"
+                >
+                  <i class="bi bi-plus"></i>
+                </button>
+                <button
+                  class="geofence-control-btn"
+                  id="collapseGeofenceBtn"
+                  title="Collapse/Expand"
+                >
+                  <i
+                    class="bi bi-chevron-down geofence-chevron-icon"
+                    id="geofenceCollapseIcon"
+                  ></i>
+                </button>
+                <button
+                  class="geofence-control-btn"
+                  id="closeGeofenceBtn"
+                  title="Close"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="geofence-content" id="geofenceContent">
+              <div class="geofence-search">
+                <input type="text" placeholder="Search" />
+                <button class="geofence-search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+
+              <div class="geofence-list">
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Marunda 3</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Test 123</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Test 1</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Test</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Additional Item 1</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Additional Item 2</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Geofence Detail Modal - Form Input -->
+          <div class="geofence-detail-modal" id="geofenceDetailModal">
+            <div class="geofence-header">
+              <div class="geofence-title">Geofence</div>
+              <div class="geofence-controls">
+                <button
+                  class="geofence-control-btn"
+                  id="collapseGeofenceDetailBtn"
+                  title="Collapse/Expand"
+                >
+                  <i
+                    class="bi bi-chevron-down geofence-chevron-icon"
+                    id="geofenceDetailCollapseIcon"
+                  ></i>
+                </button>
+                <button
+                  class="geofence-control-btn"
+                  id="closeGeofenceDetailBtn"
+                  title="Close"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="geofence-input-group">
+              <label class="geofence-input-label">Coordinates *</label>
+              <textarea
+                class="geofence-textarea"
+                id="geofenceCoordinates"
+              ></textarea>
+            </div>
+
+            <div class="geofence-input-group">
+              <label class="geofence-input-label">Description *</label>
+              <input
+                type="text"
+                class="geofence-input"
+                id="geofenceDescription"
+              />
+            </div>
+
+            <div class="geofence-actions">
+              <button class="geofence-action-btn btn-cancel">Cancel</button>
+              <button class="geofence-action-btn btn-submit">Submit</button>
+            </div>
+
+            <div class="geofence-detail-content" id="geofenceDetailContent">
+              <div class="geofence-search">
+                <input type="text" placeholder="Search" />
+                <button class="geofence-search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+
+              <div class="geofence-list">
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Marunda 3</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Test 123</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Test 1</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="geofence-item">
+                  <div class="geofence-item-name">Test</div>
+                  <div class="geofence-item-actions">
+                    <button class="geofence-btn" title="View">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <button class="geofence-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item" data-item="station">
+          <!-- <i class="bi bi-building nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="18"
+            height="22"
+            viewBox="0 0 18 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.67971 1.25231C7.42498 1.0489 7.10868 0.93811 6.78271 0.93811C6.45673 0.93811 6.14043 1.0489 5.88571 1.25231L2.29196 4.12156C1.23108 4.96969 1.82908 6.68031 3.18752 6.68175V9.69331C2.74944 9.84074 2.36045 10.106 2.06325 10.46C1.76605 10.814 1.57213 11.2431 1.50277 11.7001L0.331206 19.4094C0.300185 19.6138 0.313645 19.8226 0.370667 20.0214C0.427688 20.2201 0.526928 20.4043 0.661613 20.5612C0.796298 20.7181 0.963257 20.8442 1.15109 20.9307C1.33893 21.0172 1.54322 21.0622 1.75002 21.0625H11.8082C12.0152 21.0626 12.2199 21.0179 12.408 20.9316C12.5962 20.8452 12.7635 20.7193 12.8985 20.5623C13.0335 20.4053 13.133 20.221 13.1902 20.0221C13.2474 19.8231 13.2609 19.6141 13.2299 19.4094L12.0555 11.7001C11.9862 11.2438 11.7928 10.8154 11.4964 10.4618C11.2001 10.1081 10.8121 9.84273 10.375 9.69475V6.68175C11.7335 6.68175 12.3358 4.96969 11.2735 4.12156L7.67971 1.25231ZM4.62502 9.5625V6.68175H8.93752V9.5625H4.62502ZM2.04758 17.6786L2.38108 15.4836L10.8221 13.139L11.1297 15.1558L2.04758 17.6786ZM13.9688 8.125H16.8438C17.0344 8.125 17.2172 8.04927 17.352 7.91448C17.4868 7.77969 17.5625 7.59687 17.5625 7.40625C17.5625 7.21563 17.4868 7.03281 17.352 6.89802C17.2172 6.76323 17.0344 6.6875 16.8438 6.6875H13.9688C13.7781 6.6875 13.5953 6.76323 13.4605 6.89802C13.3257 7.03281 13.25 7.21563 13.25 7.40625C13.25 7.59687 13.3257 7.77969 13.4605 7.91448C13.5953 8.04927 13.7781 8.125 13.9688 8.125ZM15.9137 2.58488C15.9806 2.65164 16.0337 2.73096 16.07 2.81828C16.1062 2.9056 16.1249 2.99921 16.1249 3.09375C16.1249 3.18829 16.1062 3.2819 16.07 3.36922C16.0337 3.45654 15.9806 3.53586 15.9137 3.60263L14.4762 5.04013C14.3412 5.1749 14.1583 5.25053 13.9675 5.2504C13.7768 5.25027 13.5939 5.17437 13.4592 5.03941C13.3244 4.90444 13.2488 4.72147 13.2489 4.53074C13.249 4.34001 13.3249 4.15715 13.4599 4.02238L14.8974 2.58488C15.0322 2.45013 15.215 2.37443 15.4055 2.37443C15.5961 2.37443 15.7789 2.45013 15.9137 2.58488ZM15.9137 11.2099C16.0487 11.3446 16.1246 11.5275 16.1247 11.7182C16.1248 11.909 16.0492 12.0919 15.9144 12.2269C15.7797 12.3619 15.5968 12.4378 15.4061 12.4379C15.2153 12.438 15.0324 12.3624 14.8974 12.2276L13.4599 10.7901C13.3931 10.7234 13.34 10.6442 13.3038 10.5569C13.2676 10.4697 13.249 10.3762 13.2489 10.2818C13.2488 10.1873 13.2674 10.0938 13.3034 10.0065C13.3395 9.91924 13.3924 9.83992 13.4592 9.77309C13.5259 9.70627 13.6051 9.65324 13.6924 9.61704C13.7796 9.58083 13.8731 9.56217 13.9675 9.5621C14.062 9.56203 14.1555 9.58057 14.2428 9.61665C14.3301 9.65273 14.4094 9.70564 14.4762 9.77238L15.9137 11.2099Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Station</span>
+        </div>
+        <div class="nav-item" data-item="bookmark">
+          <!-- <i class="bi bi-bookmark nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="23"
+            height="24"
+            viewBox="0 0 23 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.3083 17.9417L7.28331 19.6667C6.64442 19.9382 6.03748 19.8864 5.46248 19.5114C4.88748 19.1364 4.59998 18.6051 4.59998 17.9177V5.48332C4.59998 4.95623 4.78781 4.50518 5.16348 4.13015C5.53914 3.75512 5.9902 3.56729 6.51664 3.56665H16.1C16.6271 3.56665 17.0784 3.75448 17.4541 4.13015C17.8298 4.50582 18.0173 4.95687 18.0166 5.48332V17.9177C18.0166 18.6045 17.7291 19.1357 17.1541 19.5114C16.5791 19.8871 15.9722 19.9388 15.3333 19.6667L11.3083 17.9417Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Bookmark</span>
+        </div>
+        <div class="nav-item" data-item="anomaly">
+          <!-- <i class="bi bi-exclamation-circle nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="21"
+            height="20"
+            viewBox="0 0 21 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.5 19.4808C5.20708 19.4808 0.916626 15.1903 0.916626 9.89742C0.916626 4.60455 5.20708 0.314087 10.5 0.314087C15.7928 0.314087 20.0833 4.6055 20.0833 9.89742C20.0833 15.1893 15.7928 19.4808 10.5 19.4808ZM10.5 5.10575C10.2458 5.10575 10.002 5.20672 9.82232 5.38644C9.64259 5.56616 9.54163 5.80992 9.54163 6.06409V10.8558C9.54163 11.1099 9.64259 11.3537 9.82232 11.5334C10.002 11.7131 10.2458 11.8141 10.5 11.8141C10.7541 11.8141 10.9979 11.7131 11.1776 11.5334C11.3573 11.3537 11.4583 11.1099 11.4583 10.8558V6.06409C11.4583 5.80992 11.3573 5.56616 11.1776 5.38644C10.9979 5.20672 10.7541 5.10575 10.5 5.10575ZM10.5 14.6891C10.7541 14.6891 10.9979 14.5881 11.1776 14.4084C11.3573 14.2287 11.4583 13.9849 11.4583 13.7308C11.4583 13.4766 11.3573 13.2328 11.1776 13.0531C10.9979 12.8734 10.7541 12.7724 10.5 12.7724C10.2458 12.7724 10.002 12.8734 9.82232 13.0531C9.64259 13.2328 9.54163 13.4766 9.54163 13.7308C9.54163 13.9849 9.64259 14.2287 9.82232 14.4084C10.002 14.5881 10.2458 14.6891 10.5 14.6891Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Anomaly</span>
+        </div>
+        <div class="nav-item" data-item="anchored">
+          <!-- <i class="bi bi-anchor nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="21"
+            height="23"
+            viewBox="0 0 21 23"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M9.0625 9.31717C8.10471 8.97673 7.29788 8.30905 6.78428 7.43186C6.27067 6.55467 6.08328 5.5243 6.25515 4.52245C6.42701 3.52059 6.9471 2.61159 7.72369 1.95572C8.50028 1.29986 9.48351 0.939257 10.5 0.937502C11.518 0.93663 12.5034 1.29588 13.282 1.95168C14.0605 2.60749 14.582 3.51756 14.7541 4.52086C14.9262 5.52416 14.7379 6.556 14.2224 7.43379C13.7069 8.31158 12.8975 8.97872 11.9375 9.31717V18.0438C13.3183 17.7609 14.5856 17.0788 15.5822 16.0822C16.5788 15.0856 17.2609 13.8183 17.5438 12.4375H16.25C15.8688 12.4375 15.5031 12.2861 15.2335 12.0165C14.964 11.7469 14.8125 11.3813 14.8125 11C14.8125 10.6188 14.964 10.2531 15.2335 9.98354C15.5031 9.71395 15.8688 9.5625 16.25 9.5625H19.125C19.5062 9.5625 19.8719 9.71395 20.1415 9.98354C20.411 10.2531 20.5625 10.6188 20.5625 11C20.5625 16.5574 16.0574 21.0625 10.5 21.0625C4.94263 21.0625 0.4375 16.5574 0.4375 11C0.4375 10.6188 0.58895 10.2531 0.858534 9.98354C1.12812 9.71395 1.49375 9.5625 1.875 9.5625H4.75C5.13125 9.5625 5.49688 9.71395 5.76647 9.98354C6.03605 10.2531 6.1875 10.6188 6.1875 11C6.1875 11.3813 6.03605 11.7469 5.76647 12.0165C5.49688 12.2861 5.13125 12.4375 4.75 12.4375H3.45625C3.73911 13.8183 4.42117 15.0856 5.4178 16.0822C6.41442 17.0788 7.68174 17.7609 9.0625 18.0438V9.31717ZM10.5 3.8125C10.1188 3.8125 9.75312 3.96395 9.48353 4.23354C9.21395 4.50312 9.0625 4.86875 9.0625 5.25C9.0625 5.63125 9.21395 5.99688 9.48353 6.26647C9.75312 6.53605 10.1188 6.6875 10.5 6.6875C10.8812 6.6875 11.2469 6.53605 11.5165 6.26647C11.786 5.99688 11.9375 5.63125 11.9375 5.25C11.9375 4.86875 11.786 4.50312 11.5165 4.23354C11.2469 3.96395 10.8812 3.8125 10.5 3.8125Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Anchored Vessel</span>
+        </div>
+        <div class="nav-item" data-item="enc">
+          <!-- <i class="bi bi-map nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="23"
+            height="24"
+            viewBox="0 0 23 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M2.759 4.21737C1.91663 5.05879 1.91663 6.41483 1.91663 9.125V14.875C1.91663 17.5852 1.91663 18.9412 2.759 19.7826C3.60042 20.625 4.95646 20.625 7.66663 20.625H15.3333C18.0435 20.625 19.3995 20.625 20.2409 19.7826C21.0833 18.9412 21.0833 17.5852 21.0833 14.875V9.125C21.0833 6.41483 21.0833 5.05879 20.2409 4.21737C19.3995 3.375 18.0435 3.375 15.3333 3.375H7.66663C4.95646 3.375 3.60042 3.375 2.759 4.21737ZM15.3333 8.16667C15.5875 8.16667 15.8312 8.26763 16.0109 8.44736C16.1907 8.62708 16.2916 8.87083 16.2916 9.125V16.7917C16.2916 17.0458 16.1907 17.2896 16.0109 17.4693C15.8312 17.649 15.5875 17.75 15.3333 17.75C15.0791 17.75 14.8354 17.649 14.6556 17.4693C14.4759 17.2896 14.375 17.0458 14.375 16.7917V9.125C14.375 8.87083 14.4759 8.62708 14.6556 8.44736C14.8354 8.26763 15.0791 8.16667 15.3333 8.16667ZM8.62496 11.0417C8.62496 10.7875 8.52399 10.5437 8.34427 10.364C8.16455 10.1843 7.92079 10.0833 7.66663 10.0833C7.41246 10.0833 7.1687 10.1843 6.98898 10.364C6.80926 10.5437 6.70829 10.7875 6.70829 11.0417V16.7917C6.70829 17.0458 6.80926 17.2896 6.98898 17.4693C7.1687 17.649 7.41246 17.75 7.66663 17.75C7.92079 17.75 8.16455 17.649 8.34427 17.4693C8.52399 17.2896 8.62496 17.0458 8.62496 16.7917V11.0417ZM12.4583 12.9583C12.4583 12.7042 12.3573 12.4604 12.1776 12.2807C11.9979 12.101 11.7541 12 11.5 12C11.2458 12 11.002 12.101 10.8223 12.2807C10.6426 12.4604 10.5416 12.7042 10.5416 12.9583V16.7917C10.5416 17.0458 10.6426 17.2896 10.8223 17.4693C11.002 17.649 11.2458 17.75 11.5 17.75C11.7541 17.75 11.9979 17.649 12.1776 17.4693C12.3573 17.2896 12.4583 17.0458 12.4583 16.7917V12.9583Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">ENC</span>
+        </div>
+        <div class="nav-item" data-item="logout">
+          <!-- <i class="bi bi-box-arrow-right nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="23"
+            height="24"
+            viewBox="0 0 23 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0 2.96429C0 2.31072 0.259629 1.68392 0.721773 1.22177C1.18392 0.759629 1.81072 0.5 2.46429 0.5L13.9643 0.5C14.6179 0.5 15.2447 0.759629 15.7068 1.22177C16.1689 1.68392 16.4286 2.31072 16.4286 2.96429V6.14979C15.762 6.68371 15.3295 7.45621 15.2227 8.30357H9.44643C8.96101 8.30357 8.48034 8.39918 8.03187 8.58495C7.5834 8.77071 7.80357 9.04299 7.80357 9.50005C7.80357 9.96457 7.90453 10.4236 8.10683 10.8454C8.30913 11.2672 8.59131 11.6594 8.93455 11.9929C9.26779 12.3264 9.66001 12.6086 10.0818 12.8109C10.5036 13.0132 10.9626 13.1142 11.4271 13.1142C11.8916 13.1142 12.3506 13.0132 12.7724 12.8109C13.1942 12.6086 13.5864 12.3264 13.9199 11.9929C14.2534 11.6594 14.5356 11.2672 14.7379 10.8454C14.9402 10.4236 15.0412 9.96457 15.0412 9.50005C15.0412 9.03553 14.9402 8.57657 14.7379 8.15475C14.5356 7.73293 14.2534 7.34071 13.9199 7.00727C13.5864 6.67383 13.1942 6.39165 12.7724 6.18935C12.3506 5.98705 11.8916 5.88609 11.4271 5.88609Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Log Out</span>
+        </div>
+        <div class="nav-item" data-item="profile">
+          <!-- <i class="bi bi-person nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="19"
+            height="20"
+            viewBox="0 0 19 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.50004 10.9583C12.1464 10.9583 14.2917 8.81303 14.2917 6.16667C14.2917 3.5203 12.1464 1.375 9.50004 1.375C6.85368 1.375 4.70837 3.5203 4.70837 6.16667C4.70837 8.81303 6.85368 10.9583 9.50004 10.9583Z"
+              fill="white"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M17.1667 18.625C17.1667 16.5917 16.359 14.6417 14.9212 13.2039C13.4834 11.7661 11.5334 10.9584 9.50004 10.9584C7.46671 10.9584 5.51667 11.7661 4.07889 13.2039C2.64111 14.6417 1.83337 16.5917 1.83337 18.625"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9.50004 10.9584C7.46671 10.9584 5.51667 11.7661 4.07889 13.2039C2.64111 14.6417 1.83337 16.5917 1.83337 18.625H17.1667C17.1667 16.5917 16.359 14.6417 14.9212 13.2039C13.4834 11.7661 11.5334 10.9584 9.50004 10.9584Z"
+              fill="white"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+          <span class="nav-text">Profile</span>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <!-- Custom JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Inisialisasi peta
+        const map = L.map("map", {
+          zoomControl: true, // Mengaktifkan kontrol zoom default
+        }).setView([-6.2088, 106.8456], 10);
+
+        // Menambahkan tile layer OpenStreetMap
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap contributors",
+        }).addTo(map);
+
+        // Fungsi untuk positioning modal relatif ke elemen sumber
+        function positioning(sourceElement, targetModal) {
+          const rect = sourceElement.getBoundingClientRect();
+          const modalWidth = targetModal.offsetWidth;
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+
+          // Hitung posisi yang tepat, pastikan tidak melebihi viewport
+          let leftPosition = rect.right + 10;
+
+          // Jika modal akan keluar dari viewport, posisikan di sebelah kiri
+          if (leftPosition + modalWidth > viewportWidth - 20) {
+            leftPosition = Math.max(20, rect.left - modalWidth - 10);
+          }
+
+          // Set posisi vertical, pastikan tidak melebihi viewport
+          let topPosition = rect.top;
+          const modalHeight = targetModal.offsetHeight;
+
+          if (topPosition + modalHeight > viewportHeight - 20) {
+            topPosition = Math.max(20, viewportHeight - modalHeight - 20);
+          }
+
+          // Set posisi modal
+          targetModal.style.top = `${topPosition}px`;
+          targetModal.style.left = `${leftPosition}px`;
+        }
+
+        // Existing JavaScript code
+        const hamburgerBtn = document.getElementById("hamburgerBtn");
+        const navMenu = document.getElementById("navMenu");
+        const navItems = document.querySelectorAll(".nav-item");
+
+        // Control buttons and modals
+        const mapControlBtn = document.getElementById("mapControlBtn");
+        const infoControlBtn = document.getElementById("infoControlBtn");
+        const navControlBtn = document.getElementById("navControlBtn");
+        const mapModal = document.getElementById("mapModal");
+        const layerModal = document.getElementById("layerModal");
+        const navigationModal = document.getElementById("navigationModal");
+
+        // Get the position of the hamburger container to align the menu
+        const hamburgerContainer = document.querySelector(
+          ".hamburger-container"
+        );
+        const hamburgerRect = hamburgerContainer.getBoundingClientRect();
+
+        // Set the menu position to be exactly below the hamburger menu
+        navMenu.style.top = hamburgerRect.bottom + 5 + "px";
+        navMenu.style.left = hamburgerRect.left + "px";
+
+        // Track menu state
+        let menuState = "closed";
+        let activeModal = null;
+
+        // Handle filter modal
+        const filterItem = document.querySelector('[data-item="filter"]');
+        const filterIcon = filterItem.querySelector(".nav-icon");
+        const filterModal = document.getElementById("filterModal");
+        const closeFilterBtn = document.getElementById("closeFilterBtn");
+        const addFilterBtn = document.getElementById("addFilterBtn");
+        const collapseFilterBtn = document.getElementById("collapseFilterBtn");
+        const collapseIcon = document.getElementById("collapseIcon");
+        const filterContent = document.getElementById("filterContent");
+
+        // Handle geofence modal
+        const geofenceItem = document.querySelector('[data-item="geofence"]');
+        const geofenceIcon = geofenceItem.querySelector(".nav-icon");
+        const geofenceModal = document.getElementById("geofenceModal");
+        const geofenceDetailModal = document.getElementById(
+          "geofenceDetailModal"
+        );
+        const closeGeofenceBtn = document.getElementById("closeGeofenceBtn");
+        const closeGeofenceDetailBtn = document.getElementById(
+          "closeGeofenceDetailBtn"
+        );
+        const addGeofenceBtn = document.getElementById("addGeofenceBtn");
+        const collapseGeofenceBtn = document.getElementById(
+          "collapseGeofenceBtn"
+        );
+        const geofenceCollapseIcon = document.getElementById(
+          "geofenceCollapseIcon"
+        );
+        const geofenceContent = document.getElementById("geofenceContent");
+        const collapseGeofenceDetailBtn = document.getElementById(
+          "collapseGeofenceDetailBtn"
+        );
+        const geofenceDetailCollapseIcon = document.getElementById(
+          "geofenceDetailCollapseIcon"
+        );
+        const geofenceDetailContent = document.getElementById(
+          "geofenceDetailContent"
+        );
+
+        // Fungsi untuk menampilkan geofence modal
+        function showGeofenceModal() {
+          // Tutup semua modal yang terbuka
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
+
+          geofenceModal.classList.add("visible");
+          activeModal = geofenceModal;
+
+          // Update posisi modal relatif terhadap menu item
+          const geofenceItemRect = geofenceItem.getBoundingClientRect();
+          geofenceModal.style.top = `${geofenceItemRect.top}px`;
+          geofenceModal.style.left = `${geofenceItemRect.right + 10}px`;
+        }
+
+        // Event listener untuk icon geofence (hanya untuk expand)
+        geofenceIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Event listener untuk item geofence (untuk menampilkan popup)
+        geofenceItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(showGeofenceModal, 300);
+          } else {
+            // Toggle visibility geofence modal
+            if (
+              geofenceModal.classList.contains("visible") ||
+              geofenceDetailModal.classList.contains("visible")
+            ) {
+              geofenceModal.classList.remove("visible");
+              geofenceDetailModal.classList.remove("visible");
+              activeModal = null;
+            } else {
+              showGeofenceModal();
+            }
+          }
+        });
+
+        // Event listener untuk tombol close geofence
+        closeGeofenceBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          geofenceModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol close geofence detail
+        closeGeofenceDetailBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          geofenceDetailModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol add geofence
+        addGeofenceBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          // Sembunyikan geofence modal saat detail modal ditampilkan
+          geofenceModal.classList.remove("visible");
+          geofenceDetailModal.classList.add("visible");
+
+          // Gunakan fungsi positioning untuk meletakkan modal detail
+          positioning(geofenceItem, geofenceDetailModal);
+        });
+
+        // Event listener untuk tombol edit geofence
+        document
+          .querySelectorAll('.geofence-btn[title="View"]')
+          .forEach((btn) => {
+            btn.addEventListener("click", function (e) {
+              e.stopPropagation();
+
+              // Sembunyikan geofence modal dan tampilkan detail modal
+              geofenceModal.classList.remove("visible");
+
+              // Set posisi geofence detail modal
+              const geofenceItemRect = geofenceItem.getBoundingClientRect();
+              geofenceDetailModal.style.top = `${geofenceItemRect.top}px`;
+              geofenceDetailModal.style.left = `${
+                geofenceItemRect.right + 10
+              }px`;
+
+              geofenceDetailModal.classList.add("visible");
+              activeModal = geofenceDetailModal;
+            });
+          });
+
+        // Event listener untuk tombol cancel pada detail
+        document
+          .querySelector(".geofence-action-btn.btn-cancel")
+          .addEventListener("click", function (e) {
+            e.stopPropagation();
+            geofenceDetailModal.classList.remove("visible");
+            showGeofenceModal();
+          });
+
+        // Event listener untuk tombol collapse filter
+        collapseFilterBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (filterContent.classList.contains("hidden")) {
+            filterContent.classList.remove("hidden");
+            collapseIcon.classList.remove("rotated");
+          } else {
+            filterContent.classList.add("hidden");
+            collapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Event listener untuk icon filter (hanya untuk expand)
+        filterIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Event listener untuk text filter (untuk menampilkan popup)
+        filterItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Hanya tampilkan popup jika menu sudah expanded
+          if (navMenu.classList.contains("expanded")) {
+            const isVisible = filterModal.classList.contains("visible");
+
+            // Tutup semua modal yang terbuka
+            document
+              .querySelectorAll(".control-modal, .filter-modal")
+              .forEach((modal) => {
+                modal.classList.remove("visible");
+              });
+
+            // Jika modal sebelumnya tidak visible, tampilkan
+            if (!isVisible) {
+              filterModal.classList.add("visible");
+              activeModal = filterModal;
+
+              // Update posisi modal relatif terhadap menu item
+              const filterItemRect = filterItem.getBoundingClientRect();
+              filterModal.style.top = `${filterItemRect.top}px`;
+              filterModal.style.left = `${filterItemRect.right + 10}px`;
+            } else {
+              activeModal = null;
+            }
+          }
+        });
+
+        // Event listener untuk nav items (expand menu)
+        navItems.forEach((item) => {
+          const icon = item.querySelector(".nav-icon");
+          icon.addEventListener("click", function (e) {
+            e.stopPropagation();
+            if (!navMenu.classList.contains("expanded")) {
+              navMenu.classList.add("expanded");
+              menuState = "expanded";
+            }
+          });
+        });
+
+        // Event listener untuk tombol close
+        closeFilterBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          filterModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol add filter
+        addFilterBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          const newRow = document.createElement("div");
+          newRow.className = "filter-row";
+          newRow.innerHTML = `
+            <div class="filter-group">
+              <select class="filter-select condition-select">
+                <option>AND</option>
+                <option>OR</option>
+              </select>
+              <select class="filter-select type-select">
+                <option>Type</option>
+                <option>Vessel Type</option>
+                <option>Flag</option>
+                <option>Name</option>
+              </select>
+              <select class="filter-select operator-select">
+                <option>=</option>
+                <option>></option>
+                <option><</option>
+                <option>!=</option>
+              </select>
+              <select class="filter-select value-select">
+                <option>Anti-Pollution</option>
+                <option>Fishing Vessel</option>
+                <option>Cargo</option>
+                <option>Passenger</option>
+              </select>
+            </div>
+            <button class="filter-delete">
+              <i class="bi bi-trash"></i>
+            </button>
+          `;
+          document.querySelector(".filter-content").appendChild(newRow);
+
+          // Tambahkan event listener ke dropdown baru
+          const selects = newRow.querySelectorAll(".filter-select");
+          selects.forEach((select) => {
+            select.addEventListener("click", function (e) {
+              e.stopPropagation();
+            });
+            select.addEventListener("change", function (e) {
+              e.stopPropagation();
+            });
+          });
+
+          // Tambahkan event listener ke tombol delete baru
+          const deleteBtn = newRow.querySelector(".filter-delete");
+          deleteBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            newRow.remove();
+          });
+        });
+
+        // Handle delete filter row - tambahkan event listener langsung ke tombol delete
+        document.querySelectorAll(".filter-delete").forEach((deleteBtn) => {
+          deleteBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const row = this.closest(".filter-row");
+            if (
+              !row.isEqualNode(
+                document.querySelector(".filter-content").firstElementChild
+              )
+            ) {
+              row.remove();
+            }
+          });
+        });
+
+        // Tetapkan sebuah fungsi untuk menangani dropdown yang dirender saat page load
+        function setupInitialDropdowns() {
+          document.querySelectorAll(".filter-select").forEach((select) => {
+            select.addEventListener("click", function (e) {
+              e.stopPropagation();
+            });
+            select.addEventListener("change", function (e) {
+              e.stopPropagation();
+            });
+          });
+        }
+
+        // Panggil langsung untuk dropdown yang sudah ada
+        setupInitialDropdowns();
+
+        // Update posisi filter modal saat window di-resize
+        window.addEventListener("resize", function () {
+          if (filterModal.classList.contains("visible")) {
+            const filterItemRect = filterItem.getBoundingClientRect();
+            filterModal.style.top = `${filterItemRect.top}px`;
+            filterModal.style.left = `${filterItemRect.right + 10}px`;
+          }
+        });
+
+        // Close filter modal when clicking outside
+        document.addEventListener("click", function (e) {
+          if (
+            activeModal &&
+            !e.target.closest(".filter-modal") &&
+            !e.target.closest('[data-item="filter"]') &&
+            !e.target.closest(".filter-select") &&
+            !e.target.closest(".filter-delete") &&
+            !e.target.closest(".geofence-modal") &&
+            !e.target.closest(".geofence-detail-modal") &&
+            !e.target.closest('[data-item="geofence"]')
+          ) {
+            activeModal.classList.remove("visible");
+            activeModal = null;
+          }
+        });
+
+        // Toggle menu visibility and hamburger/X icon when hamburger is clicked
+        hamburgerBtn.addEventListener("click", function () {
+          // Two-step closing process
+          if (menuState === "expanded") {
+            // First click: collapse the expanded menu
+            navMenu.classList.remove("expanded");
+            menuState = "open";
+          } else if (menuState === "open") {
+            // Second click: close the menu completely
+            this.classList.remove("active");
+            navMenu.classList.remove("visible");
+            menuState = "closed";
+          } else {
+            // Menu is closed, open it
+            this.classList.add("active");
+            navMenu.classList.add("visible");
+            menuState = "open";
+          }
+        });
+
+        // Control modal toggles
+        mapControlBtn.addEventListener("click", function () {
+          // Close other modals
+          layerModal.classList.remove("visible");
+          navigationModal.classList.remove("visible");
+
+          // Toggle map modal
+          mapModal.classList.toggle("visible");
+        });
+
+        infoControlBtn.addEventListener("click", function () {
+          // Close other modals
+          mapModal.classList.remove("visible");
+          navigationModal.classList.remove("visible");
+
+          // Toggle layer modal
+          layerModal.classList.toggle("visible");
+        });
+
+        navControlBtn.addEventListener("click", function () {
+          // Close other modals
+          mapModal.classList.remove("visible");
+          layerModal.classList.remove("visible");
+
+          // Toggle navigation modal
+          navigationModal.classList.toggle("visible");
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener("click", function (e) {
+          if (
+            !e.target.closest(".control-btn") &&
+            !e.target.closest(".control-modal")
+          ) {
+            mapModal.classList.remove("visible");
+            layerModal.classList.remove("visible");
+            navigationModal.classList.remove("visible");
+          }
+        });
+
+        // Update menu position on window resize
+        window.addEventListener("resize", function () {
+          const updatedRect = hamburgerContainer.getBoundingClientRect();
+          navMenu.style.top = updatedRect.bottom + 5 + "px";
+          navMenu.style.left = updatedRect.left + "px";
+        });
+
+        // Event listener untuk tombol collapse geofence
+        collapseGeofenceBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (geofenceContent.classList.contains("hidden")) {
+            geofenceContent.classList.remove("hidden");
+            geofenceCollapseIcon.classList.remove("rotated");
+          } else {
+            geofenceContent.classList.add("hidden");
+            geofenceCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Fungsi untuk mencegah event input dan textarea keluar dari popup
+        function preventPopupClose() {
+          // Tambahkan event listener ke semua input di modal geofence detail
+          document
+            .querySelectorAll(
+              "#geofenceDetailModal input, #geofenceDetailModal textarea"
+            )
+            .forEach((input) => {
+              input.addEventListener("click", function (e) {
+                e.stopPropagation();
+              });
+
+              input.addEventListener("focus", function (e) {
+                e.stopPropagation();
+              });
+
+              input.addEventListener("input", function (e) {
+                e.stopPropagation();
+              });
+            });
+        }
+
+        // Panggil fungsi untuk setup event listener pada input
+        preventPopupClose();
+
+        // Event listener untuk tombol collapse geofence detail
+        collapseGeofenceDetailBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (geofenceDetailContent.classList.contains("hidden")) {
+            geofenceDetailContent.classList.remove("hidden");
+            geofenceDetailCollapseIcon.classList.remove("rotated");
+          } else {
+            geofenceDetailContent.classList.add("hidden");
+            geofenceDetailCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Fungsi untuk menampilkan geofence modal
+        geofenceItem.addEventListener("click", function () {
+          geofenceModal.classList.add("visible");
+          positioning(geofenceItem, geofenceModal);
+        });
+
+        // Fungsi untuk menampilkan detail geofence saat tombol "+" diklik
+        addGeofenceBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          // Sembunyikan geofence modal saat detail modal ditampilkan
+          geofenceModal.classList.remove("visible");
+          geofenceDetailModal.classList.add("visible");
+
+          // Gunakan fungsi positioning untuk meletakkan modal detail
+          positioning(geofenceItem, geofenceDetailModal);
+        });
+
+        // Fungsi untuk menutup modal geofence
+        closeGeofenceBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          geofenceModal.classList.remove("visible");
+        });
+
+        // Fungsi untuk menutup modal detail geofence
+        closeGeofenceDetailBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          geofenceDetailModal.classList.remove("visible");
+        });
+
+        // Event listener untuk tombol delete pada geofence item
+        document.querySelectorAll(".geofence-btn.btn-danger").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            // Hapus baris item yang berisi tombol ini
+            const geofenceItem = this.closest(".geofence-item");
+            if (geofenceItem) {
+              geofenceItem.remove();
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
