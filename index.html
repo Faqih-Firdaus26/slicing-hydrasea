@@ -492,7 +492,7 @@
         position: fixed;
         left: 200px;
         top: 85px;
-        background-color: rgba(33, 37, 41, 0.6);
+        background-color: rgba(33, 37, 41, 0.5);
         border-radius: 5px;
         padding: 15px;
         display: none;
@@ -585,7 +585,7 @@
 
       /* Pastikan semua select di baris pertama dan baris berikutnya sejajar */
       .filter-row:first-child .filter-group {
-        margin-left: 78px; /* Menyesuaikan dengan lebar condition-select + gap */
+        margin-left: 78px;
       }
 
       /* Gaya untuk panah dropdown */
@@ -661,7 +661,7 @@
         position: fixed;
         left: 200px;
         top: 85px;
-        background-color: rgba(33, 37, 41, 0.6);
+        background-color: rgba(33, 37, 41, 0.5);
         border-radius: 5px;
         padding: 15px;
         display: none;
@@ -782,22 +782,22 @@
         position: fixed;
         left: 200px;
         top: 85px;
-        background-color: rgba(33, 37, 41, 0.6);
+        background-color: rgba(33, 37, 41, 0.5);
         border-radius: 5px;
         padding: 15px;
         display: none;
         z-index: 2000;
         min-width: 320px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        min-height: 320px; /* Memastikan ukuran konsisten */
-        max-height: 80vh; /* Batasi tinggi maksimum */
-        overflow-y: auto; /* Tambahkan scroll jika terlalu panjang */
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        min-height: 320px;
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
       }
 
       .geofence-detail-modal::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+        display: none;
       }
 
       .geofence-detail-modal.visible {
@@ -805,14 +805,14 @@
       }
 
       .geofence-detail-content {
-        max-height: 250px; /* Batasi tinggi konten daftar di dalam modal detail */
+        max-height: 250px;
         overflow-y: auto;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
       }
 
       .geofence-detail-content::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+        display: none;
       }
 
       .geofence-input-group {
@@ -833,7 +833,7 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         background-color: white;
         color: #333;
-        box-sizing: border-box; /* Pastikan padding termasuk dalam lebar */
+        box-sizing: border-box;
       }
 
       .geofence-textarea {
@@ -845,8 +845,8 @@
         color: #333;
         min-height: 60px;
         resize: vertical;
-        box-sizing: border-box; /* Pastikan padding termasuk dalam lebar */
-        max-height: 120px; /* Batasi tinggi maksimum */
+        box-sizing: border-box;
+        max-height: 120px;
       }
 
       .geofence-actions {
@@ -897,6 +897,14 @@
       /* Pastikan ukuran modal konsisten */
       .geofence-modal {
         min-height: 150px;
+      }
+
+      .filter-modal .filter-content {
+        min-height: 50px;
+      }
+
+      .filter-modal.content-hidden {
+        min-height: 50px;
       }
     </style>
   </head>
@@ -1737,6 +1745,9 @@
         geofenceItem.addEventListener("click", function (e) {
           e.stopPropagation();
 
+          // Tutup modal filter jika terbuka
+          filterModal.classList.remove("visible");
+
           // Tambahkan class expanded ke menu jika belum ada
           if (!navMenu.classList.contains("expanded")) {
             navMenu.classList.add("expanded");
@@ -1839,6 +1850,10 @@
         filterItem.addEventListener("click", function (e) {
           e.stopPropagation();
 
+          // Tutup modal geofence jika terbuka
+          geofenceModal.classList.remove("visible");
+          geofenceDetailModal.classList.remove("visible");
+
           // Hanya tampilkan popup jika menu sudah expanded
           if (navMenu.classList.contains("expanded")) {
             const isVisible = filterModal.classList.contains("visible");
@@ -1868,6 +1883,21 @@
         // Event listener untuk nav items (expand menu)
         navItems.forEach((item) => {
           const icon = item.querySelector(".nav-icon");
+          const itemType = item.getAttribute("data-item");
+
+          // Tambahkan event listener pada seluruh item navigasi
+          item.addEventListener("click", function (e) {
+            // Jika item yang diklik bukan filter atau geofence, tutup semua modal
+            if (itemType !== "filter" && itemType !== "geofence") {
+              // Tutup semua modal yang terbuka
+              filterModal.classList.remove("visible");
+              geofenceModal.classList.remove("visible");
+              geofenceDetailModal.classList.remove("visible");
+              activeModal = null;
+            }
+          });
+
+          // Event listener pada icon (hanya untuk expand menu)
           icon.addEventListener("click", function (e) {
             e.stopPropagation();
             if (!navMenu.classList.contains("expanded")) {

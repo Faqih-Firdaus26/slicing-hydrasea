@@ -38,6 +38,158 @@
         width: 100%;
         margin-top: 15px;
         font-weight: 500;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      /* Animasi loading kompleks */
+      .loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .loading-outer {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 5px solid rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        animation: rotate-outer 1.5s linear infinite forwards;
+        position: relative;
+      }
+
+      .loading-inner {
+        width: 70px;
+        height: 70px;
+        border-radius: inherit;
+        border: 5px solid rgba(255, 255, 255, 0.8);
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        animation: rotate-inner 1.5s linear infinite forwards;
+        position: absolute;
+      }
+
+      .loading-core {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(90deg, rgb(111, 34, 83), rgb(253, 64, 149));
+        animation: pulse 1.5s ease-in-out infinite alternate;
+        position: absolute;
+      }
+
+      .loading-spark {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.9);
+        animation: spark 2s ease-in-out infinite;
+      }
+
+      .spark1 {
+        transform: translate(50px, 0);
+        animation-delay: 0s;
+      }
+      .spark2 {
+        transform: translate(0, 50px);
+        animation-delay: 0.4s;
+      }
+      .spark3 {
+        transform: translate(-50px, 0);
+        animation-delay: 0.8s;
+      }
+      .spark4 {
+        transform: translate(0, -50px);
+        animation-delay: 1.2s;
+      }
+      .spark5 {
+        transform: translate(35px, 35px);
+        animation-delay: 1.6s;
+      }
+      .spark6 {
+        transform: translate(-35px, 35px);
+        animation-delay: 2s;
+      }
+
+      @keyframes rotate-outer {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(200deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes rotate-inner {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(-400deg);
+        }
+        100% {
+          transform: rotate(-720deg);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(0.8);
+          box-shadow: 0 0 0 0 rgba(253, 64, 149, 0.7);
+        }
+        70% {
+          transform: scale(1);
+          box-shadow: 0 0 0 15px rgba(253, 64, 149, 0);
+        }
+        100% {
+          transform: scale(0.8);
+          box-shadow: 0 0 0 0 rgba(253, 64, 149, 0);
+        }
+      }
+
+      @keyframes spark {
+        0%,
+        100% {
+          transform: translateY(0) scale(0);
+          opacity: 0;
+        }
+        50% {
+          transform: translateY(-20px) scale(1);
+          opacity: 1;
+        }
+      }
+
+      .show-loading {
+        display: flex;
+      }
+
+      .btn-loading {
+        color: transparent;
+        background-color: #3b85fd;
+        cursor: not-allowed;
+      }
+
+      .btn-login:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
@@ -66,7 +218,11 @@
                   required
                 />
               </div>
-              <button type="submit" class="btn btn-login font-weight-bold ">
+              <button
+                type="submit"
+                class="btn btn-login font-weight-bold"
+                id="loginBtn"
+              >
                 Login
               </button>
             </form>
@@ -75,7 +231,42 @@
       </div>
     </div>
 
+    <!-- Loading container for complex animation -->
+    <div class="loading-container" id="loadingContainer">
+      <div class="loading-outer">
+        <div class="loading-inner">
+          <div class="loading-core"></div>
+        </div>
+        <div class="loading-spark spark1"></div>
+        <div class="loading-spark spark2"></div>
+        <div class="loading-spark spark3"></div>
+        <div class="loading-spark spark4"></div>
+        <div class="loading-spark spark5"></div>
+        <div class="loading-spark spark6"></div>
+      </div>
+    </div>
+
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script untuk animasi login modern -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.querySelector("form");
+        const loginBtn = document.getElementById("loginBtn");
+        const loadingContainer = document.getElementById("loadingContainer");
+
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          loginBtn.classList.add("btn-loading");
+          loginBtn.disabled = true;
+          loadingContainer.classList.add("show-loading");
+
+          setTimeout(function () {
+            window.location.href = "index.html";
+          }, 2000);
+        });
+      });
+    </script>
   </body>
 </html>
