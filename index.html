@@ -3155,6 +3155,71 @@
             e.stopPropagation();
             document.getElementById("encActiveCell").value = "";
           });
+
+        // Tambahkan kode ini setelah event listener untuk trash ENC
+        // Event listener untuk input active cell
+        document
+          .getElementById("encActiveCell")
+          .addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+
+        document
+          .getElementById("encActiveCell")
+          .addEventListener("focus", function (e) {
+            e.stopPropagation();
+          });
+
+        document
+          .getElementById("encActiveCell")
+          .addEventListener("input", function (e) {
+            e.stopPropagation();
+          });
+
+        // Event listener untuk input search
+        document
+          .querySelector(".enc-search input")
+          .addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+
+        document
+          .querySelector(".enc-search input")
+          .addEventListener("focus", function (e) {
+            e.stopPropagation();
+          });
+
+        document
+          .querySelector(".enc-search input")
+          .addEventListener("input", function (e) {
+            e.stopPropagation();
+          });
+
+        // Event listener untuk tombol search
+        document
+          .querySelector(".enc-search-btn")
+          .addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+
+        // Event listener untuk tombol view di tabel ENC
+        document.querySelectorAll(".enc-view-btn").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const row = this.closest("tr");
+            const cellId = row.cells[0].textContent;
+            const title = row.cells[2].textContent;
+
+            // Tampilkan cell yang dipilih di input active cell
+            document.getElementById("encActiveCell").value =
+              cellId + " - " + title;
+          });
+        });
+
+        // Tambahkan event listener untuk mencegah penutupan modal saat mengklik konten
+        encModal.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
       });
     </script>
   </body>
