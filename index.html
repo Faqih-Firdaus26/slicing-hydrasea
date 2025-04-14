@@ -1320,6 +1320,412 @@
       .enc-content.hidden {
         display: none;
       }
+
+      /* Antena Modal Styles */
+      .antena-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 200px;
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        color: white;
+      }
+
+      .antena-modal::-webkit-scrollbar {
+        display: none;
+      }
+
+      .antena-modal.visible {
+        display: block;
+      }
+
+      .antena-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .antena-title {
+        font-weight: bold;
+        color: white;
+      }
+
+      .antena-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .antena-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+      }
+
+      /* Antena Edit Form Styles */
+      .antena-edit-form {
+        margin-bottom: 15px;
+        display: none;
+      }
+
+      .antena-edit-form.visible {
+        display: block;
+      }
+
+      .antena-form-group {
+        margin-bottom: 10px;
+      }
+
+      .antena-form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+        font-size: 0.9em;
+      }
+
+      .antena-form-group input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+      }
+
+      .antena-required::after {
+        content: " *";
+        color: #ff4d4f;
+      }
+
+      .antena-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .antena-btn {
+        padding: 5px 15px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .antena-btn:hover {
+        opacity: 0.9;
+      }
+
+      .antena-btn-cancel {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .antena-btn-submit {
+        background-color: #0d6efd;
+        color: white;
+      }
+
+      /* Antena Table Styles */
+      .antena-search {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .antena-search-container {
+        position: relative;
+      }
+
+      .antena-search input {
+        padding: 5px 30px 5px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #333;
+        width: 150px;
+      }
+
+      .antena-search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #333;
+        cursor: pointer;
+      }
+
+      .antena-edit-btn {
+        background-color: #ff923e;
+        color: white;
+        border: none;
+        padding: 3px 8px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .antena-edit-btn:hover {
+        background-color: #e67e22;
+      }
+
+      .antena-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      .antena-table th,
+      .antena-table td {
+        padding: 8px 5px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .antena-table th {
+        font-weight: bold;
+        font-size: 0.9em;
+      }
+
+      .antena-action-btns {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+      }
+
+      .antena-status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .status-on {
+        background-color: #28a745;
+      }
+
+      .status-off {
+        background-color: #dc3545;
+      }
+
+      /* Station Modal Styles */
+      .station-modal {
+        position: fixed;
+        bottom: 100%;
+        right: 0;
+        margin-bottom: 10px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        display: none;
+        z-index: 1001;
+        color: white;
+        width: 400px;
+      }
+
+      .station-modal.visible {
+        display: block;
+      }
+
+      .station-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .station-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: white;
+      }
+
+      .station-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .station-control-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      .station-form-group {
+        margin-bottom: 10px;
+      }
+
+      .station-form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+        font-size: 0.9em;
+      }
+
+      .station-input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+      }
+
+      .station-required::after {
+        content: " *";
+        color: #ff4d4f;
+      }
+
+      .station-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .station-btn {
+        padding: 5px 15px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .station-btn:hover {
+        opacity: 0.9;
+      }
+
+      .station-btn-cancel {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .station-btn-submit {
+        background-color: #0d6efd;
+        color: white;
+      }
+
+      .station-search-container {
+        position: relative;
+        margin-bottom: 15px;
+      }
+
+      .station-search {
+        position: relative;
+        margin-bottom: 10px;
+      }
+
+      .station-search input {
+        width: 100%;
+        padding: 6px 30px 6px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+      }
+
+      .station-search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #333;
+        cursor: pointer;
+      }
+
+      .station-table {
+        width: 100%;
+        border-collapse: collapse;
+        color: white;
+        font-size: 12px;
+      }
+
+      .station-table th,
+      .station-table td {
+        padding: 8px 5px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .station-table th {
+        font-weight: bold;
+      }
+
+      .station-action-btns {
+        display: flex;
+        gap: 5px;
+      }
+
+      .station-edit-btn {
+        background-color: #ff923e;
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .station-edit-btn:hover {
+        background-color: #e67e22;
+      }
+
+      .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-danger:hover {
+        background-color: #bd2130;
+      }
+
+      /* Station Edit Form Style */
+      .station-edit-form {
+        background-color: rgba(33, 37, 41, 0.8);
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        display: none;
+      }
+
+      .station-edit-form.visible {
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -1349,7 +1755,7 @@
           <!-- Controls -->
           <div class="controls-container">
             <!-- Map Control -->
-            <button class="control-btn" id="mapControlBtn">
+            <button class="control-btn" id="infoControlBtn">
               <!-- <i class="bi bi-layers"></i> -->
               <svg
                 width="20"
@@ -1366,7 +1772,7 @@
             </button>
 
             <!-- Info Control -->
-            <button class="control-btn" id="infoControlBtn">
+            <button class="control-btn" id="mapControlBtn">
               <!-- <i class="bi bi-info-circle"></i> -->
               <svg
                 width="20"
@@ -1619,6 +2025,179 @@
           </svg>
 
           <span class="nav-text">Antenna</span>
+
+          <!-- Antena Modal -->
+          <div class="antena-modal" id="antenaModal">
+            <div class="antena-header">
+              <div class="antena-title">Antena</div>
+              <div class="antena-controls">
+                <button
+                  class="antena-control-btn"
+                  id="antenaAddBtn"
+                  title="Tambah Antena"
+                >
+                  <i class="bi bi-plus"></i>
+                </button>
+                <button
+                  class="antena-control-btn"
+                  id="collapseAntenaBtn"
+                  title="Collapse/Expand"
+                >
+                  <i class="bi bi-chevron-down" id="antenaCollapseIcon"></i>
+                </button>
+                <button
+                  class="antena-control-btn"
+                  id="closeAntenaBtn"
+                  title="Close"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="antena-content" id="antenaContent">
+              <!-- Edit Form di atas tabel -->
+              <div class="antena-edit-form" id="antenaEditForm">
+                <div class="antena-form-group">
+                  <label for="antenaName" class="antena-required">Name</label>
+                  <input type="text" id="antenaName" class="antena-input" />
+                </div>
+                <div class="antena-form-group">
+                  <label for="antenaLongitude" class="antena-required"
+                    >Longitude</label
+                  >
+                  <input
+                    type="text"
+                    id="antenaLongitude"
+                    class="antena-input"
+                  />
+                </div>
+                <div class="antena-form-group">
+                  <label for="antenaLatitude" class="antena-required"
+                    >Latitude</label
+                  >
+                  <input type="text" id="antenaLatitude" class="antena-input" />
+                </div>
+                <div class="antena-form-actions">
+                  <button
+                    class="antena-btn antena-btn-cancel"
+                    id="antenaCancelBtn"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="antena-btn antena-btn-submit"
+                    id="antenaSubmitBtn"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+
+              <!-- Table Section -->
+              <div class="antena-search">
+                <div class="antena-search-container">
+                  <input type="text" placeholder="Search" />
+                  <button class="antena-search-btn">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+
+              <table class="antena-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Longitude</th>
+                    <th>Latitude</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    data-id="1"
+                    data-name="Green Bay Ais Station"
+                    data-longitude="106.7776441"
+                    data-latitude="-6.1079"
+                  >
+                    <td>Green Bay Ais Station</td>
+                    <td>106.7776441</td>
+                    <td>-6.1079</td>
+                    <td>
+                      <div class="antena-action-btns">
+                        <button class="antena-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="antena-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    data-id="2"
+                    data-name="SOS Test"
+                    data-longitude="106.7854645"
+                    data-latitude="-6.2390013"
+                  >
+                    <td>SOS Test</td>
+                    <td>106.7854645</td>
+                    <td>-6.2390013</td>
+                    <td>
+                      <div class="antena-action-btns">
+                        <button class="antena-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="antena-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    data-id="3"
+                    data-name="Teluk Jakarta"
+                    data-longitude="106.850122"
+                    data-latitude="-6.125478"
+                  >
+                    <td>Teluk Jakarta</td>
+                    <td>106.850122</td>
+                    <td>-6.125478</td>
+                    <td>
+                      <div class="antena-action-btns">
+                        <button class="antena-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="antena-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    data-id="4"
+                    data-name="Tanjung Priok"
+                    data-longitude="106.888764"
+                    data-latitude="-6.102345"
+                  >
+                    <td>Tanjung Priok</td>
+                    <td>106.888764</td>
+                    <td>-6.102345</td>
+                    <td>
+                      <div class="antena-action-btns">
+                        <button class="antena-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="antena-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div class="nav-item" data-item="geofence">
           <!-- <i class="bi bi-geo-alt nav-icon"></i> -->
@@ -1872,6 +2451,183 @@
           </svg>
 
           <span class="nav-text">Station</span>
+
+          <!-- Station Modal -->
+          <div class="station-modal" id="stationModal">
+            <div class="station-header">
+              <div class="station-title">Station</div>
+              <div class="station-controls">
+                <button
+                  class="station-control-btn"
+                  id="stationAddBtn"
+                  title="Tambah Station"
+                >
+                  <i class="bi bi-plus"></i>
+                </button>
+                <button
+                  class="station-control-btn"
+                  id="collapseStationBtn"
+                  title="Collapse/Expand"
+                >
+                  <i class="bi bi-chevron-down" id="stationCollapseIcon"></i>
+                </button>
+                <button
+                  class="station-control-btn"
+                  id="closeStationBtn"
+                  title="Close"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="station-content" id="stationContent">
+              <!-- Edit Form di atas tabel -->
+              <div class="station-edit-form" id="stationEditForm">
+                <div class="station-form-group">
+                  <label for="stationName" class="station-required">Name</label>
+                  <input type="text" id="stationName" class="station-input" />
+                </div>
+                <div class="station-form-group">
+                  <label for="stationLongitude" class="station-required"
+                    >Longitude</label
+                  >
+                  <input
+                    type="text"
+                    id="stationLongitude"
+                    class="station-input"
+                  />
+                </div>
+                <div class="station-form-group">
+                  <label for="stationLatitude" class="station-required"
+                    >Latitude</label
+                  >
+                  <input
+                    type="text"
+                    id="stationLatitude"
+                    class="station-input"
+                  />
+                </div>
+                <div class="station-form-actions">
+                  <button
+                    class="station-btn station-btn-cancel"
+                    id="stationCancelBtn"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="station-btn station-btn-submit"
+                    id="stationSubmitBtn"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+
+              <!-- Table Section -->
+              <div class="station-search">
+                <div class="station-search-container">
+                  <input type="text" placeholder="Search" />
+                  <button class="station-search-btn">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+
+              <table class="station-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Longitude</th>
+                    <th>Latitude</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    data-id="1"
+                    data-name="Green Bay Ais Station"
+                    data-longitude="106.7776441"
+                    data-latitude="-6.1079"
+                  >
+                    <td>Green Bay Ais Station</td>
+                    <td>106.7776441</td>
+                    <td>-6.1079</td>
+                    <td>
+                      <div class="station-action-btns">
+                        <button class="station-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="station-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    data-id="2"
+                    data-name="SOS Test"
+                    data-longitude="106.7854645"
+                    data-latitude="-6.2390013"
+                  >
+                    <td>SOS Test</td>
+                    <td>106.7854645</td>
+                    <td>-6.2390013</td>
+                    <td>
+                      <div class="station-action-btns">
+                        <button class="station-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="station-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    data-id="3"
+                    data-name="Teluk Jakarta"
+                    data-longitude="106.850122"
+                    data-latitude="-6.125478"
+                  >
+                    <td>Teluk Jakarta</td>
+                    <td>106.850122</td>
+                    <td>-6.125478</td>
+                    <td>
+                      <div class="station-action-btns">
+                        <button class="station-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="station-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    data-id="4"
+                    data-name="Tanjung Priok"
+                    data-longitude="106.888764"
+                    data-latitude="-6.102345"
+                  >
+                    <td>Tanjung Priok</td>
+                    <td>106.888764</td>
+                    <td>-6.102345</td>
+                    <td>
+                      <div class="station-action-btns">
+                        <button class="station-edit-btn" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="station-btn btn-danger" title="Delete">
+                          <i class="bi bi-trash-fill"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
         <div class="nav-item" data-item="bookmark">
           <!-- <i class="bi bi-bookmark nav-icon"></i> -->
@@ -3077,7 +3833,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .antena-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -3103,12 +3859,8 @@
         encItem.addEventListener("click", function (e) {
           e.stopPropagation();
 
-          // Tutup modal filter dan geofence jika terbuka
-          filterModal.classList.remove("visible");
-          geofenceModal.classList.remove("visible");
-          geofenceDetailModal.classList.remove("visible");
-          bookmarkModal.classList.remove("visible");
-          bookmarkDetailModal.classList.remove("visible");
+          // Tutup semua modal yang aktif
+          closeAllActiveModals();
 
           // Tambahkan class expanded ke menu jika belum ada
           if (!navMenu.classList.contains("expanded")) {
@@ -3220,6 +3972,601 @@
         encModal.addEventListener("click", function (e) {
           e.stopPropagation();
         });
+
+        // Handle Antena modal
+        const antenaItem = document.querySelector('[data-item="antenna"]');
+        const antenaIcon = antenaItem.querySelector(".nav-icon");
+        const antenaModal = document.getElementById("antenaModal");
+        const closeAntenaBtn = document.getElementById("closeAntenaBtn");
+        const antenaAddBtn = document.getElementById("antenaAddBtn");
+        const collapseAntenaBtn = document.getElementById("collapseAntenaBtn");
+        const antenaCollapseIcon =
+          document.getElementById("antenaCollapseIcon");
+        const antenaContent = document.getElementById("antenaContent");
+        const antenaEditForm = document.getElementById("antenaEditForm");
+        const antenaCancelBtn = document.getElementById("antenaCancelBtn");
+        const antenaSubmitBtn = document.getElementById("antenaSubmitBtn");
+        const antenaEditBtns = document.querySelectorAll(".antena-edit-btn");
+        const antenaEditMode = { isEdit: false, rowIndex: -1 };
+
+        // Event listener untuk icon Antena (hanya untuk expand)
+        antenaIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Event listener untuk item Antena (untuk menampilkan popup)
+        antenaItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Tutup semua modal yang aktif
+          closeAllActiveModals();
+
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(function () {
+              showAntenaModal();
+            }, 300);
+          } else {
+            // Toggle visibility antena modal
+            if (antenaModal.classList.contains("visible")) {
+              antenaModal.classList.remove("visible");
+              activeModal = null;
+            } else {
+              showAntenaModal();
+            }
+          }
+        });
+
+        // Fungsi untuk menampilkan modal antena
+        function showAntenaModal() {
+          // Sembunyikan form edit
+          antenaEditForm.classList.remove("visible");
+
+          // Update posisi modal relatif terhadap menu item
+          positioning(antenaItem, antenaModal);
+
+          antenaModal.classList.add("visible");
+          activeModal = antenaModal;
+        }
+
+        // Fungsi untuk menampilkan form edit dengan data
+        function showAntenaEditForm(
+          name = "",
+          longitude = "",
+          latitude = "",
+          rowIndex = -1
+        ) {
+          // Isi form dengan data
+          document.getElementById("antenaName").value = name;
+          document.getElementById("antenaLongitude").value = longitude;
+          document.getElementById("antenaLatitude").value = latitude;
+
+          // Set mode edit
+          antenaEditMode.isEdit = rowIndex >= 0;
+          antenaEditMode.rowIndex = rowIndex;
+
+          // Tampilkan form edit
+          antenaEditForm.classList.add("visible");
+        }
+
+        // Event listener untuk tombol close Antena
+        closeAntenaBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          antenaModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol collapse Antena
+        collapseAntenaBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (antenaContent.classList.contains("hidden")) {
+            antenaContent.classList.remove("hidden");
+            antenaCollapseIcon.classList.remove("rotated");
+          } else {
+            antenaContent.classList.add("hidden");
+            antenaCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Event listener untuk tombol Add Antena
+        antenaAddBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          showAntenaEditForm();
+        });
+
+        // Event listener untuk tombol Cancel form
+        antenaCancelBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          antenaEditForm.classList.remove("visible");
+        });
+
+        // Event listener untuk tombol Submit form
+        antenaSubmitBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Ambil nilai dari form
+          const name = document.getElementById("antenaName").value;
+          const longitude = document.getElementById("antenaLongitude").value;
+          const latitude = document.getElementById("antenaLatitude").value;
+
+          // Validasi sederhana
+          if (name === "" || longitude === "" || latitude === "") {
+            alert("Semua field harus diisi!");
+            return;
+          }
+
+          // Jika dalam mode edit, update baris yang sudah ada
+          if (antenaEditMode.isEdit && antenaEditMode.rowIndex >= 0) {
+            const table = document.querySelector(".antena-table tbody");
+            const row = table.rows[antenaEditMode.rowIndex];
+
+            row.cells[0].textContent = name;
+            row.cells[1].textContent = longitude;
+            row.cells[2].textContent = latitude;
+
+            // Update data attributes
+            row.setAttribute("data-name", name);
+            row.setAttribute("data-longitude", longitude);
+            row.setAttribute("data-latitude", latitude);
+          } else {
+            // Jika mode tambah baru, tambahkan baris baru ke tabel
+            const table = document.querySelector(".antena-table tbody");
+            const newRow = table.insertRow();
+
+            // Set atribut data
+            newRow.setAttribute("data-id", Date.now().toString());
+            newRow.setAttribute("data-name", name);
+            newRow.setAttribute("data-longitude", longitude);
+            newRow.setAttribute("data-latitude", latitude);
+
+            // Tambahkan sel-sel untuk data
+            const nameCell = newRow.insertCell(0);
+            const longitudeCell = newRow.insertCell(1);
+            const latitudeCell = newRow.insertCell(2);
+            const actionCell = newRow.insertCell(3);
+
+            // Isi data
+            nameCell.textContent = name;
+            longitudeCell.textContent = longitude;
+            latitudeCell.textContent = latitude;
+
+            // Tambahkan tombol edit
+            const actionBtns = document.createElement("div");
+            actionBtns.className = "antena-action-btns";
+            actionBtns.innerHTML = `
+              <button class="antena-edit-btn" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+            `;
+            actionCell.appendChild(actionBtns);
+
+            // Tambahkan event listener untuk tombol edit
+            const editBtn = actionBtns.querySelector(".antena-edit-btn");
+            addEditButtonListener(editBtn);
+          }
+
+          // Sembunyikan form edit
+          antenaEditForm.classList.remove("visible");
+        });
+
+        // Fungsi untuk menambahkan event listener ke tombol edit
+        function addEditButtonListener(button) {
+          button.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            // Ambil baris yang berisi tombol ini
+            const row = this.closest("tr");
+
+            // Cari indeks baris
+            const table = document.querySelector(".antena-table tbody");
+            const rowIndex = Array.from(table.rows).indexOf(row);
+
+            // Ambil data dari atribut data
+            const name = row.getAttribute("data-name");
+            const longitude = row.getAttribute("data-longitude");
+            const latitude = row.getAttribute("data-latitude");
+
+            // Tampilkan form edit dengan data
+            showAntenaEditForm(name, longitude, latitude, rowIndex);
+          });
+        }
+
+        // Tambahkan event listener ke semua tombol edit yang ada
+        antenaEditBtns.forEach(function (button) {
+          addEditButtonListener(button);
+        });
+
+        // Event listener untuk stop propagation pada modal
+        antenaModal.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+
+        // Event listener untuk semua input dan tombol di modal antena
+        document
+          .querySelectorAll(
+            ".antena-modal input, .antena-modal button, .antena-modal select"
+          )
+          .forEach((el) => {
+            ["click", "focus", "input", "change"].forEach((eventType) => {
+              el.addEventListener(eventType, function (e) {
+                e.stopPropagation();
+              });
+            });
+          });
+
+        // Menutup semua modal yang aktif
+        function closeAllActiveModals() {
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
+          activeModal = null;
+        }
+
+        // Tambahkan event listener untuk semua item navigasi
+        document.querySelectorAll(".nav-item").forEach(function (item) {
+          const itemType = item.getAttribute("data-item");
+
+          if (itemType !== "antenna") {
+            // Untuk item selain antenna, tambahkan event yang menutup modal antenna
+            item.addEventListener("click", function () {
+              // Tutup modal antena jika terbuka
+              if (antenaModal.classList.contains("visible")) {
+                antenaModal.classList.remove("visible");
+              }
+            });
+          }
+        });
+
+        // Event listener untuk item ENC yang memperbaiki masalah tampilan modal
+        encItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Tutup semua modal yang aktif
+          closeAllActiveModals();
+
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(showEncModal, 300);
+          } else {
+            // Toggle visibility ENC modal
+            if (encModal.classList.contains("visible")) {
+              encModal.classList.remove("visible");
+              activeModal = null;
+            } else {
+              showEncModal();
+            }
+          }
+        });
+
+        // Pastikan semua item navigasi menutup modal lain saat diklik
+        document
+          .querySelectorAll(
+            '[data-item="geofence"], [data-item="filter"], [data-item="bookmark"], [data-item="control"]'
+          )
+          .forEach(function (item) {
+            item.addEventListener("click", function (e) {
+              // Tutup modal antena dan enc
+              antenaModal.classList.remove("visible");
+              encModal.classList.remove("visible");
+            });
+          });
+
+        // Station Modal Handler
+        const stationItem = document.querySelector('[data-item="station"]');
+        const stationIcon = stationItem.querySelector(".nav-icon");
+        const stationModal = document.getElementById("stationModal");
+        const closeStationBtn = document.getElementById("closeStationBtn");
+        const collapseStationBtn =
+          document.getElementById("collapseStationBtn");
+        const stationCollapseIcon = document.getElementById(
+          "stationCollapseIcon"
+        );
+        const stationContent = document.getElementById("stationContent");
+        const stationEditForm = document.getElementById("stationEditForm");
+        const stationCancelBtn = document.getElementById("stationCancelBtn");
+        const stationSubmitBtn = document.getElementById("stationSubmitBtn");
+        const stationEditBtns = document.querySelectorAll(".station-edit-btn");
+        const stationDeleteBtns = document.querySelectorAll(
+          ".station-btn.btn-danger"
+        );
+        const stationAddBtn = document.getElementById("stationAddBtn");
+        const stationEditMode = { isEdit: false, rowIndex: -1 };
+
+        // Event listener untuk icon Station (hanya untuk expand)
+        stationIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Event listener untuk item Station (untuk menampilkan popup)
+        stationItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Tutup semua modal yang aktif
+          closeAllActiveModals();
+
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(function () {
+              showStationModal();
+            }, 300);
+          } else {
+            // Toggle visibility station modal
+            if (stationModal.classList.contains("visible")) {
+              stationModal.classList.remove("visible");
+              activeModal = null;
+            } else {
+              showStationModal();
+            }
+          }
+        });
+
+        // Fungsi untuk menampilkan modal station
+        function showStationModal() {
+          // Sembunyikan form edit
+          stationEditForm.classList.remove("visible");
+
+          // Update posisi modal relatif terhadap menu item
+          positioning(stationItem, stationModal);
+
+          stationModal.classList.add("visible");
+          activeModal = stationModal;
+        }
+
+        // Fungsi untuk menampilkan form edit station dengan data
+        function showStationEditForm(
+          name = "",
+          longitude = "",
+          latitude = "",
+          rowIndex = -1
+        ) {
+          // Isi form dengan data
+          document.getElementById("stationName").value = name;
+          document.getElementById("stationLongitude").value = longitude;
+          document.getElementById("stationLatitude").value = latitude;
+
+          // Set mode edit
+          stationEditMode.isEdit = rowIndex >= 0;
+          stationEditMode.rowIndex = rowIndex;
+
+          // Tampilkan form edit
+          stationEditForm.classList.add("visible");
+        }
+
+        // Event listener untuk tombol close Station
+        closeStationBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          stationModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk tombol collapse Station
+        collapseStationBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (stationContent.classList.contains("hidden")) {
+            stationContent.classList.remove("hidden");
+            stationCollapseIcon.classList.remove("rotated");
+          } else {
+            stationContent.classList.add("hidden");
+            stationCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Event listener untuk tombol add Station
+        stationAddBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          // Tampilkan form edit kosong
+          showStationEditForm();
+        });
+
+        // Event listener untuk tombol Cancel form station
+        stationCancelBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          stationEditForm.classList.remove("visible");
+        });
+
+        // Event listener untuk tombol Submit form station
+        stationSubmitBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Ambil nilai dari form
+          const name = document.getElementById("stationName").value;
+          const longitude = document.getElementById("stationLongitude").value;
+          const latitude = document.getElementById("stationLatitude").value;
+
+          // Validasi sederhana
+          if (name === "" || longitude === "" || latitude === "") {
+            alert("Semua field harus diisi!");
+            return;
+          }
+
+          // Jika dalam mode edit, update baris yang sudah ada
+          if (stationEditMode.isEdit && stationEditMode.rowIndex >= 0) {
+            const table = document.querySelector(".station-table tbody");
+            const row = table.rows[stationEditMode.rowIndex];
+
+            row.cells[0].textContent = name;
+            row.cells[1].textContent = longitude;
+            row.cells[2].textContent = latitude;
+
+            // Update data attributes
+            row.setAttribute("data-name", name);
+            row.setAttribute("data-longitude", longitude);
+            row.setAttribute("data-latitude", latitude);
+          } else {
+            // Jika mode tambah baru, tambahkan baris baru ke tabel
+            const table = document.querySelector(".station-table tbody");
+            const newRow = table.insertRow();
+
+            // Set atribut data
+            newRow.setAttribute("data-id", Date.now().toString());
+            newRow.setAttribute("data-name", name);
+            newRow.setAttribute("data-longitude", longitude);
+            newRow.setAttribute("data-latitude", latitude);
+
+            // Tambahkan sel-sel untuk data
+            const nameCell = newRow.insertCell(0);
+            const longitudeCell = newRow.insertCell(1);
+            const latitudeCell = newRow.insertCell(2);
+            const actionCell = newRow.insertCell(3);
+
+            // Isi data
+            nameCell.textContent = name;
+            longitudeCell.textContent = longitude;
+            latitudeCell.textContent = latitude;
+
+            // Tambahkan tombol edit dan delete
+            const actionBtns = document.createElement("div");
+            actionBtns.className = "station-action-btns";
+            actionBtns.innerHTML = `
+              <button class="station-edit-btn" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="station-btn btn-danger" title="Delete">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            `;
+            actionCell.appendChild(actionBtns);
+
+            // Tambahkan event listener untuk tombol edit dan delete
+            const editBtn = actionBtns.querySelector(".station-edit-btn");
+            const deleteBtn = actionBtns.querySelector(
+              ".station-btn.btn-danger"
+            );
+            addStationEditButtonListener(editBtn);
+            addStationDeleteButtonListener(deleteBtn);
+          }
+
+          // Sembunyikan form edit
+          stationEditForm.classList.remove("visible");
+        });
+
+        // Fungsi untuk menambahkan event listener ke tombol edit station
+        function addStationEditButtonListener(button) {
+          button.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            // Ambil baris yang berisi tombol ini
+            const row = this.closest("tr");
+
+            // Cari indeks baris
+            const table = document.querySelector(".station-table tbody");
+            const rowIndex = Array.from(table.rows).indexOf(row);
+
+            // Ambil data dari atribut data
+            const name = row.getAttribute("data-name");
+            const longitude = row.getAttribute("data-longitude");
+            const latitude = row.getAttribute("data-latitude");
+
+            // Tampilkan form edit dengan data
+            showStationEditForm(name, longitude, latitude, rowIndex);
+          });
+        }
+
+        // Fungsi untuk menambahkan event listener ke tombol delete station
+        function addStationDeleteButtonListener(button) {
+          button.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            // Ambil baris yang berisi tombol ini
+            const row = this.closest("tr");
+
+            // Hapus baris
+            if (row && confirm("Yakin ingin menghapus station ini?")) {
+              row.remove();
+            }
+          });
+        }
+
+        // Tambahkan event listener ke semua tombol edit station yang ada
+        stationEditBtns.forEach(function (button) {
+          addStationEditButtonListener(button);
+        });
+
+        // Tambahkan event listener ke tombol delete yang sudah ada
+        stationDeleteBtns.forEach(function (button) {
+          addStationDeleteButtonListener(button);
+        });
+
+        // Event listener untuk stop propagation pada modal station
+        stationModal.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+
+        // Event listener untuk semua input dan tombol di modal station
+        document
+          .querySelectorAll(
+            ".station-modal input, .station-modal button, .station-modal select"
+          )
+          .forEach((el) => {
+            ["click", "focus", "input", "change"].forEach((eventType) => {
+              el.addEventListener(eventType, function (e) {
+                e.stopPropagation();
+              });
+            });
+          });
+
+        // Update closeAllActiveModals function untuk include station-modal
+        function closeAllActiveModals() {
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
+          activeModal = null;
+        }
+
+        // Update navigasi item listener untuk menutup modal station
+        document.querySelectorAll(".nav-item").forEach(function (item) {
+          const itemType = item.getAttribute("data-item");
+
+          if (itemType !== "antenna" && itemType !== "station") {
+            // Untuk item selain antenna dan station, tambahkan event yang menutup modalnya
+            item.addEventListener("click", function () {
+              if (antenaModal.classList.contains("visible")) {
+                antenaModal.classList.remove("visible");
+              }
+              if (stationModal.classList.contains("visible")) {
+                stationModal.classList.remove("visible");
+              }
+            });
+          }
+        });
+
+        // Pastikan semua modal ditutup saat navigasi lain diklik
+        document
+          .querySelectorAll(
+            '[data-item="geofence"], [data-item="filter"], [data-item="bookmark"], [data-item="control"], [data-item="enc"]'
+          )
+          .forEach(function (item) {
+            item.addEventListener("click", function (e) {
+              // Tutup modal antena dan station
+              antenaModal.classList.remove("visible");
+              stationModal.classList.remove("visible");
+            });
+          });
       });
     </script>
   </body>
