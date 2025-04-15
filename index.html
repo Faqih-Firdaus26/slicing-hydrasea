@@ -3512,7 +3512,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -3668,7 +3668,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -3963,7 +3963,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -4145,7 +4145,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .antena-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .antena-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -4517,7 +4517,7 @@
         function closeAllActiveModals() {
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -4842,7 +4842,7 @@
         function closeAllActiveModals() {
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -4890,7 +4890,9 @@
               // Tutup modal antena, station, dan anchored vessel
               antenaModal.classList.remove("visible");
               stationModal.classList.remove("visible");
-              anchoredVesselModal.classList.remove("visible");
+              if (anchoredVesselModal) {
+                anchoredVesselModal.style.display = "none";
+              }
             });
           });
 
