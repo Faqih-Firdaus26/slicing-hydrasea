@@ -1519,72 +1519,32 @@
         display: inline-block;
       }
 
-      .status-on {
-        background-color: #28a745;
-      }
-
-      .status-off {
-        background-color: #dc3545;
-      }
-
       /* Station Modal Styles */
       .station-modal {
         position: fixed;
-        bottom: 100%;
-        right: 0;
-        margin-bottom: 10px;
+        left: 200px;
+        top: 85px;
         background-color: rgba(33, 37, 41, 0.6);
         border-radius: 5px;
-        padding: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        padding: 15px;
         display: none;
-        z-index: 1001;
-        color: white;
-        width: 400px;
-      }
-
-      .station-modal.visible {
-        display: block;
-      }
-
-      .station-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-
-      .station-title {
-        font-weight: bold;
-        margin-bottom: 10px;
+        z-index: 2000;
+        min-width: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 200px;
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
         color: white;
       }
 
-      .station-controls {
-        display: flex;
-        gap: 5px;
+      .station-edit-form {
+        margin-bottom: 15px;
+        display: none;
       }
 
-      .station-control-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.2rem;
-        cursor: pointer;
-      }
-
-      .station-form-group {
-        margin-bottom: 10px;
-      }
-
-      .station-form-group label {
-        display: block;
-        margin-bottom: 5px;
-        color: white;
-        font-size: 0.9em;
-      }
-
-      .station-input {
+      .station-form-group input {
         width: 100%;
         padding: 8px 10px;
         border-radius: 5px;
@@ -1593,19 +1553,8 @@
         color: #333;
       }
 
-      .station-required::after {
-        content: " *";
-        color: #ff4d4f;
-      }
-
-      .station-form-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 15px;
-      }
-
-      .station-btn {
+      .station-btn-cancel,
+      .station-btn-submit {
         padding: 5px 15px;
         border-radius: 5px;
         border: none;
@@ -1613,48 +1562,24 @@
         font-size: 12px;
       }
 
-      .station-btn:hover {
-        opacity: 0.9;
+      .station-content {
+        max-height: 300px;
+        overflow-y: auto;
+        scrollbar-width: none;
+        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
       }
 
-      .station-btn-cancel {
-        background-color: #dc3545;
-        color: white;
+      .station-content::-webkit-scrollbar {
+        width: 6px;
       }
 
-      .station-btn-submit {
-        background-color: #0d6efd;
-        color: white;
+      .station-content::-webkit-scrollbar-track {
+        background: transparent;
       }
 
-      .station-search-container {
-        position: relative;
-        margin-bottom: 15px;
-      }
-
-      .station-search {
-        position: relative;
-        margin-bottom: 10px;
-      }
-
-      .station-search input {
-        width: 100%;
-        padding: 6px 30px 6px 10px;
-        border-radius: 5px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background-color: white;
-        color: #333;
-      }
-
-      .station-search-btn {
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: #333;
-        cursor: pointer;
+      .station-content::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
       }
 
       .station-table {
@@ -1680,7 +1605,8 @@
         gap: 5px;
       }
 
-      .station-edit-btn {
+      .station-edit-btn,
+      .station-btn.btn-danger {
         background-color: #ff923e;
         color: white;
         border: none;
@@ -1697,34 +1623,141 @@
         background-color: #e67e22;
       }
 
-      .btn-danger {
+      .station-btn.btn-danger {
         background-color: #dc3545;
-        color: white;
-        border: none;
-        width: 24px;
-        height: 24px;
-        border-radius: 3px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
       }
 
-      .btn-danger:hover {
+      .station-btn.btn-danger:hover {
         background-color: #bd2130;
       }
 
       /* Station Edit Form Style */
       .station-edit-form {
-        background-color: rgba(33, 37, 41, 0.8);
-        padding: 15px;
-        border-radius: 5px;
         margin-bottom: 15px;
         display: none;
       }
 
       .station-edit-form.visible {
         display: block;
+      }
+
+      .station-form-group {
+        margin-bottom: 10px;
+      }
+
+      .station-form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+        font-size: 0.9em;
+      }
+
+      .station-required::after {
+        content: " *";
+        color: #ff4d4f;
+      }
+
+      .station-input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 3px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+      }
+
+      .station-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .station-btn-cancel,
+      .station-btn-submit {
+        padding: 5px 15px;
+        border-radius: 3px;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .station-btn-cancel {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .station-btn-submit {
+        background-color: #0d6efd;
+        color: white;
+      }
+
+      .station-modal::-webkit-scrollbar {
+        display: none;
+      }
+
+      .station-modal.visible {
+        display: block;
+      }
+
+      .station-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .station-title {
+        font-weight: bold;
+        color: white;
+      }
+
+      .station-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .station-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .station-search {
+        position: relative;
+        margin: 10px 0;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .station-search input {
+        padding: 5px 30px 5px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #333;
+        width: 150px;
+      }
+
+      .station-search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #333;
+        cursor: pointer;
+      }
+
+      .station-btn-cancel:hover {
+        opacity: 0.9;
+      }
+
+      .station-btn-submit:hover {
+        opacity: 0.9;
       }
     </style>
   </head>
@@ -2435,7 +2468,6 @@
           </div>
         </div>
         <div class="nav-item" data-item="station">
-          <!-- <i class="bi bi-building nav-icon"></i> -->
           <svg
             class="nav-icon"
             width="18"
@@ -2449,13 +2481,12 @@
               fill="white"
             />
           </svg>
-
           <span class="nav-text">Station</span>
 
           <!-- Station Modal -->
           <div class="station-modal" id="stationModal">
             <div class="station-header">
-              <div class="station-title">Station</div>
+              <div class="station-title">Stasiun Pandu</div>
               <div class="station-controls">
                 <button
                   class="station-control-btn"
@@ -2489,70 +2520,63 @@
                   <input type="text" id="stationName" class="station-input" />
                 </div>
                 <div class="station-form-group">
-                  <label for="stationLongitude" class="station-required"
-                    >Longitude</label
+                  <label for="stationAreaType" class="station-required"
+                    >Area Type</label
                   >
                   <input
                     type="text"
-                    id="stationLongitude"
+                    id="stationAreaType"
                     class="station-input"
                   />
                 </div>
                 <div class="station-form-group">
-                  <label for="stationLatitude" class="station-required"
-                    >Latitude</label
+                  <label for="stationMaxSpeed" class="station-required"
+                    >Max Speed (knot)</label
                   >
                   <input
                     type="text"
-                    id="stationLatitude"
+                    id="stationMaxSpeed"
                     class="station-input"
                   />
                 </div>
                 <div class="station-form-actions">
-                  <button
-                    class="station-btn station-btn-cancel"
-                    id="stationCancelBtn"
-                  >
+                  <button class="station-btn-cancel" id="stationCancelBtn">
                     Cancel
                   </button>
-                  <button
-                    class="station-btn station-btn-submit"
-                    id="stationSubmitBtn"
-                  >
+                  <button class="station-btn-submit" id="stationSubmitBtn">
                     Submit
                   </button>
                 </div>
               </div>
 
-              <!-- Table Section -->
+              <!-- Search Box -->
               <div class="station-search">
-                <div class="station-search-container">
-                  <input type="text" placeholder="Search" />
-                  <button class="station-search-btn">
-                    <i class="bi bi-search"></i>
-                  </button>
-                </div>
+                <input type="text" placeholder="Search" />
+                <button class="station-search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
               </div>
 
+              <!-- Table -->
               <table class="station-table">
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Longitude</th>
-                    <th>Latitude</th>
+                    <th>Area Type</th>
+                    <th>Max Speed(knot)</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
                     data-id="1"
-                    data-name="Green Bay Ais Station"
-                    data-longitude="106.7776441"
-                    data-latitude="-6.1079"
+                    data-name="Tanjung Priok Dalam"
+                    data-area-type="Pilot"
+                    data-max-speed="5"
                   >
-                    <td>Green Bay Ais Station</td>
-                    <td>106.7776441</td>
-                    <td>-6.1079</td>
+                    <td>Tanjung Priok Dalam</td>
+                    <td>Pilot</td>
+                    <td>5</td>
                     <td>
                       <div class="station-action-btns">
                         <button class="station-edit-btn" title="Edit">
@@ -2566,53 +2590,13 @@
                   </tr>
                   <tr
                     data-id="2"
-                    data-name="SOS Test"
-                    data-longitude="106.7854645"
-                    data-latitude="-6.2390013"
+                    data-name="Tanjung Priok Dalam"
+                    data-area-type="Labor"
+                    data-max-speed="20"
                   >
-                    <td>SOS Test</td>
-                    <td>106.7854645</td>
-                    <td>-6.2390013</td>
-                    <td>
-                      <div class="station-action-btns">
-                        <button class="station-edit-btn" title="Edit">
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="station-btn btn-danger" title="Delete">
-                          <i class="bi bi-trash-fill"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr
-                    data-id="3"
-                    data-name="Teluk Jakarta"
-                    data-longitude="106.850122"
-                    data-latitude="-6.125478"
-                  >
-                    <td>Teluk Jakarta</td>
-                    <td>106.850122</td>
-                    <td>-6.125478</td>
-                    <td>
-                      <div class="station-action-btns">
-                        <button class="station-edit-btn" title="Edit">
-                          <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="station-btn btn-danger" title="Delete">
-                          <i class="bi bi-trash-fill"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr
-                    data-id="4"
-                    data-name="Tanjung Priok"
-                    data-longitude="106.888764"
-                    data-latitude="-6.102345"
-                  >
-                    <td>Tanjung Priok</td>
-                    <td>106.888764</td>
-                    <td>-6.102345</td>
+                    <td>Tanjung Priok Dalam</td>
+                    <td>Labor</td>
+                    <td>20</td>
                     <td>
                       <div class="station-action-btns">
                         <button class="station-edit-btn" title="Edit">
@@ -4336,14 +4320,14 @@
         // Fungsi untuk menampilkan form edit station dengan data
         function showStationEditForm(
           name = "",
-          longitude = "",
-          latitude = "",
+          areaType = "",
+          maxSpeed = "",
           rowIndex = -1
         ) {
           // Isi form dengan data
           document.getElementById("stationName").value = name;
-          document.getElementById("stationLongitude").value = longitude;
-          document.getElementById("stationLatitude").value = latitude;
+          document.getElementById("stationAreaType").value = areaType;
+          document.getElementById("stationMaxSpeed").value = maxSpeed;
 
           // Set mode edit
           stationEditMode.isEdit = rowIndex >= 0;
@@ -4391,11 +4375,11 @@
 
           // Ambil nilai dari form
           const name = document.getElementById("stationName").value;
-          const longitude = document.getElementById("stationLongitude").value;
-          const latitude = document.getElementById("stationLatitude").value;
+          const areaType = document.getElementById("stationAreaType").value;
+          const maxSpeed = document.getElementById("stationMaxSpeed").value;
 
           // Validasi sederhana
-          if (name === "" || longitude === "" || latitude === "") {
+          if (name === "" || areaType === "" || maxSpeed === "") {
             alert("Semua field harus diisi!");
             return;
           }
@@ -4406,13 +4390,13 @@
             const row = table.rows[stationEditMode.rowIndex];
 
             row.cells[0].textContent = name;
-            row.cells[1].textContent = longitude;
-            row.cells[2].textContent = latitude;
+            row.cells[1].textContent = areaType;
+            row.cells[2].textContent = maxSpeed;
 
             // Update data attributes
             row.setAttribute("data-name", name);
-            row.setAttribute("data-longitude", longitude);
-            row.setAttribute("data-latitude", latitude);
+            row.setAttribute("data-area-type", areaType);
+            row.setAttribute("data-max-speed", maxSpeed);
           } else {
             // Jika mode tambah baru, tambahkan baris baru ke tabel
             const table = document.querySelector(".station-table tbody");
@@ -4421,19 +4405,19 @@
             // Set atribut data
             newRow.setAttribute("data-id", Date.now().toString());
             newRow.setAttribute("data-name", name);
-            newRow.setAttribute("data-longitude", longitude);
-            newRow.setAttribute("data-latitude", latitude);
+            newRow.setAttribute("data-area-type", areaType);
+            newRow.setAttribute("data-max-speed", maxSpeed);
 
             // Tambahkan sel-sel untuk data
             const nameCell = newRow.insertCell(0);
-            const longitudeCell = newRow.insertCell(1);
-            const latitudeCell = newRow.insertCell(2);
+            const areaTypeCell = newRow.insertCell(1);
+            const maxSpeedCell = newRow.insertCell(2);
             const actionCell = newRow.insertCell(3);
 
             // Isi data
             nameCell.textContent = name;
-            longitudeCell.textContent = longitude;
-            latitudeCell.textContent = latitude;
+            areaTypeCell.textContent = areaType;
+            maxSpeedCell.textContent = maxSpeed;
 
             // Tambahkan tombol edit dan delete
             const actionBtns = document.createElement("div");
@@ -4475,11 +4459,11 @@
 
             // Ambil data dari atribut data
             const name = row.getAttribute("data-name");
-            const longitude = row.getAttribute("data-longitude");
-            const latitude = row.getAttribute("data-latitude");
+            const areaType = row.getAttribute("data-area-type");
+            const maxSpeed = row.getAttribute("data-max-speed");
 
             // Tampilkan form edit dengan data
-            showStationEditForm(name, longitude, latitude, rowIndex);
+            showStationEditForm(name, areaType, maxSpeed, rowIndex);
           });
         }
 
