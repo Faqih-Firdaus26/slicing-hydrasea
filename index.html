@@ -522,6 +522,7 @@
 
       .filter-title {
         font-weight: bold;
+        font-size: 14px;
         color: white;
       }
 
@@ -702,6 +703,7 @@
 
       .geofence-title {
         font-weight: bold;
+        font-size: 14px;
         color: white;
       }
 
@@ -726,11 +728,11 @@
       }
 
       .geofence-search input {
-        padding: 5px 10px;
+        padding: 5px 30px 5px 10px;
         border-radius: 5px;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        background-color: transparent;
-        color: white;
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #333;
         width: 150px;
       }
 
@@ -741,7 +743,7 @@
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: white;
+        color: #333;
         cursor: pointer;
       }
 
@@ -954,6 +956,7 @@
       .bookmark-title {
         font-weight: bold;
         color: white;
+        font-size: 14px;
       }
 
       .bookmark-controls {
@@ -992,7 +995,7 @@
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: white;
+        color: #333;
         cursor: pointer;
       }
 
@@ -1193,6 +1196,7 @@
       .enc-title {
         font-weight: bold;
         color: white;
+        font-size: 14px;
       }
 
       .enc-controls {
@@ -1262,7 +1266,7 @@
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: white;
+        color: #333;
         cursor: pointer;
       }
 
@@ -1358,6 +1362,7 @@
 
       .antena-title {
         font-weight: bold;
+        font-size: 14px;
         color: white;
       }
 
@@ -1710,6 +1715,7 @@
       .station-title {
         font-weight: bold;
         color: white;
+        font-size: 14px;
       }
 
       .station-controls {
@@ -1798,6 +1804,7 @@
       .anchored-vessel-title {
         font-weight: bold;
         color: white;
+        font-size: 14px;
       }
 
       .anchored-vessel-controls {
@@ -1953,6 +1960,270 @@
         cursor: pointer;
         font-weight: normal;
         font-size: 14px;
+      }
+
+      /* Gaya untuk ENC content hidden */
+      .enc-content.hidden {
+        display: none;
+      }
+
+      /* Anomaly Modal Styles */
+      .anomaly-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        display: none;
+        z-index: 2000;
+        min-width: 600px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 320px;
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .anomaly-modal::-webkit-scrollbar {
+        display: none;
+      }
+
+      .anomaly-modal.visible {
+        display: block;
+      }
+
+      .anomaly-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .anomaly-title {
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      .anomaly-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .anomaly-control-btn {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 2px;
+      }
+
+      .anomaly-content {
+        color: white;
+      }
+
+      .anomaly-content.hidden {
+        display: none;
+      }
+
+      .anomaly-search {
+        margin-bottom: 15px;
+        margin-top: 15px;
+        width: 200px;
+        display: flex;
+        justify-content: flex-end;
+        /* align-items: self-end; */
+      }
+
+      .anomaly-search-container {
+        display: flex;
+        background: white;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 10px;
+        /* justify-content: flex-end; */
+      }
+
+      .anomaly-search-container input {
+        border: none;
+        padding: 8px 12px;
+        flex-grow: 1;
+        outline: none;
+      }
+
+      .anomaly-search-btn {
+        background-color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+
+      .anomaly-filter-buttons {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .anomaly-filter-btn {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        border-radius: 4px;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+      }
+
+      .anomaly-filter-btn.active {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+
+      .anomaly-table-container {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .anomaly-table-container.hidden {
+        display: none;
+      }
+
+      .anomaly-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      .anomaly-table th,
+      .anomaly-table td {
+        padding: 8px 12px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .anomaly-table th {
+        font-weight: 500;
+        color: #ccc;
+      }
+
+      .anomaly-table tr:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      /* ... existing code ... */
+      /* Gaya umum untuk semua modal saat collapsed */
+      .control-modal.collapsed,
+      .filter-modal.collapsed,
+      .geofence-modal.collapsed,
+      .geofence-detail-modal.collapsed,
+      .bookmark-modal.collapsed,
+      .bookmark-detail-modal.collapsed,
+      .enc-modal.collapsed,
+      .antena-modal.collapsed,
+      .station-modal.collapsed,
+      .anchored-vessel-modal.collapsed,
+      .anomaly-modal.collapsed {
+        min-height: 50px !important;
+        height: auto !important;
+        transition: all 0.3s ease;
+      }
+
+      /* Animasi rotasi untuk semua icon chevron */
+      .bi-chevron-down {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      .bi-chevron-down.rotated {
+        transform: rotate(180deg);
+      }
+
+      /* Gaya untuk content hidden di semua modal */
+      .modal-content.hidden {
+        display: none;
+      }
+
+      /* Animasi perubahan ukuran modal */
+      .control-modal,
+      .filter-modal,
+      .geofence-modal,
+      .geofence-detail-modal,
+      .bookmark-modal,
+      .bookmark-detail-modal,
+      .enc-modal,
+      .antena-modal,
+      .station-modal,
+      .anchored-vessel-modal,
+      .anomaly-modal {
+        transition: all 0.3s ease;
+      }
+
+      /* ... existing code ... */
+      /* Pastikan modal content selector sesuai dengan semua modal */
+      .filter-content.hidden,
+      .geofence-content.hidden,
+      .bookmark-content.hidden,
+      .enc-content.hidden,
+      .antena-content.hidden,
+      .station-content.hidden,
+      .anchored-vessel-content.hidden,
+      .anomaly-content.hidden,
+      #encTable.hidden {
+        display: none;
+      }
+
+      .filter-action {
+        display: flex;
+        justify-content: flex-end;
+        padding: 10px 0;
+      }
+
+      .filter-modal.collapsed .filter-action {
+        display: none; /* Menyembunyikan tombol submit saat collapsed */
+      }
+
+      /* Penyeragaman searchbar input untuk semua modal */
+      .enc-search input,
+      .anomaly-search-container input,
+      .antena-search-container input,
+      .station-search input,
+      .bookmark-search input {
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: white;
+        color: #333;
+        width: 150px;
+      }
+
+      .enc-search-container,
+      .anomaly-search-container,
+      .antena-search-container,
+      .station-search,
+      .bookmark-search {
+        position: relative;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .enc-content {
+        overflow-y: auto;
+        max-height: calc(80vh - 60px);
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .enc-content::-webkit-scrollbar {
+        display: none;
+      }
+
+      .enc-content.hidden {
+        display: none;
       }
     </style>
   </head>
@@ -3029,6 +3300,156 @@
           </svg>
 
           <span class="nav-text">Anomaly</span>
+
+          <!-- Anomaly Modal -->
+          <div class="anomaly-modal" id="anomalyModal">
+            <div class="anomaly-header">
+              <div class="anomaly-title">Anomaly Identity</div>
+              <div class="anomaly-controls">
+                <button
+                  class="anomaly-control-btn"
+                  id="collapseAnomalyBtn"
+                  title="Collapse"
+                >
+                  <i class="bi bi-chevron-down" id="anomalyCollapseIcon"></i>
+                </button>
+                <button
+                  class="anomaly-control-btn"
+                  id="closeAnomalyBtn"
+                  title="Close"
+                >
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+            <div class="anomaly-content" id="anomalyContent">
+              <div class="anomaly-filter-buttons">
+                <button class="anomaly-filter-btn active" data-filter="mmsi">
+                  Invalid MMSI Number
+                </button>
+                <button class="anomaly-filter-btn" data-filter="imo">
+                  Invalid IMO Number
+                </button>
+                <button class="anomaly-filter-btn" data-filter="callsign">
+                  Invalid Callsign Number
+                </button>
+              </div>
+              <div class="anomaly-search">
+                <div class="anomaly-search-container">
+                  <input type="text" placeholder="Search anomaly..." />
+                  <button class="anomaly-search-btn">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- MMSI Table - Ditampilkan secara default -->
+              <div class="anomaly-table-container" id="mmsiTableContainer">
+                <table class="anomaly-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Vessel Name</th>
+                      <th>MMSI</th>
+                      <th>IMO</th>
+                      <th>Date</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>01</td>
+                      <td>KM SSB</td>
+                      <td>9136234</td>
+                      <td>-</td>
+                      <td>2025-04-09 10:25:06</td>
+                      <td>mmsi not 9 digits</td>
+                    </tr>
+                    <tr>
+                      <td>02</td>
+                      <td>-</td>
+                      <td>0</td>
+                      <td>6611150</td>
+                      <td>2025-04-09 09:12:56</td>
+                      <td>mmsi not 9 digits</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- IMO Table - Disembunyikan secara default -->
+              <div
+                class="anomaly-table-container hidden"
+                id="imoTableContainer"
+              >
+                <table class="anomaly-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Vessel Name</th>
+                      <th>MMSI</th>
+                      <th>IMO</th>
+                      <th>Last Digit Incorrect</th>
+                      <th>Last Digit Has to be</th>
+                      <th>Date</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>01</td>
+                      <td>KM SSB</td>
+                      <td>525701129</td>
+                      <td>106469900</td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>2025-04-09 10:25:06</td>
+                      <td>digit not equal to 7</td>
+                    </tr>
+                    <tr>
+                      <td>02</td>
+                      <td>KM SSB</td>
+                      <td>525021134</td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>-</td>
+                      <td>2025-04-09 10:32:18</td>
+                      <td>digit not equal to 7</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Callsign Table - Disembunyikan secara default -->
+              <div
+                class="anomaly-table-container hidden"
+                id="callsignTableContainer"
+              >
+                <table class="anomaly-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Vessel Name</th>
+                      <th>MMSI</th>
+                      <th>Callsign</th>
+                      <th>Date</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>01</td>
+                      <td>Un known</td>
+                      <td>525701129</td>
+                      <td>9V8353</td>
+                      <td>2025-04-10 08:15:03</td>
+                      <td>Callsign is Invalid</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="nav-item" data-item="anchored">
           <!-- <i class="bi bi-anchor nav-icon"></i> -->
@@ -3224,81 +3645,83 @@
               </div>
             </div>
 
-            <div class="enc-search-container">
-              <div class="enc-active-cell">
-                <span>Active Cell</span>
-                <input type="text" id="encActiveCell" />
-                <button class="enc-trash-btn" title="Clear">
-                  <i class="bi bi-trash"></i>
-                </button>
+            <div class="enc-content" id="encContent">
+              <div class="enc-search-container">
+                <div class="enc-active-cell">
+                  <span>Active Cell</span>
+                  <input type="text" id="encActiveCell" />
+                  <button class="enc-trash-btn" title="Clear">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+
+                <div class="enc-search">
+                  <input type="text" placeholder="Search" />
+                  <button class="enc-search-btn">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
               </div>
 
-              <div class="enc-search">
-                <input type="text" placeholder="Search" />
-                <button class="enc-search-btn">
-                  <i class="bi bi-search"></i>
-                </button>
-              </div>
+              <table class="enc-table">
+                <thead>
+                  <tr>
+                    <th>Cell ID</th>
+                    <th>Band</th>
+                    <th>Title</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ID100066</td>
+                    <td>Overview</td>
+                    <td>
+                      Palembang, Bangka Belitung, Lampung, Pulau Jawa, Laut Jawa
+                    </td>
+                    <td>
+                      <button class="enc-view-btn" title="View">
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13.7811 0.220343C13.6788 0.118118 13.5492 0.0476272 13.4078 0.0173556C13.2665 -0.0129161 13.1193 -0.00167774 12.9842 0.0497177L0.483266 4.78128H0.480766C0.336629 4.83672 0.213118 4.9353 0.127104 5.06356C0.0410898 5.19182 -0.00323491 5.3435 0.000183888 5.49789C0.00360268 5.65229 0.0545983 5.80186 0.146206 5.92619C0.237813 6.05051 0.365566 6.14353 0.512016 6.19253L0.524828 6.19659L4.81545 8.02878C4.89914 8.05419 4.98803 8.0572 5.07324 8.03751C5.15845 8.01782 5.23701 7.97613 5.30108 7.91659L12.1873 1.50003C12.2078 1.47951 12.2322 1.46323 12.259 1.45213C12.2858 1.44102 12.3146 1.43531 12.3436 1.43531C12.3726 1.43531 12.4013 1.44102 12.4281 1.45213C12.455 1.46323 12.4793 1.47951 12.4998 1.50003C12.5203 1.52055 12.5366 1.54491 12.5477 1.57172C12.5588 1.59853 12.5645 1.62726 12.5645 1.65628C12.5645 1.6853 12.5588 1.71403 12.5477 1.74084C12.5366 1.76765 12.5203 1.79201 12.4998 1.81253L6.08295 8.69566C6.02342 8.75972 5.98172 8.83828 5.96204 8.92349C5.94235 9.00871 5.94536 9.09759 5.97077 9.18128L7.80358 13.4744C7.80545 13.4807 7.80733 13.4863 7.80952 13.4922C7.90952 13.7819 8.16264 13.9863 8.46858 14H8.49983C8.65427 14.0009 8.80542 13.9553 8.9336 13.8691C9.06178 13.783 9.16108 13.6603 9.21858 13.5169L13.9495 1.01941C14.0016 0.88418 14.0135 0.736748 13.9836 0.594939C13.9537 0.453131 13.8834 0.32302 13.7811 0.220343Z"
+                            fill="#1E1E1E"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ID100066</td>
+                    <td>Overview</td>
+                    <td>
+                      Palembang, Bangka Belitung, Lampung, Pulau Jawa, Laut Jawa
+                    </td>
+                    <td>
+                      <button class="enc-view-btn" title="View">
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 14 14"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13.7811 0.220343C13.6788 0.118118 13.5492 0.0476272 13.4078 0.0173556C13.2665 -0.0129161 13.1193 -0.00167774 12.9842 0.0497177L0.483266 4.78128H0.480766C0.336629 4.83672 0.213118 4.9353 0.127104 5.06356C0.0410898 5.19182 -0.00323491 5.3435 0.000183888 5.49789C0.00360268 5.65229 0.0545983 5.80186 0.146206 5.92619C0.237813 6.05051 0.365566 6.14353 0.512016 6.19253L0.524828 6.19659L4.81545 8.02878C4.89914 8.05419 4.98803 8.0572 5.07324 8.03751C5.15845 8.01782 5.23701 7.97613 5.30108 7.91659L12.1873 1.50003C12.2078 1.47951 12.2322 1.46323 12.259 1.45213C12.2858 1.44102 12.3146 1.43531 12.3436 1.43531C12.3726 1.43531 12.4013 1.44102 12.4281 1.45213C12.455 1.46323 12.4793 1.47951 12.4998 1.50003C12.5203 1.52055 12.5366 1.54491 12.5477 1.57172C12.5588 1.59853 12.5645 1.62726 12.5645 1.65628C12.5645 1.6853 12.5588 1.71403 12.5477 1.74084C12.5366 1.76765 12.5203 1.79201 12.4998 1.81253L6.08295 8.69566C6.02342 8.75972 5.98172 8.83828 5.96204 8.92349C5.94235 9.00871 5.94536 9.09759 5.97077 9.18128L7.80358 13.4744C7.80545 13.4807 7.80733 13.4863 7.80952 13.4922C7.90952 13.7819 8.16264 13.9863 8.46858 14H8.49983C8.65427 14.0009 8.80542 13.9553 8.9336 13.8691C9.06178 13.783 9.16108 13.6603 9.21858 13.5169L13.9495 1.01941C14.0016 0.88418 14.0135 0.736748 13.9836 0.594939C13.9537 0.453131 13.8834 0.32302 13.7811 0.220343Z"
+                            fill="#1E1E1E"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-            <table class="enc-table">
-              <thead>
-                <tr>
-                  <th>Cell ID</th>
-                  <th>Band</th>
-                  <th>Title</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>ID100066</td>
-                  <td>Overview</td>
-                  <td>
-                    Palembang, Bangka Belitung, Lampung, Pulau Jawa, Laut Jawa
-                  </td>
-                  <td>
-                    <button class="enc-view-btn" title="View">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M13.7811 0.220343C13.6788 0.118118 13.5492 0.0476272 13.4078 0.0173556C13.2665 -0.0129161 13.1193 -0.00167774 12.9842 0.0497177L0.483266 4.78128H0.480766C0.336629 4.83672 0.213118 4.9353 0.127104 5.06356C0.0410898 5.19182 -0.00323491 5.3435 0.000183888 5.49789C0.00360268 5.65229 0.0545983 5.80186 0.146206 5.92619C0.237813 6.05051 0.365566 6.14353 0.512016 6.19253L0.524828 6.19659L4.81545 8.02878C4.89914 8.05419 4.98803 8.0572 5.07324 8.03751C5.15845 8.01782 5.23701 7.97613 5.30108 7.91659L12.1873 1.50003C12.2078 1.47951 12.2322 1.46323 12.259 1.45213C12.2858 1.44102 12.3146 1.43531 12.3436 1.43531C12.3726 1.43531 12.4013 1.44102 12.4281 1.45213C12.455 1.46323 12.4793 1.47951 12.4998 1.50003C12.5203 1.52055 12.5366 1.54491 12.5477 1.57172C12.5588 1.59853 12.5645 1.62726 12.5645 1.65628C12.5645 1.6853 12.5588 1.71403 12.5477 1.74084C12.5366 1.76765 12.5203 1.79201 12.4998 1.81253L6.08295 8.69566C6.02342 8.75972 5.98172 8.83828 5.96204 8.92349C5.94235 9.00871 5.94536 9.09759 5.97077 9.18128L7.80358 13.4744C7.80545 13.4807 7.80733 13.4863 7.80952 13.4922C7.90952 13.7819 8.16264 13.9863 8.46858 14H8.49983C8.65427 14.0009 8.80542 13.9553 8.9336 13.8691C9.06178 13.783 9.16108 13.6603 9.21858 13.5169L13.9495 1.01941C14.0016 0.88418 14.0135 0.736748 13.9836 0.594939C13.9537 0.453131 13.8834 0.32302 13.7811 0.220343Z"
-                          fill="#1E1E1E"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ID100066</td>
-                  <td>Overview</td>
-                  <td>
-                    Palembang, Bangka Belitung, Lampung, Pulau Jawa, Laut Jawa
-                  </td>
-                  <td>
-                    <button class="enc-view-btn" title="View">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M13.7811 0.220343C13.6788 0.118118 13.5492 0.0476272 13.4078 0.0173556C13.2665 -0.0129161 13.1193 -0.00167774 12.9842 0.0497177L0.483266 4.78128H0.480766C0.336629 4.83672 0.213118 4.9353 0.127104 5.06356C0.0410898 5.19182 -0.00323491 5.3435 0.000183888 5.49789C0.00360268 5.65229 0.0545983 5.80186 0.146206 5.92619C0.237813 6.05051 0.365566 6.14353 0.512016 6.19253L0.524828 6.19659L4.81545 8.02878C4.89914 8.05419 4.98803 8.0572 5.07324 8.03751C5.15845 8.01782 5.23701 7.97613 5.30108 7.91659L12.1873 1.50003C12.2078 1.47951 12.2322 1.46323 12.259 1.45213C12.2858 1.44102 12.3146 1.43531 12.3436 1.43531C12.3726 1.43531 12.4013 1.44102 12.4281 1.45213C12.455 1.46323 12.4793 1.47951 12.4998 1.50003C12.5203 1.52055 12.5366 1.54491 12.5477 1.57172C12.5588 1.59853 12.5645 1.62726 12.5645 1.65628C12.5645 1.6853 12.5588 1.71403 12.5477 1.74084C12.5366 1.76765 12.5203 1.79201 12.4998 1.81253L6.08295 8.69566C6.02342 8.75972 5.98172 8.83828 5.96204 8.92349C5.94235 9.00871 5.94536 9.09759 5.97077 9.18128L7.80358 13.4744C7.80545 13.4807 7.80733 13.4863 7.80952 13.4922C7.90952 13.7819 8.16264 13.9863 8.46858 14H8.49983C8.65427 14.0009 8.80542 13.9553 8.9336 13.8691C9.06178 13.783 9.16108 13.6603 9.21858 13.5169L13.9495 1.01941C14.0016 0.88418 14.0135 0.736748 13.9836 0.594939C13.9537 0.453131 13.8834 0.32302 13.7811 0.220343Z"
-                          fill="#1E1E1E"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
         <div class="nav-item" data-item="logout">
@@ -4120,7 +4543,7 @@
         const closeEncBtn = document.getElementById("closeEncBtn");
         const collapseEncBtn = document.getElementById("collapseEncBtn");
         const encCollapseIcon = document.getElementById("encCollapseIcon");
-        const encContent = document.querySelector(".enc-search-container");
+        const encContent = document.getElementById("encContent");
         const encTable = document.querySelector(".enc-table");
 
         // Event listener untuk tombol collapse ENC
@@ -4863,9 +5286,10 @@
           if (
             itemType !== "antenna" &&
             itemType !== "station" &&
-            itemType !== "anchored"
+            itemType !== "anchored" &&
+            itemType !== "anomaly"
           ) {
-            // Untuk item selain antenna, station, dan anchored, tambahkan event yang menutup modalnya
+            // Untuk item selain antenna, station, anchored, dan anomaly, tambahkan event yang menutup modalnya
             item.addEventListener("click", function () {
               if (antenaModal.classList.contains("visible")) {
                 antenaModal.classList.remove("visible");
@@ -4875,6 +5299,9 @@
               }
               if (anchoredVesselModal.classList.contains("visible")) {
                 anchoredVesselModal.classList.remove("visible");
+              }
+              if (anomalyModal.classList.contains("visible")) {
+                anomalyModal.classList.remove("visible");
               }
             });
           }
@@ -4890,6 +5317,7 @@
               // Tutup modal antena, station, dan anchored vessel
               antenaModal.classList.remove("visible");
               stationModal.classList.remove("visible");
+              anomalyModal.classList.remove("visible");
               if (anchoredVesselModal) {
                 anchoredVesselModal.style.display = "none";
               }
@@ -5019,6 +5447,397 @@
               });
             }
           });
+
+        // Event handling untuk Anomaly
+        const anomalyItem = document.querySelector('[data-item="anomaly"]');
+        const anomalyIcon = anomalyItem.querySelector(".nav-icon");
+        const anomalyModal = document.getElementById("anomalyModal");
+        const closeAnomalyBtn = document.getElementById("closeAnomalyBtn");
+        const collapseAnomalyBtn =
+          document.getElementById("collapseAnomalyBtn");
+        const anomalyContent = document.getElementById("anomalyContent");
+        const anomalyCollapseIcon = document.getElementById(
+          "anomalyCollapseIcon"
+        );
+        const anomalyFilterBtns = document.querySelectorAll(
+          ".anomaly-filter-btn"
+        );
+        const mmsiTableContainer =
+          document.getElementById("mmsiTableContainer");
+        const imoTableContainer = document.getElementById("imoTableContainer");
+        const callsignTableContainer = document.getElementById(
+          "callsignTableContainer"
+        );
+
+        // Event listener untuk filter buttons pada Anomaly modal
+        anomalyFilterBtns.forEach(function (btn) {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            // Hapus class active dari semua button
+            anomalyFilterBtns.forEach(function (filterBtn) {
+              filterBtn.classList.remove("active");
+            });
+
+            // Tambahkan class active ke button yang diklik
+            this.classList.add("active");
+
+            // Dapatkan jenis filter dari data attribute
+            const filterType = this.getAttribute("data-filter");
+
+            // Sembunyikan semua container tabel
+            mmsiTableContainer.classList.add("hidden");
+            imoTableContainer.classList.add("hidden");
+            callsignTableContainer.classList.add("hidden");
+
+            // Tampilkan container tabel sesuai dengan filter yang dipilih
+            if (filterType === "mmsi") {
+              mmsiTableContainer.classList.remove("hidden");
+            } else if (filterType === "imo") {
+              imoTableContainer.classList.remove("hidden");
+            } else if (filterType === "callsign") {
+              callsignTableContainer.classList.remove("hidden");
+            }
+          });
+        });
+
+        // Update closeAllActiveModals function untuk include anomaly-modal
+        function closeAllActiveModals() {
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal, .anomaly-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
+
+          // Khusus untuk anchoredVesselModal yang menggunakan style display
+          if (anchoredVesselModal) {
+            anchoredVesselModal.style.display = "none";
+          }
+
+          activeModal = null;
+        }
+
+        // Event listener untuk icon Anomaly (hanya untuk expand)
+        anomalyIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Event listener untuk item Anomaly (untuk menampilkan popup)
+        anomalyItem.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Tutup semua modal yang aktif
+          closeAllActiveModals();
+
+          // Tambahkan class expanded ke menu jika belum ada
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            // Tunggu transisi selesai sebelum menampilkan modal
+            setTimeout(function () {
+              showAnomalyModal();
+            }, 300);
+          } else {
+            // Toggle visibility anomaly modal
+            if (anomalyModal.classList.contains("visible")) {
+              anomalyModal.classList.remove("visible");
+              activeModal = null;
+            } else {
+              showAnomalyModal();
+            }
+          }
+        });
+
+        // Fungsi untuk menampilkan modal anomaly
+        function showAnomalyModal() {
+          // Update posisi modal relatif terhadap menu item
+          positioning(anomalyItem, anomalyModal);
+
+          // Tampilkan modal
+          anomalyModal.classList.add("visible");
+
+          // Pastikan konten ditampilkan saat modal dibuka
+          anomalyContent.classList.remove("hidden");
+          anomalyCollapseIcon.classList.remove("rotated");
+
+          activeModal = anomalyModal;
+        }
+
+        // Event listener untuk tombol collapse Anomaly
+        collapseAnomalyBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          // Toggle collapse content
+          if (anomalyContent.classList.contains("hidden")) {
+            anomalyContent.classList.remove("hidden");
+            anomalyCollapseIcon.classList.remove("rotated");
+          } else {
+            anomalyContent.classList.add("hidden");
+            anomalyCollapseIcon.classList.add("rotated");
+          }
+        });
+
+        // Event listener untuk tombol close Anomaly
+        closeAnomalyBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          anomalyModal.classList.remove("visible");
+          activeModal = null;
+        });
+
+        // Event listener untuk stop propagation pada modal
+        anomalyModal.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+
+        // Hentikan propagasi pada elemen-elemen dalam modal
+        document
+          .querySelectorAll(".anomaly-modal input, .anomaly-modal button")
+          .forEach(function (element) {
+            element.addEventListener("click", function (e) {
+              e.stopPropagation();
+            });
+          });
+
+        // Event listener untuk filter buttons pada Anomaly modal
+        anomalyFilterBtns.forEach(function (btn) {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            // Hapus class active dari semua button
+            anomalyFilterBtns.forEach(function (filterBtn) {
+              filterBtn.classList.remove("active");
+            });
+
+            // Tambahkan class active ke button yang diklik
+            this.classList.add("active");
+
+            // Dapatkan jenis filter dari data attribute
+            const filterType = this.getAttribute("data-filter");
+
+            // Sembunyikan semua container tabel
+            mmsiTableContainer.classList.add("hidden");
+            imoTableContainer.classList.add("hidden");
+            callsignTableContainer.classList.add("hidden");
+
+            // Tampilkan container tabel sesuai dengan filter yang dipilih
+            if (filterType === "mmsi") {
+              mmsiTableContainer.classList.remove("hidden");
+            } else if (filterType === "imo") {
+              imoTableContainer.classList.remove("hidden");
+            } else if (filterType === "callsign") {
+              callsignTableContainer.classList.remove("hidden");
+            }
+          });
+        });
+
+        // ... existing code ...
+        // Fungsi umum untuk toggle collapse pada semua modal
+        function setupCollapseFunction(
+          collapseBtn,
+          modal,
+          content,
+          collapseIcon
+        ) {
+          collapseBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            if (content.classList.contains("hidden")) {
+              // Expand
+              content.classList.remove("hidden");
+              collapseIcon.classList.remove("rotated");
+              modal.classList.remove("collapsed");
+            } else {
+              // Collapse
+              content.classList.add("hidden");
+              collapseIcon.classList.add("rotated");
+              modal.classList.add("collapsed");
+            }
+          });
+        }
+
+        // Terapkan fungsi collapse untuk semua modal
+        // Filter Modal
+        setupCollapseFunction(
+          collapseFilterBtn,
+          filterModal,
+          filterContent,
+          document.querySelector("#collapseFilterBtn i")
+        );
+
+        // Geofence Modal
+        setupCollapseFunction(
+          document.getElementById("collapseGeofenceBtn"),
+          document.getElementById("geofenceModal"),
+          document.getElementById("geofenceContent"),
+          document.getElementById("geofenceCollapseIcon")
+        );
+
+        // Bookmark Modal
+        setupCollapseFunction(
+          document.getElementById("collapseBookmarkBtn"),
+          document.getElementById("bookmarkModal"),
+          document.getElementById("bookmarkContent"),
+          document.getElementById("bookmarkCollapseIcon")
+        );
+
+        // ENC Modal
+        setupCollapseFunction(
+          document.getElementById("collapseEncBtn"),
+          document.getElementById("encModal"),
+          document.getElementById("encContent"),
+          document.getElementById("encCollapseIcon")
+        );
+
+        // Antena Modal
+        setupCollapseFunction(
+          collapseAntenaBtn,
+          antenaModal,
+          antenaContent,
+          antenaCollapseIcon
+        );
+
+        // Station Modal
+        setupCollapseFunction(
+          collapseStationBtn,
+          stationModal,
+          stationContent,
+          document.querySelector("#collapseStationBtn i")
+        );
+
+        // Anchored Vessel Modal
+        setupCollapseFunction(
+          collapseAnchoredVesselBtn,
+          anchoredVesselModal,
+          anchoredVesselContent,
+          anchoredVesselCollapseIcon
+        );
+
+        // Anomaly Modal
+        setupCollapseFunction(
+          collapseAnomalyBtn,
+          anomalyModal,
+          anomalyContent,
+          anomalyCollapseIcon
+        );
+
+        // ... existing code ...
+
+        // Menambahkan event listener untuk DOMContentLoaded
+        window.addEventListener("DOMContentLoaded", function () {
+          // Fungsi umum untuk toggle collapse pada semua modal
+          function setupCollapseFunction(
+            collapseBtn,
+            modal,
+            content,
+            collapseIcon
+          ) {
+            // Hapus event listener yang mungkin sudah ada (jika ada)
+            collapseBtn.removeEventListener(
+              "click",
+              collapseBtn.collapseHandler
+            );
+
+            // Buat handler baru
+            collapseBtn.collapseHandler = function (e) {
+              e.stopPropagation();
+
+              if (content.classList.contains("hidden")) {
+                // Expand
+                content.classList.remove("hidden");
+                collapseIcon.classList.remove("rotated");
+                modal.classList.remove("collapsed");
+              } else {
+                // Collapse
+                content.classList.add("hidden");
+                collapseIcon.classList.add("rotated");
+                modal.classList.add("collapsed");
+              }
+            };
+
+            // Tambahkan event listener baru
+            collapseBtn.addEventListener("click", collapseBtn.collapseHandler);
+          }
+
+          // Inisialisasi semua tombol collapse setelah DOM sepenuhnya dimuat
+          try {
+            // Filter Modal
+            setupCollapseFunction(
+              document.getElementById("collapseFilterBtn"),
+              document.getElementById("filterModal"),
+              document.getElementById("filterContent"),
+              document.querySelector("#collapseFilterBtn i")
+            );
+
+            // Geofence Modal
+            setupCollapseFunction(
+              document.getElementById("collapseGeofenceBtn"),
+              document.getElementById("geofenceModal"),
+              document.getElementById("geofenceContent"),
+              document.getElementById("geofenceCollapseIcon")
+            );
+
+            // Bookmark Modal
+            setupCollapseFunction(
+              document.getElementById("collapseBookmarkBtn"),
+              document.getElementById("bookmarkModal"),
+              document.getElementById("bookmarkContent"),
+              document.getElementById("bookmarkCollapseIcon")
+            );
+
+            // ENC Modal
+            setupCollapseFunction(
+              document.getElementById("collapseEncBtn"),
+              document.getElementById("encModal"),
+              document.getElementById("encContent"),
+              document.getElementById("encCollapseIcon")
+            );
+
+            // Antena Modal
+            setupCollapseFunction(
+              document.getElementById("collapseAntenaBtn"),
+              document.getElementById("antenaModal"),
+              document.getElementById("antenaContent"),
+              document.getElementById("antenaCollapseIcon")
+            );
+
+            // Station Modal
+            setupCollapseFunction(
+              document.getElementById("collapseStationBtn"),
+              document.getElementById("stationModal"),
+              document.getElementById("stationContent"),
+              document.querySelector("#collapseStationBtn i")
+            );
+
+            // Anchored Vessel Modal
+            setupCollapseFunction(
+              document.getElementById("collapseAnchoredVesselBtn"),
+              document.getElementById("anchoredVesselModal"),
+              document.getElementById("anchoredVesselContent"),
+              document.getElementById("anchoredVesselCollapseIcon")
+            );
+
+            // Anomaly Modal
+            setupCollapseFunction(
+              document.getElementById("collapseAnomalyBtn"),
+              document.getElementById("anomalyModal"),
+              document.getElementById("anomalyContent"),
+              document.getElementById("anomalyCollapseIcon")
+            );
+
+            console.log("Semua handler collapse telah diatur ulang");
+          } catch (error) {
+            console.error(
+              "Terjadi kesalahan saat inisialisasi tombol collapse:",
+              error
+            );
+          }
+        });
       });
     </script>
   </body>
