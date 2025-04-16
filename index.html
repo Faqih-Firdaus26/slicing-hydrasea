@@ -2,8 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hydrasea Map</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Hydrasea</title>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -22,6 +25,121 @@
       crossorigin=""
     />
     <style>
+      :root {
+        --background-color: #212529;
+        --text-color: white;
+        --modal-background: rgba(33, 37, 41, 0.6);
+        --item-hover: rgba(255, 255, 255, 0.1);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --input-background: white;
+        --input-text: #333;
+      }
+
+      body.light-mode {
+        --background-color: #f5f5f5;
+        --text-color: #333;
+        --modal-background: rgba(245, 245, 245, 0.9);
+        --item-hover: rgba(0, 0, 0, 0.05);
+        --border-color: rgba(0, 0, 0, 0.1);
+        --input-background: white;
+        --input-text: #333;
+      }
+
+      body.light-mode .sidebar {
+        background-color: white;
+        color: #333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-mode .nav-item {
+        color: #444;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-mode .nav-item:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      body.light-mode .nav-icon path,
+      body.light-mode .nav-icon {
+        fill: #444;
+        stroke: #444;
+      }
+
+      /* Modal untuk konfirmasi delete */
+      .confirm-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        z-index: 3000;
+        width: 300px;
+        display: none;
+      }
+
+      .confirm-modal.visible {
+        display: block;
+      }
+
+      .confirm-title {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .confirm-message {
+        margin-bottom: 20px;
+        color: #555;
+        font-size: 14px;
+      }
+
+      .confirm-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .confirm-cancel,
+      .confirm-delete {
+        padding: 5px 15px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .confirm-cancel {
+        background-color: #f8f9fa;
+        color: #333;
+        border: 1px solid #ddd;
+      }
+
+      .confirm-delete {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      /* Modal backdrop */
+      .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2999;
+        display: none;
+      }
+
+      .modal-backdrop.visible {
+        display: block;
+      }
+
       body,
       html {
         height: 100%;
@@ -214,8 +332,8 @@
         background-color: rgba(52, 58, 64, 0.9);
       }
       .nav-icon {
-        font-size: 0.8rem;
-        min-width: 30px;
+        font-size: 0.6rem;
+        min-width: 25px;
         text-align: center;
         flex-shrink: 0;
         color: white;
@@ -229,10 +347,10 @@
         position: absolute;
         left: 40px;
         pointer-events: none;
-        font-size: 0.8rem;
+        font-size: 12px;
       }
       .nav-menu.expanded {
-        width: 180px;
+        width: 150px;
       }
       .nav-menu.expanded .nav-text {
         opacity: 1;
@@ -272,6 +390,7 @@
       }
       .modal-content {
         max-height: none;
+        font-size: 12px;
       }
       .checkbox-item {
         display: flex;
@@ -322,6 +441,7 @@
         bottom: 20px !important;
         right: 20px !important;
         margin: 0 !important;
+        z-index: 999 !important;
       }
 
       /* Responsive Design */
@@ -365,8 +485,9 @@
           padding: 5px;
         }
 
+        /* Memastikan kontrol tidak tumpang tindih dengan zoom */
         .controls-container {
-          right: 20px;
+          right: 80px;
           padding: 5px;
           gap: 5px;
           display: flex;
@@ -377,6 +498,15 @@
           z-index: 1000;
         }
 
+        /* Mengubah posisi zoom control */
+        .leaflet-control-zoom {
+          position: fixed !important;
+          bottom: 20px !important;
+          right: 20px !important;
+          margin: 0 !important;
+          z-index: 999 !important;
+        }
+
         .control-modal {
           width: 180px;
           padding: 8px;
@@ -384,6 +514,9 @@
           position: absolute;
           bottom: 100%;
           margin-bottom: 10px;
+          max-height: 60vh;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch; /* Untuk scrolling yang lebih baik di iOS */
         }
 
         #layerModal {
@@ -392,11 +525,21 @@
 
         .checkbox-item {
           margin-bottom: 6px;
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
         }
 
         .checkbox-item label {
           font-size: 0.8rem;
           min-width: 80px;
+          flex: 1;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+          margin-right: 5px;
+          width: 16px;
+          height: 16px;
         }
 
         .hours-input {
@@ -448,6 +591,13 @@
           height: 20px;
           display: block;
         }
+
+        .modal-content {
+          max-height: 50vh;
+          overflow-y: auto;
+          padding-right: 5px;
+          -webkit-overflow-scrolling: touch;
+        }
       }
 
       @media screen and (max-width: 480px) {
@@ -456,11 +606,16 @@
           height: 28px;
         }
 
+        /* Menyesuaikan posisi kontrol agar tidak tertutup zoom */
         .controls-container {
-          right: 10px;
+          right: 80px; /* Posisi lebih jauh dari tombol zoom */
           gap: 3px;
           padding: 3px;
           bottom: 15px;
+          flex-wrap: wrap; /* Memungkinkan pembungkusan jika terlalu banyak tombol */
+          max-width: calc(
+            100% - 100px
+          ); /* Mencegah menutupi layar terlalu banyak */
         }
 
         .control-btn {
@@ -475,6 +630,14 @@
         .control-modal {
           width: 160px;
           right: 0;
+          /* Memastikan modal muncul di atas bukan di bawah pada mobile */
+          bottom: unset;
+          top: 100%;
+          margin-top: 10px;
+          margin-bottom: 0;
+          max-height: 60vh;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
         }
 
         #layerModal {
@@ -483,6 +646,78 @@
 
         .right-controls {
           gap: 3px;
+        }
+
+        /* Menyesuaikan ukuran kontrol zoom pada mobile */
+        .leaflet-control-zoom a {
+          width: 30px !important;
+          height: 30px !important;
+          line-height: 30px !important;
+          font-size: 16px !important;
+        }
+
+        .checkbox-item {
+          margin-bottom: 5px;
+        }
+
+        .checkbox-item label {
+          font-size: 0.75rem;
+          min-width: 70px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+          width: 14px;
+          height: 14px;
+        }
+      }
+
+      /* Media query untuk orientasi landscape pada perangkat mobile */
+      @media screen and (max-height: 480px) and (orientation: landscape) {
+        .controls-container {
+          right: 80px;
+          bottom: 10px;
+          flex-direction: row;
+          flex-wrap: wrap;
+          max-width: calc(100% - 100px);
+        }
+
+        .control-btn {
+          padding: 3px;
+          margin: 2px;
+        }
+
+        .control-btn svg {
+          width: 16px;
+          height: 16px;
+        }
+
+        .leaflet-control-zoom {
+          bottom: 10px !important;
+          right: 10px !important;
+        }
+
+        .leaflet-control-zoom a {
+          width: 25px !important;
+          height: 25px !important;
+          line-height: 25px !important;
+        }
+
+        .control-modal {
+          width: 160px;
+          max-height: 80vh;
+          /* Dalam landscape, tampilkan di samping bukan di atas/bawah */
+          top: 0;
+          right: 100%;
+          margin-right: 10px;
+          margin-top: 0;
+        }
+
+        .nav-menu {
+          max-height: calc(100vh - 60px);
+        }
+
+        .modal-content {
+          max-height: 70vh;
         }
       }
 
@@ -2226,6 +2461,311 @@
       .enc-content.hidden {
         display: none;
       }
+
+      /* Memperkecil ukuran elemen pada semua modal box */
+      .filter-title,
+      .geofence-title,
+      .bookmark-title,
+      .enc-title,
+      .antena-title,
+      .station-title,
+      .anomaly-title {
+        font-size: 13px;
+        font-weight: bold;
+        color: white;
+      }
+
+      .filter-control-btn,
+      .geofence-control-btn,
+      .bookmark-control-btn,
+      .enc-control-btn,
+      .antena-control-btn,
+      .station-control-btn,
+      .anomaly-control-btn {
+        background: none;
+        border: none;
+        padding: 1px;
+        cursor: pointer;
+        color: white;
+        font-size: 12px;
+      }
+
+      .filter-control-btn i,
+      .geofence-control-btn i,
+      .bookmark-control-btn i,
+      .enc-control-btn i,
+      .antena-control-btn i,
+      .station-control-btn i,
+      .anomaly-control-btn i {
+        font-size: 12px;
+      }
+
+      /* Ukuran teks dan input */
+      .filter-select,
+      .geofence-input,
+      .geofence-textarea,
+      .bookmark-input,
+      .enc-active-cell input,
+      .antena-input,
+      .station-input,
+      .anomaly-input {
+        font-size: 12px;
+        padding: 4px 8px;
+      }
+
+      /* Ukuran search input */
+      .geofence-search input,
+      .bookmark-search input,
+      .enc-search input,
+      .antena-search-container input,
+      .station-search input,
+      .anomaly-search-container input {
+        font-size: 12px;
+        padding: 4px 25px 4px 8px;
+        width: 130px;
+      }
+
+      /* Ukuran ikon search */
+      .geofence-search-btn i,
+      .bookmark-search-btn i,
+      .enc-search-btn i,
+      .antena-search-btn i,
+      .station-search-btn i,
+      .anomaly-search-btn i {
+        font-size: 11px;
+      }
+
+      /* Ukuran teks tabel */
+      .geofence-item,
+      .bookmark-item,
+      .enc-table td,
+      .enc-table th,
+      .antena-table td,
+      .antena-table th,
+      .station-table td,
+      .station-table th,
+      .anomaly-table td,
+      .anomaly-table th {
+        font-size: 12px;
+        padding: 5px 4px;
+      }
+
+      /* Ukuran tombol aksi */
+      .geofence-btn,
+      .bookmark-btn,
+      .enc-view-btn,
+      .antena-btn.btn-danger,
+      .antena-edit-btn,
+      .station-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 10px;
+      }
+
+      /* Ukuran row action buttons */
+      .filter-submit,
+      .antena-btn-submit,
+      .antena-btn-cancel,
+      .geofence-action-btn {
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+
+      /* Mengecilkan tinggi modal */
+      .filter-content,
+      .geofence-content,
+      .bookmark-content,
+      .enc-content,
+      .antena-content,
+      .station-content,
+      .anomaly-content {
+        max-height: calc(70vh - 50px);
+      }
+
+      /* Ukuran label */
+      .antena-form-group label,
+      .geofence-input-label,
+      .bookmark-input-label {
+        font-size: 11px;
+        margin-bottom: 3px;
+      }
+
+      /* Margin antar elemen */
+      .filter-row,
+      .geofence-item,
+      .bookmark-item,
+      .antena-form-group,
+      .geofence-input-group {
+        margin-bottom: 8px;
+      }
+
+      /* Ukuran tombol trash pada ENC */
+      .enc-trash-btn {
+        padding: 2px;
+        font-size: 11px;
+      }
+
+      /* Ukuran active cell di ENC */
+      .enc-active-cell span {
+        font-size: 11px;
+      }
+
+      .filter-modal,
+      .geofence-modal,
+      .geofence-detail-modal,
+      .bookmark-modal,
+      .bookmark-detail-modal,
+      .enc-modal,
+      .antena-modal,
+      .station-modal,
+      .anomaly-modal {
+        min-width: 280px;
+        padding: 12px;
+      }
+
+      .filter-header,
+      .geofence-header,
+      .bookmark-header,
+      .enc-header,
+      .antena-header,
+      .station-header,
+      .anomaly-header {
+        margin-bottom: 8px;
+      }
+
+      /* Memperkecil ukuran modal tabel */
+      .enc-table,
+      .antena-table,
+      .station-table,
+      .anomaly-table {
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+
+      .enc-table th,
+      .antena-table th,
+      .station-table th,
+      .anomaly-table th {
+        padding: 4px 2px;
+        font-size: 11px;
+        text-align: left;
+      }
+
+      /* Memperkecil spacing */
+      .geofence-item-actions,
+      .bookmark-item-actions,
+      .antena-action-btns {
+        gap: 3px;
+      }
+
+      .geofence-actions,
+      .bookmark-actions,
+      .antena-form-actions,
+      .filter-action {
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .enc-active-cell {
+        gap: 5px;
+        margin-bottom: 6px;
+      }
+
+      /* Padding dan margin container */
+      .geofence-search,
+      .bookmark-search,
+      .enc-search-container,
+      .antena-search-container,
+      .station-search,
+      .anomaly-search-container {
+        margin-bottom: 8px;
+      }
+
+      /* Memperkecil tinggi list */
+      .geofence-list,
+      .bookmark-list {
+        max-height: 120px;
+      }
+
+      /* Memperkecil gap antar controls */
+      .geofence-controls,
+      .bookmark-controls,
+      .enc-controls,
+      .antena-controls,
+      .station-controls,
+      .anomaly-controls {
+        gap: 3px;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+
+      .sidebar {
+        width: 60px;
+        height: 100vh;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow-y: auto;
+        z-index: 1000;
+        transition: width 0.3s;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        color: var(--text-color);
+        cursor: pointer;
+        border-bottom: 1px solid var(--border-color);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nav-item:hover {
+        background-color: var(--item-hover);
+      }
+
+      /* Update modal backgrounds to use variables */
+      .filter-modal,
+      .geofence-modal,
+      .geofence-detail-modal,
+      .bookmark-modal,
+      .bookmark-detail-modal,
+      .enc-modal,
+      .antena-modal,
+      .station-modal,
+      .anomaly-modal,
+      .anchored-vessel-modal {
+        background-color: var(--modal-background);
+      }
+
+      /* Update input styles to use variables */
+      .filter-select,
+      .geofence-input,
+      .geofence-textarea,
+      .bookmark-input,
+      .enc-active-cell input,
+      .antena-input,
+      .station-input,
+      .anomaly-input,
+      .geofence-search input,
+      .bookmark-search input,
+      .enc-search input,
+      .antena-search-container input,
+      .station-search input,
+      .anomaly-search-container input {
+        background-color: var(--input-background);
+        color: var(--input-text);
+      }
     </style>
   </head>
   <body>
@@ -2310,6 +2850,7 @@
             <!-- Map Modal -->
             <div class="control-modal" id="mapModal">
               <div class="modal-title">Map</div>
+              <h7>Basemap</h7>
               <div class="modal-content">
                 <div class="checkbox-item">
                   <input type="checkbox" id="openStreetMap" />
@@ -2334,6 +2875,15 @@
                 <div class="checkbox-item">
                   <input type="checkbox" id="openLayerLocal" />
                   <label for="openLayerLocal">OpenLayer Local</label>
+                </div>
+                <h6>Map Feature</h6>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="light" />
+                  <label for="light">Light</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="dark" />
+                  <label for="dark">Dark</label>
                 </div>
               </div>
             </div>
@@ -2437,8 +2987,8 @@
         <div class="nav-item" data-item="filter">
           <svg
             class="nav-icon"
-            width="19"
-            height="18"
+            width="17"
+            height="16"
             viewBox="0 0 19 18"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -4941,7 +5491,7 @@
         function closeAllActiveModals() {
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -5839,7 +6389,221 @@
             );
           }
         });
+
+        // Variabel untuk modal konfirmasi
+        const confirmModal = document.getElementById("confirmModal");
+        const modalBackdrop = document.getElementById("modalBackdrop");
+        const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+        const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+        let itemToDelete = null;
+        let deleteType = "";
+
+        // Fungsi untuk menampilkan modal konfirmasi
+        function showConfirmModal(item, type) {
+          itemToDelete = item;
+          deleteType = type;
+          confirmModal.classList.add("visible");
+          modalBackdrop.classList.add("visible");
+        }
+
+        // Fungsi untuk menyembunyikan modal konfirmasi
+        function hideConfirmModal() {
+          confirmModal.classList.remove("visible");
+          modalBackdrop.classList.remove("visible");
+          itemToDelete = null;
+          deleteType = "";
+        }
+
+        // Event listener untuk tombol batal pada modal konfirmasi
+        confirmCancelBtn.addEventListener("click", function () {
+          hideConfirmModal();
+        });
+
+        // Event listener untuk tombol hapus pada modal konfirmasi
+        confirmDeleteBtn.addEventListener("click", function () {
+          if (itemToDelete) {
+            if (deleteType === "row") {
+              itemToDelete.remove();
+            } else if (deleteType === "encActive") {
+              document.getElementById("encActiveCell").value = "";
+            }
+            hideConfirmModal();
+          }
+        });
+
+        // Event listener untuk tombol delete pada geofence items
+        document.querySelectorAll(".geofence-btn.btn-danger").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const geofenceItem = this.closest(".geofence-item");
+            if (geofenceItem) {
+              showConfirmModal(geofenceItem, "row");
+            }
+          });
+        });
+
+        // Event listener untuk tombol delete pada bookmark items
+        document.querySelectorAll(".bookmark-btn.btn-danger").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const bookmarkItem = this.closest(".bookmark-item");
+            if (bookmarkItem) {
+              showConfirmModal(bookmarkItem, "row");
+            }
+          });
+        });
+
+        // Event listener untuk tombol delete pada antena items
+        document.querySelectorAll(".antena-btn.btn-danger").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const row = this.closest("tr");
+            if (row) {
+              showConfirmModal(row, "row");
+            }
+          });
+        });
+
+        // Event listener untuk tombol delete pada station items
+        document.querySelectorAll(".station-btn.btn-danger").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const row = this.closest("tr");
+            if (row) {
+              showConfirmModal(row, "row");
+            }
+          });
+        });
+
+        // Event listener untuk tombol trash pada filter rows
+        document.querySelectorAll(".filter-delete").forEach((deleteBtn) => {
+          deleteBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const row = this.closest(".filter-row");
+            if (row) {
+              showConfirmModal(row, "row");
+            }
+          });
+        });
+
+        // Update handler untuk menambahkan event listener ke tombol delete baru
+        const filterAddBtn = document.getElementById("addFilterBtn");
+        if (filterAddBtn) {
+          const originalHandler = filterAddBtn.onclick;
+          filterAddBtn.onclick = function (e) {
+            if (originalHandler) {
+              originalHandler.call(this, e);
+            }
+            // Add event listener to the delete button
+            const deleteButtons = document.querySelectorAll(".filter-delete");
+            const newDeleteBtn = deleteButtons[deleteButtons.length - 1];
+            if (newDeleteBtn) {
+              newDeleteBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                const row = this.closest(".filter-row");
+                if (row) {
+                  showConfirmModal(row, "row");
+                }
+              });
+            }
+          };
+        }
+
+        // Event listener untuk tombol clear pada ENC active cell
+        document
+          .querySelector(".enc-trash-btn")
+          .addEventListener("click", function (e) {
+            e.stopPropagation();
+            showConfirmModal(null, "encActive");
+          });
+
+        // Implementasi Light/Dark mode
+        const lightCheckbox = document.getElementById("light");
+        const darkCheckbox = document.getElementById("dark");
+
+        // Set default mode (dark)
+        let currentMode = localStorage.getItem("themeMode") || "dark";
+        if (currentMode === "light") {
+          document.body.classList.add("light-mode");
+          lightCheckbox.checked = true;
+          darkCheckbox.checked = false;
+        } else {
+          document.body.classList.remove("light-mode");
+          darkCheckbox.checked = true;
+          lightCheckbox.checked = false;
+        }
+
+        // Event listener untuk checkbox light
+        lightCheckbox.addEventListener("change", function () {
+          if (this.checked) {
+            document.body.classList.add("light-mode");
+            darkCheckbox.checked = false;
+            localStorage.setItem("themeMode", "light");
+          } else {
+            if (!darkCheckbox.checked) {
+              darkCheckbox.checked = true;
+              document.body.classList.remove("light-mode");
+              localStorage.setItem("themeMode", "dark");
+            }
+          }
+        });
+
+        // Event listener untuk checkbox dark
+        darkCheckbox.addEventListener("change", function () {
+          if (this.checked) {
+            document.body.classList.remove("light-mode");
+            lightCheckbox.checked = false;
+            localStorage.setItem("themeMode", "dark");
+          } else {
+            if (!lightCheckbox.checked) {
+              lightCheckbox.checked = true;
+              document.body.classList.add("light-mode");
+              localStorage.setItem("themeMode", "light");
+            }
+          }
+        });
       });
+    </script>
+
+    <!-- Modal Konfirmasi Delete -->
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="confirm-modal" id="confirmModal">
+      <div class="confirm-title">Konfirmasi Hapus</div>
+      <div class="confirm-message">
+        Apakah Anda yakin ingin menghapus item ini?
+      </div>
+      <div class="confirm-buttons">
+        <button class="confirm-cancel" id="confirmCancelBtn">Batal</button>
+        <button class="confirm-delete" id="confirmDeleteBtn">Hapus</button>
+      </div>
+    </div>
+
+    <!-- Ketika file di-load, pastikan event ini dipicu -->
+    <script>
+      // Memastikan peta responsif pada mobile
+      function handleResponsiveMap() {
+        const isMobile = window.innerWidth <= 768;
+        const isSmallMobile = window.innerWidth <= 480;
+        const isLandscape =
+          window.innerHeight <= 480 && window.innerWidth > window.innerHeight;
+
+        // Atur ulang posisi kontrol zoom berdasarkan ukuran layar
+        if (window.map && window.map.zoomControl) {
+          // Peta sudah terinisialisasi, atur posisi kontrolnya
+          if (isSmallMobile || isLandscape) {
+            // Pastikan kontrol tidak tertutup
+            document.querySelectorAll(".controls-container").forEach((el) => {
+              el.style.right = "80px";
+              el.style.bottom = isLandscape ? "10px" : "15px";
+            });
+          }
+        }
+      }
+
+      // Jalankan saat halaman dimuat
+      window.addEventListener("load", handleResponsiveMap);
+      // Jalankan saat ukuran layar berubah
+      window.addEventListener("resize", handleResponsiveMap);
     </script>
   </body>
 </html>
