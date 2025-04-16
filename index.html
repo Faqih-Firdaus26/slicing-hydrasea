@@ -5778,9 +5778,9 @@
             const row = this.closest("tr");
 
             // Hapus baris
-            if (row && confirm("Yakin ingin menghapus station ini?")) {
-              row.remove();
-            }
+            // if (row && confirm("Yakin ingin menghapus station ini?")) {
+            //   row.remove();
+            // }
           });
         }
 
@@ -6481,7 +6481,7 @@
             e.stopPropagation();
             const row = this.closest(".filter-row");
             if (row) {
-              showConfirmModal(row, "row");
+              row.remove(); // Langsung hapus tanpa konfirmasi
             }
           });
         });
@@ -6502,7 +6502,7 @@
                 e.stopPropagation();
                 const row = this.closest(".filter-row");
                 if (row) {
-                  showConfirmModal(row, "row");
+                  row.remove(); // Langsung hapus tanpa konfirmasi
                 }
               });
             }
@@ -6514,7 +6514,7 @@
           .querySelector(".enc-trash-btn")
           .addEventListener("click", function (e) {
             e.stopPropagation();
-            showConfirmModal(null, "encActive");
+            document.getElementById("encActiveCell").value = ""; // Langsung hapus tanpa konfirmasi
           });
 
         // Implementasi Light/Dark mode
