@@ -1759,128 +1759,6 @@
         display: inline-block;
       }
 
-      /* Profile Modal Styles */
-      .profile-modal {
-        position: fixed; /* Mengubah dari absolute menjadi fixed */
-        left: 200px;
-        top: 0px;
-        background-color: rgba(33, 37, 41, 0.6);
-        border-radius: 5px;
-        padding: 15px;
-        min-width: 300px;
-        max-width: 600px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        min-height: 40px;
-        overflow-y: auto; /* Mengubah dari hidden ke auto */
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        color: white;
-        z-index: 2100;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        transform: translateY(
-          0
-        ); /* Menambahkan ini untuk mencegah pergerakan */
-        will-change: transform; /* Optimasi performa */
-      }
-
-      .profile-modal::-webkit-scrollbar {
-        display: none;
-      }
-
-      .profile-modal.visible {
-        display: block;
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .profile-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-      }
-
-      .profile-title {
-        font-weight: bold;
-        font-size: 14px;
-        color: white;
-      }
-
-      .profile-controls {
-        display: flex;
-        gap: 5px;
-      }
-
-      .profile-control-btn {
-        background: none;
-        border: none;
-        padding: 2px;
-        cursor: pointer;
-        color: white;
-      }
-
-      .profile-content {
-        max-height: 500px;
-        overflow: hidden;
-        transition: max-height 0.3s ease, padding 0.3s ease;
-        padding: 10px 0;
-      }
-
-      .profile-content.hidden {
-        max-height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-      }
-
-      * Untuk rotasi ikon saat collapse */ .profile-chevron-icon.rotated {
-        transform: rotate(180deg);
-        transition: transform 0.3s ease;
-      }
-
-      .profile-chevron-icon {
-        transition: transform 0.3s ease;
-      }
-
-      .profile-form input {
-        padding: 5px 8px; /* tambah padding kecil kalau perlu */
-        font-size: 12px; /* dari default bisa diperkecil */
-        background-color: white;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #333;
-      }
-
-      .profile-form label {
-        color: white;
-        margin-bottom: 5px;
-      }
-
-      .profile-form-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      .profile-btn {
-        padding: 4px 10px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        font-size: 11px;
-      }
-
-      .profile-btn-cancel {
-        background-color: #dc3545;
-        color: white;
-      }
-
-      .profile-btn-submit {
-        background-color: #0d6efd;
-        color: white;
-      }
-
       /* Station Modal Styles */
       .station-modal {
         position: fixed;
@@ -2472,6 +2350,160 @@
         background-color: rgba(255, 255, 255, 0.05);
       }
 
+      .profile-modal {
+        position: fixed;
+        left: 170px; /* Default position matching others */
+        top: 40px;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 15px;
+        width: 350px;
+        max-width: 90vw;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        color: white;
+        z-index: 2100;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        transform: none;
+        margin: 0;
+        will-change: transform;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .profile-modal::-webkit-scrollbar {
+        display: none;
+      }
+
+      .profile-modal.visible {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        /* padding-bottom: 10px; */
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+      }
+
+      .profile-title {
+        font-weight: bold;
+        font-size: 14px;
+        color: white;
+      }
+
+      .profile-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .profile-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+        /* opacity: 0.7; */
+        /* transition: opacity 0.2s; */
+      }
+
+      .profile-control-btn:hover {
+        opacity: 1;
+      }
+
+      .profile-content {
+        max-height: 500px;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        padding: 10px 0;
+      }
+
+      .profile-content.hidden {
+        /* max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0; */
+        display: none;
+      }
+
+      .profile-chevron-icon.rotated {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+      }
+
+      .profile-chevron-icon {
+        transition: transform 0.3s ease;
+      }
+
+      .profile-form input {
+        padding: 5px 8px;
+        font-size: 12px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #333;
+        border-radius: 3px;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .profile-form label {
+        color: white;
+        margin-bottom: 5px;
+        font-size: 12px;
+        display: block;
+      }
+
+      .profile-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .profile-btn {
+        padding: 4px 10px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 11px;
+        transition: opacity 0.2s;
+      }
+
+      .profile-btn:hover {
+        opacity: 0.9;
+      }
+
+      .profile-btn-cancel {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .profile-btn-submit {
+        background-color: #0d6efd;
+        color: white;
+      }
+
+      .profile-form .row {
+        margin-bottom: 5px;
+      }
+
+      /* For responsive adjustment */
+      @media (max-width: 768px) {
+        .profile-modal {
+          left: 20px;
+          right: 20px;
+          width: auto;
+          max-width: calc(100% - 40px);
+        }
+      }
+
       /* ... existing code ... */
       /* Gaya umum untuk semua modal saat collapsed */
       .control-modal.collapsed,
@@ -2481,7 +2513,6 @@
       .bookmark-modal.collapsed,
       .bookmark-detail-modal.collapsed,
       .enc-modal.collapsed,
-      .profile-modal.collapsed,
       .antena-modal.collapsed,
       .station-modal.collapsed,
       .anchored-vessel-modal.collapsed,
@@ -2506,23 +2537,6 @@
         display: none;
       }
 
-      .profile-modal,
-      .anchored-vessel-modal,
-      .anomaly-modal,
-      .filter-modal,
-      .geofence-modal,
-      .geofence-detail-modal,
-      .control-modal,
-      .map-modal,
-      .layer-modal,
-      .navigation-modal {
-        display: none;
-        position: fixed;
-        z-index: 1000; /* Modal utama */
-        background-color: white; /* Pastikan latar belakang solid */
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Efek bayangan untuk membedakan */
-      }
-
       /* Animasi perubahan ukuran modal */
       .control-modal,
       .filter-modal,
@@ -2531,7 +2545,6 @@
       .bookmark-modal,
       .bookmark-detail-modal,
       .enc-modal,
-      .profile-modal,
       .antena-modal,
       .station-modal,
       .anchored-vessel-modal,
@@ -2757,7 +2770,6 @@
       .bookmark-modal,
       .bookmark-detail-modal,
       .enc-modal,
-      .profile-modal,
       .antena-modal,
       .station-modal,
       .anomaly-modal {
@@ -2883,7 +2895,6 @@
       .bookmark-modal,
       .bookmark-detail-modal,
       .enc-modal,
-      .profile-modal,
       .antena-modal,
       .station-modal,
       .anomaly-modal,
@@ -2908,6 +2919,17 @@
       .anomaly-search-container input {
         background-color: var(--input-background);
         color: var(--input-text);
+      }
+
+      /* Fungsi dari sidebar bisa buka tutup viewbox */
+      .viewbox-class {
+        position: fixed;
+        display: none; /* atau opacity: 0 untuk transition */
+        /* tambahan styling lainnya */
+      }
+
+      .viewbox-class.visible {
+        display: block; /* atau opacity: 1 */
       }
     </style>
   </head>
@@ -4418,7 +4440,6 @@
             </div>
           </div>
         </div>
-        <!-- logout -->
         <div class="nav-item" data-item="logout">
           <!-- <i class="bi bi-box-arrow-right nav-icon"></i> -->
           <svg
@@ -4439,8 +4460,6 @@
 
           <span class="nav-text">Log Out</span>
         </div>
-
-        <!-- profile -->
         <div class="nav-item" data-item="profile">
           <svg
             class="nav-icon"
@@ -4476,32 +4495,53 @@
           </svg>
           <span class="nav-text">Profile</span>
 
-          <!-- Profile Modal -->
-          <div class="profile-modal" id="profileModal">
+          <!-- Profile Viewbox -->
+          <div class="profile-modal" id="profileViewbox">
             <div class="profile-header">
-              <div class="profile-title">Profile</div>
+              <div class="profile-title">Profile Information</div>
               <div class="profile-controls">
+                <!-- Collapse Button - Added back -->
                 <button
                   class="profile-control-btn"
-                  id="collapseProfileBtn"
+                  id="collapseProfileViewbox"
                   title="Collapse"
                 >
-                  <i
-                    class="bi bi-chevron-down profile-chevron-icon"
-                    id="profileCollapseIcon"
-                  ></i>
+                  <svg
+                    class="profile-chevron-icon"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 </button>
+                <!-- Close Button -->
                 <button
                   class="profile-control-btn"
-                  id="closeProfileBtn"
+                  id="closeProfileViewbox"
                   title="Close"
                 >
-                  <i class="bi bi-x"></i>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
                 </button>
               </div>
             </div>
-
-            <div class="profile-content" id="profileContent">
+            <div class="profile-content" id="profileViewboxContent">
               <form class="profile-form">
                 <div class="row g-2">
                   <div class="col-md-6">
@@ -4575,72 +4615,6 @@
     ></script>
     <!-- Custom JavaScript -->
     <script>
-      // Profile Modal Handlers
-      const profileItem = document.querySelector('[data-item="profile"]');
-      const profileIcon = profileItem.querySelector(".nav-icon");
-      const profileModal = document.getElementById("profileModal");
-      const closeProfileBtn = document.getElementById("closeProfileBtn");
-      const collapseProfileBtn = document.getElementById("collapseProfileBtn");
-      const profileCollapseIcon = document.getElementById(
-        "profileCollapseIcon"
-      );
-      const profileContent = document.getElementById("profileContent");
-
-      // Show profile modal
-      function showProfileModal() {
-        // Sembunyikan modal lain
-        document.querySelectorAll(".modal").forEach((modal) => {
-          modal.classList.remove("visible");
-        });
-
-        // Tampilkan modal profil
-        profileModal.classList.add("visible");
-
-        // Simpan posisi awal saat pertama kali dibuka
-        if (!profileModal.dataset.originalTop) {
-          const profileItemRect = profileItem.getBoundingClientRect();
-          profileModal.dataset.originalTop = Math.max(
-            20,
-            profileItemRect.top - 100
-          );
-          profileModal.dataset.originalLeft = profileItemRect.right + 10;
-        }
-
-        // Gunakan posisi yang disimpan
-        profileModal.style.top = `${profileModal.dataset.originalTop}px`;
-        profileModal.style.left = `${profileModal.dataset.originalLeft}px`;
-      }
-
-      // Profile icon click handler
-      profileIcon.addEventListener("click", function (e) {
-        e.stopPropagation();
-        if (!navMenu.classList.contains("expanded")) {
-          navMenu.classList.add("expanded");
-          menuState = "expanded";
-        }
-      });
-
-      // Close button handler
-      closeProfileBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        profileModal.classList.remove("visible");
-        activeModal = null;
-      });
-
-      // Collapse button handler
-      collapseProfileBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        if (profileContent.classList.contains("hidden")) {
-          profileContent.classList.remove("hidden");
-          profileCollapseIcon.classList.remove("rotated");
-        } else {
-          profileContent.classList.add("hidden");
-          profileCollapseIcon.classList.add("rotated");
-        }
-      });
-
-      // Close modal profiles
-
       document.addEventListener("DOMContentLoaded", function () {
         // Inisialisasi peta
         const map = L.map("map", {
@@ -4679,37 +4653,7 @@
           // Set posisi modal
           targetModal.style.top = `${topPosition}px`;
           targetModal.style.left = `${leftPosition}px`;
-
-          const anchoredBtn = document.querySelector('[data-item="anchored"]');
-          if (anchoredBtn) {
-            anchoredBtn.addEventListener("click", function (e) {
-              e.stopPropagation();
-              toggleModal(".anchored-vessel-modal");
-            });
-          }
-
-          const profileBtn = document.querySelector('[data-item="profile"]');
-          if (profileBtn) {
-            profileBtn.addEventListener("click", function (e) {
-              e.stopPropagation();
-              toggleModal(".profile-modal");
-            });
-          }
-
-          document.addEventListener("click", function (e) {
-            if (activeModal && !activeModal.contains(e.target)) {
-              closeAllModals();
-            }
-          });
-
-          handleResponsiveMap();
         }
-
-        let resizeTimeout;
-        window.addEventListener("resize", function () {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(handleResponsiveMap, 100);
-        });
 
         // Existing JavaScript code
         const hamburgerBtn = document.getElementById("hamburgerBtn");
@@ -4811,7 +4755,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".profile-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .station-modal, .antena-modal, .enc-modal, .anchored-vessel-modal, .anomaly-modal "
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -4967,7 +4911,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal, .profile-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -5262,7 +5206,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal, .profile-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -5444,7 +5388,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".profile-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .station-modal, .antena-modal, .enc-modal, .anchored-vessel-modal, .anomaly-modal "
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .antena-modal, .anchored-vessel-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -5813,15 +5757,17 @@
           });
 
         // Menutup semua modal yang aktif
-        function closeAllModals() {
-          const modals = document.querySelectorAll(
-            ".profile-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .station-modal, .antena-modal, .enc-modal, .anchored-vessel-modal, .anomaly-modal "
-          );
-          modals.forEach((modal) => {
-            modal.classList.remove("visible");
-          });
+        function closeAllActiveModals() {
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
           activeModal = null;
         }
+
         // Tambahkan event listener untuk semua item navigasi
         document.querySelectorAll(".nav-item").forEach(function (item) {
           const itemType = item.getAttribute("data-item");
@@ -6135,108 +6081,36 @@
             });
           });
 
-        // modal profiles visibality
-        function toggleProfileModal() {
-          const profileModal = document.querySelector(".profile-modal");
-          const isVisible = profileModal.classList.contains("visible");
+        // Update closeAllActiveModals function untuk include station-modal
+        function closeAllActiveModals() {
+          document
+            .querySelectorAll(
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal"
+            )
+            .forEach((modal) => {
+              modal.classList.remove("visible");
+            });
 
-          // Close all modals first
-          closeAllModals();
-
-          // Toggle profile modal visibility
-          if (!isVisible) {
-            profileModal.classList.add("visible");
-            activeModal = profileModal;
+          // Khusus untuk anchoredVesselModal yang menggunakan style display
+          if (anchoredVesselModal) {
+            anchoredVesselModal.style.display = "none";
           }
-        }
 
-        // Fungsi helper untuk menangani modal
-        function toggleModal(modalSelector, visibleClass = "visible") {
-          const modal = document.querySelector(modalSelector);
-          if (!modal) return;
-
-          if (
-            modal.classList.contains(visibleClass) ||
-            modal.style.display === "block"
-          ) {
-            closeAllModals();
-          } else {
-            closeAllModals();
-            modal.style.display = "block";
-            modal.classList.add(visibleClass);
-            activeModal = modal;
-          }
-        }
-
-        document
-          .querySelector(".profile-btn")
-          .addEventListener("click", function (e) {
-            e.stopPropagation();
-
-            const profileModal = document.querySelector(".profile-modal");
-
-            // If profile modal is already visible, just hide it
-            if (profileModal.classList.contains("visible")) {
-              profileModal.classList.remove("visible");
-              activeModal = null;
-              return;
-            }
-
-            // Close all other modals first
-            closeAllActiveModals();
-
-            // Show profile modal
-            profileModal.classList.add("visible");
-            activeModal = profileModal;
-          });
-
-        document
-          .querySelector('[data-item="anchored"]')
-          .addEventListener("click", function (e) {
-            e.stopPropagation();
-
-            // Close all modals first including profile
-            closeAllActiveModals();
-
-            // Show anchored vessel modal
-            if (anchoredVesselModal) {
-              anchoredVesselModal.style.display = "block";
-              activeModal = anchoredVesselModal;
-            }
-          });
-
-        // Modify closeAllModals function to include profile modal
-        function closeAllModals() {
-          const modals = document.querySelectorAll(
-            ".profile-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .station-modal, .antena-modal, .enc-modal, .anchored-vessel-modal, .anomaly-modal "
-          );
-          modals.forEach((modal) => {
-            modal.classList.remove("visible");
-          });
           activeModal = null;
         }
 
-        // Add click handler for ENC button
-        document
-          .querySelector('[data-item="enc"]')
-          .addEventListener("click", function (e) {
-            e.stopPropagation();
-            closeAllModals();
-            // ... rest of ENC modal handling
-          });
-
-        // Update closeAllActiveModals function untuk include station-modal
-        function closeAllActiveModals() {
+        function closeAllModals() {
+          // Tutup modal yang menggunakan class visible
           const modals = document.querySelectorAll(
             ".profile-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .station-modal, .antena-modal, .enc-modal, .anchored-vessel-modal, .anomaly-modal"
           );
           modals.forEach((modal) => {
-            if (modal) {
-              modal.classList.remove("visible");
-              modal.style.display = "none"; // Pastikan display diatur ke none untuk semua modal
-            }
+            modal.classList.remove("visible");
+            modal.style.display = "none"; // Pastikan display juga none
           });
-          activeModal = null; // Reset activeModal
+
+          // Reset active modal
+          activeModal = null;
         }
 
         // Update navigasi item listener untuk menutup modal station
@@ -6262,25 +6136,6 @@
               }
               if (anomalyModal.classList.contains("visible")) {
                 anomalyModal.classList.remove("visible");
-              }
-            });
-
-            item.addEventListener("click", function (e) {
-              e.stopPropagation();
-
-              // Close all modals first
-              closeAllModals();
-
-              // Then handle the specific modal for this nav item
-              const itemType = this.getAttribute("data-item");
-              const modal = document.querySelector(`#${itemType}Modal`);
-              if (modal) {
-                modal.classList.add("visible");
-                activeModal = modal;
-
-                // Update modal position
-                const itemRect = this.getBoundingClientRect();
-                positioning(this, modal);
               }
             });
           }
@@ -6484,7 +6339,7 @@
         function closeAllActiveModals() {
           document
             .querySelectorAll(
-              ".profile-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .station-modal, .antena-modal, .enc-modal, .anchored-vessel-modal, .anomaly-modal "
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal, .anomaly-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -6991,6 +6846,330 @@
           }
         });
       });
+
+      // Handle Profile modal
+      const profileItem = document.querySelector('[data-item="profile"]');
+      const profileIcon = profileItem.querySelector(".nav-icon");
+      const profileText = profileItem.querySelector(".nav-text");
+      const profileViewbox = document.getElementById("profileViewbox");
+      const closeProfileBtn = document.getElementById("closeProfileViewbox");
+      const collapseProfileBtn = document.getElementById(
+        "collapseProfileViewbox"
+      );
+      const profileContent = document.getElementById("profileViewboxContent");
+      const profileChevron = collapseProfileBtn.querySelector(
+        ".profile-chevron-icon"
+      );
+
+      // State variables
+      let isProfileViewboxOpen = false;
+      let isProfileContentCollapsed = false;
+
+      // Event listener for profile text (opens viewbox)
+      profileText.addEventListener("click", function (e) {
+        e.stopPropagation();
+        toggleProfileViewbox();
+      });
+
+      // Event listener for profile icon (only expands menu)
+      profileIcon.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (!navMenu.classList.contains("expanded")) {
+          navMenu.classList.add("expanded");
+          menuState = "expanded";
+        }
+      });
+
+      // Close button handler
+      closeProfileBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        closeProfileViewbox();
+      });
+
+      // Collapse button handler
+      collapseProfileBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        toggleProfileContent();
+      });
+
+      // Close when clicking outside
+      document.addEventListener("click", function (e) {
+        if (
+          !profileViewbox.contains(e.target) &&
+          !profileText.contains(e.target)
+        ) {
+          closeProfileViewbox();
+        }
+      });
+
+      // Toggle viewbox visibility
+      function toggleProfileViewbox() {
+        if (isProfileViewboxOpen) {
+          closeProfileViewbox();
+        } else {
+          openProfileViewbox();
+        }
+      }
+
+      // Open profile viewbox
+      function openProfileViewbox() {
+        // Close all other modals first
+        closeAllActiveModals();
+
+        // Position the viewbox
+        positionProfileViewbox();
+
+        // Expand content if collapsed
+        if (isProfileContentCollapsed) {
+          toggleProfileContent();
+        }
+
+        // Show viewbox
+        profileViewbox.classList.add("visible");
+        isProfileViewboxOpen = true;
+        activeModal = profileViewbox;
+      }
+
+      // Close profile viewbox
+      function closeProfileViewbox() {
+        profileViewbox.classList.remove("visible");
+        isProfileViewboxOpen = false;
+        activeModal = null;
+      }
+
+      // Toggle content collapse
+      function toggleProfileContent() {
+        profileContent.classList.toggle("hidden");
+        profileChevron.classList.toggle("rotated");
+        isProfileContentCollapsed = !isProfileContentCollapsed;
+      }
+
+      // Position the viewbox
+      function positionProfileViewbox() {
+        const anchoredItem = document.querySelector('[data-item="anchored"]');
+        if (anchoredItem) {
+          const anchoredRect = anchoredItem.getBoundingClientRect();
+          profileViewbox.style.left = "170px"; // Adjusted left position
+          profileViewbox.style.top = `${anchoredRect.top}px`;
+        } else {
+          // Fallback position
+          profileViewbox.style.left = "170px";
+          profileViewbox.style.top = "40px";
+        }
+      }
+
+      // Enhanced closeAllActiveModals function
+      function closeAllActiveModals() {
+        document
+          .querySelectorAll(
+            ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, " +
+              ".bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, " +
+              ".station-modal, .anchored-vessel-modal, .anomaly-modal, .profile-modal"
+          )
+          .forEach((modal) => {
+            modal.classList.remove("visible");
+          });
+
+        // Handle special cases
+        if (anchoredVesselModal) {
+          anchoredVesselModal.style.display = "none";
+        }
+
+        activeModal = null;
+      }
+
+      // Update nav item click handlers to properly close other modals
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        const itemType = item.getAttribute("data-item");
+
+        if (itemType !== "profile") {
+          item.addEventListener("click", function () {
+            if (profileViewbox.classList.contains("visible")) {
+              closeProfileViewbox();
+            }
+          });
+        }
+      });
+      //close profile
+
+      //Fungsi untuk membuka tutup semua sidebar pada viewbox
+      // Fungsi utama untuk mengelola toggle behavior semua navigasi
+      function setupNavigationToggle() {
+        // Daftar semua item navigasi yang memiliki viewbox
+        const navItems = [
+          // {
+          //   name: "profile",
+          //   item: document.querySelector('[data-item="profile"]'),
+          //   viewbox: document.getElementById("profileViewbox"),
+          // },
+          {
+            name: "filter",
+            item: document.querySelector('[data-item="filter"]'),
+            viewbox: document.getElementById("filterModal"),
+          },
+          {
+            name: "geofence",
+            item: document.querySelector('[data-item="geofence"]'),
+            viewbox: document.getElementById("geofenceModal"),
+          },
+          {
+            name: "bookmark",
+            item: document.querySelector('[data-item="bookmark"]'),
+            viewbox: document.getElementById("bookmarkModal"),
+          },
+          {
+            name: "enc",
+            item: document.querySelector('[data-item="enc"]'),
+            viewbox: document.getElementById("encModal"),
+          },
+          {
+            name: "antenna",
+            item: document.querySelector('[data-item="antenna"]'),
+            viewbox: document.getElementById("antenaModal"),
+          },
+          {
+            name: "station",
+            item: document.querySelector('[data-item="station"]'),
+            viewbox: document.getElementById("stationModal"),
+          },
+          {
+            name: "anchored",
+            item: document.querySelector('[data-item="anchored"]'),
+            viewbox: document.getElementById("anchoredVesselModal"),
+          },
+          {
+            name: "anomaly",
+            item: document.querySelector('[data-item="anomaly"]'),
+            viewbox: document.getElementById("anomalyModal"),
+          },
+        ];
+
+        // Variabel untuk melacak modal aktif
+        let activeModal = null;
+
+        // Fungsi untuk menutup semua modal
+        function closeAllModals() {
+          navItems.forEach((nav) => {
+            if (nav.viewbox) {
+              if (nav.name === "anchored") {
+                nav.viewbox.style.display = "none";
+              } else {
+                nav.viewbox.classList.remove("visible");
+              }
+            }
+          });
+          activeModal = null;
+        }
+
+        // Fungsi untuk memposisikan viewbox
+        function positionViewbox(item, viewbox) {
+          const rect = item.getBoundingClientRect();
+          viewbox.style.left = `${rect.right + 10}px`;
+          viewbox.style.top = `${rect.top}px`;
+        }
+
+        // Setup untuk setiap item navigasi
+        navItems.forEach((nav) => {
+          if (!nav.item || !nav.viewbox) return;
+
+          const icon = nav.item.querySelector(".nav-icon");
+          const text = nav.item.querySelector(".nav-text");
+
+          // Handler untuk toggle viewbox
+          const toggleViewbox = (e) => {
+            e.stopPropagation();
+
+            // Jika menu belum expanded, expand dulu
+            if (!navMenu.classList.contains("expanded")) {
+              navMenu.classList.add("expanded");
+              menuState = "expanded";
+              setTimeout(() => showViewbox(nav), 300);
+            } else {
+              // Jika viewbox ini sedang aktif, tutup
+              if (activeModal === nav.viewbox) {
+                closeViewbox(nav);
+              } else {
+                // Jika tidak, tampilkan viewbox ini
+                showViewbox(nav);
+              }
+            }
+          };
+
+          // Fungsi untuk menampilkan viewbox
+          const showViewbox = (nav) => {
+            closeAllModals();
+            positionViewbox(nav.item, nav.viewbox);
+
+            if (nav.name === "anchored") {
+              nav.viewbox.style.display = "block";
+            } else {
+              nav.viewbox.classList.add("visible");
+            }
+
+            activeModal = nav.viewbox;
+          };
+
+          // Fungsi untuk menutup viewbox
+          const closeViewbox = (nav) => {
+            if (nav.name === "anchored") {
+              nav.viewbox.style.display = "none";
+            } else {
+              nav.viewbox.classList.remove("visible");
+            }
+            activeModal = null;
+          };
+
+          // Event listener untuk teks navigasi (toggle viewbox)
+          if (text) {
+            text.addEventListener("click", toggleViewbox);
+          }
+
+          // Event listener untuk icon (hanya expand menu)
+          if (icon) {
+            icon.addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (!navMenu.classList.contains("expanded")) {
+                navMenu.classList.add("expanded");
+                menuState = "expanded";
+              }
+            });
+          }
+
+          // Tambahkan event listener untuk tombol close jika ada
+          const closeBtn = nav.viewbox.querySelector(
+            ".profile-control-btn, .modal-close-btn"
+          );
+          if (closeBtn) {
+            closeBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              closeViewbox(nav);
+            });
+          }
+        });
+
+        // Close modal saat klik di luar
+        document.addEventListener("click", (e) => {
+          let clickedInsideModal = false;
+          navItems.forEach((nav) => {
+            if (
+              nav.viewbox &&
+              (nav.viewbox.contains(e.target) ||
+                (nav.item && nav.item.contains(e.target)))
+            ) {
+              clickedInsideModal = true;
+            }
+          });
+
+          if (!clickedInsideModal) {
+            closeAllModals();
+          }
+        });
+      }
+
+      // Panggil fungsi setup saat DOM siap
+      document.addEventListener("DOMContentLoaded", setupNavigationToggle);
+
+      // close sidebar fungsi semua sidebar
     </script>
 
     <!-- Modal Konfirmasi Delete -->
@@ -7010,71 +7189,23 @@
     <script>
       // Memastikan peta responsif pada mobile
       function handleResponsiveMap() {
-        // Pengecekan aman untuk objek peta
-        if (!window.map || !window.map.zoomControl) return;
-
         const isMobile = window.innerWidth <= 768;
         const isSmallMobile = window.innerWidth <= 480;
         const isLandscape =
           window.innerHeight <= 480 && window.innerWidth > window.innerHeight;
 
         // Atur ulang posisi kontrol zoom berdasarkan ukuran layar
-        if (isSmallMobile || isLandscape) {
-          document.querySelectorAll(".controls-container").forEach((el) => {
-            el.style.right = "80px";
-            el.style.bottom = isLandscape ? "10px" : "15px";
-          });
+        if (window.map && window.map.zoomControl) {
+          // Peta sudah terinisialisasi, atur posisi kontrolnya
+          if (isSmallMobile || isLandscape) {
+            // Pastikan kontrol tidak tertutup
+            document.querySelectorAll(".controls-container").forEach((el) => {
+              el.style.right = "80px";
+              el.style.bottom = isLandscape ? "10px" : "15px";
+            });
+          }
         }
       }
-
-      // Update closeAllModals function
-      function closeAllModals() {
-        document
-          .querySelectorAll(".profile-modal, .anchored-vessel-modal")
-          .forEach((modal) => {
-            modal.classList.remove("visible");
-            modal.style.display = "none";
-          });
-        activeModal = null;
-      }
-
-      // Update anchored vessel modal handler
-      document
-        .querySelector('[data-item="anchored"]')
-        .addEventListener("click", function (e) {
-          e.stopPropagation();
-          const anchoredModal = document.querySelector(
-            ".anchored-vessel-modal"
-          );
-
-          if (anchoredModal.style.display === "block") {
-            closeAllModals();
-            return;
-          }
-
-          closeAllModals();
-          anchoredModal.style.display = "block";
-          anchoredModal.classList.add("visible");
-          activeModal = anchoredModal;
-        });
-
-      // Update profile modal handler
-      document
-        .querySelector('[data-item="profile"]')
-        .addEventListener("click", function (e) {
-          e.stopPropagation();
-          const profileModal = document.querySelector(".profile-modal");
-
-          if (profileModal.classList.contains("visible")) {
-            closeAllModals();
-            return;
-          }
-
-          closeAllModals();
-          profileModal.style.display = "block";
-          profileModal.classList.add("visible");
-          activeModal = profileModal;
-        });
 
       // Jalankan saat halaman dimuat
       window.addEventListener("load", handleResponsiveMap);
