@@ -789,6 +789,7 @@
         gap: 10px;
         margin-bottom: 10px;
         align-items: center;
+        justify-content: flex-start; /* Ensure items are left-aligned */
       }
 
       .filter-row:not(:first-child) {
@@ -839,7 +840,7 @@
 
       /* Pastikan semua select di baris pertama dan baris berikutnya sejajar */
       .filter-row:first-child .filter-group {
-        margin-left: 78px;
+        left: 0;
       }
 
       /* Gaya untuk panah dropdown */
@@ -2008,13 +2009,13 @@
         left: 200px;
         top: 85px;
         background-color: rgba(33, 37, 41, 0.6);
-        border-radius: 8px;
-        padding: 15px;
+        border-radius: 5px;
+        padding: 12px;
         display: none;
         z-index: 2000;
-        width: 420px;
+        width: 340px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        min-height: 200px;
+        min-height: 150px;
         max-height: 80vh;
         overflow-y: auto;
         scrollbar-width: none;
@@ -2075,36 +2076,53 @@
       .anchored-vessel-form {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
       }
 
       .anchored-vessel-form-row {
         display: flex;
         align-items: center;
         background-color: white;
-        border-radius: 5px;
-        padding: 10px 15px;
-        margin-bottom: 5px;
-        height: 42px;
+        border-radius: 3px;
+        padding: 5px 10px; /* Tambah padding kanan untuk ruang lebih */
+        margin-bottom: 4px;
+        height: 32px; /* Sedikit tambah tinggi untuk keseimbangan */
+      }
+
+      .anchored-vessel-form-row input[type="text"],
+      .anchored-vessel-form-row select {
+        font-size: 12px;
+        padding: 3px 7px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        height: 24px;
+        min-width: 0;
       }
 
       .anchored-vessel-label {
-        width: 120px;
+        width: 80px;
         color: #333;
-        font-size: 15px;
+        font-size: 12px;
         font-weight: normal;
+        margin-right: 10px; /* Tambah margin untuk jarak lebih dari dropdown */
+      }
+
+      .anchored-vessel-form-row.station-area-row .anchored-vessel-label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #222;
       }
 
       .anchored-vessel-checkbox-group {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
       }
 
       .anchored-vessel-checkbox-wrapper {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 4px;
       }
 
       .anchored-vessel-checkbox-wrapper input[type="checkbox"] {
@@ -2115,9 +2133,7 @@
       }
 
       .anchored-vessel-checkbox-wrapper label {
-        cursor: pointer;
-        color: #333;
-        font-size: 15px;
+        font-size: 12px;
       }
 
       .station-area-dropdown {
@@ -2126,7 +2142,7 @@
 
       .station-area-dropdown select {
         width: 100%;
-        padding: 6px 10px;
+        padding: 3px 30px 3px 7px; /* Tambah padding kanan untuk ikon chevron */
         border-radius: 4px;
         border: 1px solid #ccc;
         background-color: white;
@@ -2135,25 +2151,27 @@
         background-repeat: no-repeat;
         background-position: right 10px center;
         background-size: 12px;
-        font-size: 14px;
+        font-size: 12px; /* Perbesar font untuk kejelasan */
         color: #333;
+        line-height: 1.5; /* Pastikan teks terpusat vertikal */
       }
 
       .date-input-group {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         width: 100%;
       }
 
       .date-input-group input[type="date"] {
-        padding: 6px 10px;
-        border-radius: 4px;
+        padding: 3px 7px;
+        border-radius: 3px;
         border: 1px solid #ccc;
         background-color: white;
-        width: 100%;
-        font-size: 14px;
+        width: 100px;
+        font-size: 12px;
         color: #333;
+        height: 24px;
       }
 
       .swap-date-btn {
@@ -2162,40 +2180,39 @@
         justify-content: center;
         background-color: #f0f0f0;
         border: 1px solid #dadada;
-        border-radius: 4px;
-        min-width: 34px;
-        height: 34px;
+        border-radius: 3px;
+        min-width: 22px;
+        height: 24px;
         cursor: pointer;
         padding: 0;
+        font-size: 12px;
       }
 
       .anchored-vessel-btn-group {
         display: flex;
         justify-content: flex-end;
-        gap: 10px;
-        margin-top: 15px;
+        gap: 6px;
+        margin-top: 10px;
       }
 
       .anchored-vessel-btn-cancel {
         background-color: #dc3545;
         color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 8px 18px;
-        cursor: pointer;
-        font-weight: normal;
-        font-size: 14px;
       }
 
       .anchored-vessel-btn-submit {
         background-color: #007bff;
         color: white;
+      }
+
+      .anchored-vessel-btn-cancel,
+      .anchored-vessel-btn-submit {
+        border-radius: 3px;
+        padding: 4px 12px;
+        font-size: 12px;
         border: none;
-        border-radius: 4px;
-        padding: 8px 18px;
         cursor: pointer;
         font-weight: normal;
-        font-size: 14px;
       }
 
       /* Gaya untuk ENC content hidden */
@@ -2267,10 +2284,9 @@
       .anomaly-search {
         margin-bottom: 15px;
         margin-top: 15px;
-        width: 200px;
+        width: 100%; /* Make search bar full width */
         display: flex;
-        justify-content: flex-end;
-        /* align-items: self-end; */
+        justify-content: flex-start; /* Align to the left */
       }
 
       .anomaly-search-container {
@@ -2415,6 +2431,15 @@
         /* transition: opacity 0.2s; */
       }
 
+      .profile-modal.collapsed {
+        min-height: 50px !important;
+        height: auto !important;
+        transition: all 0.3s ease;
+        /* Optionally, reduce padding for a tighter collapsed look */
+        padding-bottom: 0;
+        padding-top: 0;
+      }
+
       .profile-control-btn:hover {
         opacity: 1;
       }
@@ -2494,13 +2519,35 @@
         margin-bottom: 5px;
       }
 
-      /* For responsive adjustment */
+      /* Responsive adjustments for profile modal */
+      @media (max-width: 1024px) {
+        .profile-modal {
+          left: 120px;
+          width: 320px;
+          max-width: 95vw;
+        }
+      }
+
       @media (max-width: 768px) {
         .profile-modal {
           left: 20px;
           right: 20px;
           width: auto;
           max-width: calc(100% - 40px);
+          top: 20px;
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .profile-modal {
+          left: 5px;
+          right: 5px;
+          width: auto;
+          max-width: calc(100% - 10px);
+          top: 10px;
+          padding: 8px;
+          border-radius: 4px;
         }
       }
 
@@ -6886,12 +6933,6 @@
         closeProfileViewbox();
       });
 
-      // Collapse button handler
-      collapseProfileBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        toggleProfileContent();
-      });
-
       // Close when clicking outside
       document.addEventListener("click", function (e) {
         if (
@@ -6993,15 +7034,35 @@
       //close profile
 
       //Fungsi untuk membuka tutup semua sidebar pada viewbox
-      // Fungsi utama untuk mengelola toggle behavior semua navigasi
+      document.addEventListener("DOMContentLoaded", setupNavigationToggle);
+
+      /**
+       * Mengatur toggle navigasi untuk sidebar dan viewbox terkait, termasuk fitur buka/tutup sidebar.
+       */
       function setupNavigationToggle() {
-        // Daftar semua item navigasi yang memiliki viewbox
+        // Elemen sidebar utama
+        const navMenu = document.querySelector(".nav-menu"); // Sesuaikan selector jika berbeda
+        if (!navMenu) {
+          console.error("Nav menu element not found!");
+          return;
+        }
+
+        // State untuk sidebar dan viewbox
+        let menuState = "collapsed";
+        let activeModal = null;
+        let isProfileContentCollapsed = false;
+        let lastActiveViewbox = null; // Melacak viewbox terakhir yang dibuka
+
+        // Daftar item navigasi dan viewbox terkait
         const navItems = [
-          // {
-          //   name: "profile",
-          //   item: document.querySelector('[data-item="profile"]'),
-          //   viewbox: document.getElementById("profileViewbox"),
-          // },
+          {
+            name: "profile",
+            item: document.querySelector('[data-item="profile"]'),
+            viewbox: document.getElementById("profileViewbox"),
+            content: document.getElementById("profileViewboxContent"),
+            collapseBtn: document.getElementById("collapseProfileViewbox"),
+            closeBtn: document.getElementById("closeProfileViewbox"),
+          },
           {
             name: "filter",
             item: document.querySelector('[data-item="filter"]'),
@@ -7044,10 +7105,19 @@
           },
         ];
 
-        // Variabel untuk melacak modal aktif
-        let activeModal = null;
+        // Validasi elemen navigasi
+        navItems.forEach((nav) => {
+          if (!nav.item) {
+            console.warn(`Nav item for ${nav.name} not found!`);
+          }
+          if (!nav.viewbox) {
+            console.warn(`Viewbox for ${nav.name} not found!`);
+          }
+        });
 
-        // Fungsi untuk menutup semua modal
+        /**
+         * Menutup semua modal/viewbox yang aktif.
+         */
         function closeAllModals() {
           navItems.forEach((nav) => {
             if (nav.viewbox) {
@@ -7056,75 +7126,110 @@
               } else {
                 nav.viewbox.classList.remove("visible");
               }
+              // Reset state collapse untuk profile
+              if (nav.name === "profile" && nav.content && nav.collapseBtn) {
+                nav.content.classList.remove("hidden");
+                nav.collapseBtn
+                  .querySelector(".profile-chevron-icon")
+                  ?.classList.remove("rotated");
+                isProfileContentCollapsed = false;
+              }
             }
           });
           activeModal = null;
+          navMenu.classList.remove("modal-active");
         }
 
-        // Fungsi untuk memposisikan viewbox
+        /**
+         * Memposisikan viewbox relatif terhadap item navigasi atau anchored vessel (untuk profile).
+         * @param {HTMLElement} item - Elemen navigasi.
+         * @param {HTMLElement} viewbox - Elemen viewbox.
+         */
         function positionViewbox(item, viewbox) {
-          const rect = item.getBoundingClientRect();
-          viewbox.style.left = `${rect.right + 10}px`;
-          viewbox.style.top = `${rect.top}px`;
+          if (!item || !viewbox) return;
+          if (viewbox.id === "profileViewbox") {
+            const anchoredItem = document.querySelector(
+              '[data-item="anchored"]'
+            );
+            if (anchoredItem) {
+              const anchoredRect = anchoredItem.getBoundingClientRect();
+              viewbox.style.left = "170px";
+              viewbox.style.top = `${anchoredRect.top}px`;
+            } else {
+              // Fallback jika anchored item tidak ditemukan
+              viewbox.style.left = "170px";
+              viewbox.style.top = "40px";
+            }
+          } else {
+            const rect = item.getBoundingClientRect();
+            viewbox.style.left = `${rect.right + 10}px`;
+            viewbox.style.top = `${rect.top}px`;
+          }
         }
 
-        // Setup untuk setiap item navigasi
+        /**
+         * Menampilkan viewbox untuk item navigasi.
+         * @param {Object} nav - Objek navigasi.
+         */
+        function showViewbox(nav) {
+          closeAllModals();
+          positionViewbox(nav.item, nav.viewbox);
+          if (nav.name === "anchored") {
+            nav.viewbox.style.display = "block";
+          } else {
+            nav.viewbox.classList.add("visible");
+          }
+          activeModal = nav.viewbox;
+          lastActiveViewbox = nav; // Simpan viewbox terakhir yang dibuka
+          navMenu.classList.add("modal-active");
+        }
+
+        /**
+         * Menutup viewbox untuk item navigasi.
+         * @param {Object} nav - Objek navigasi.
+         */
+        function closeViewbox(nav) {
+          if (nav.name === "anchored") {
+            nav.viewbox.style.display = "none";
+          } else {
+            nav.viewbox.classList.remove("visible");
+          }
+          activeModal = null;
+          navMenu.classList.remove("modal-active");
+        }
+
+        // Setup event listener untuk setiap item navigasi
         navItems.forEach((nav) => {
           if (!nav.item || !nav.viewbox) return;
 
           const icon = nav.item.querySelector(".nav-icon");
           const text = nav.item.querySelector(".nav-text");
 
-          // Handler untuk toggle viewbox
+          /**
+           * Toggle viewbox untuk item navigasi.
+           * @param {Event} e - Event klik.
+           */
           const toggleViewbox = (e) => {
             e.stopPropagation();
-
-            // Jika menu belum expanded, expand dulu
             if (!navMenu.classList.contains("expanded")) {
               navMenu.classList.add("expanded");
               menuState = "expanded";
-              setTimeout(() => showViewbox(nav), 300);
+              setTimeout(() => showViewbox(nav), 300); // Tunggu animasi expand
             } else {
-              // Jika viewbox ini sedang aktif, tutup
               if (activeModal === nav.viewbox) {
                 closeViewbox(nav);
               } else {
-                // Jika tidak, tampilkan viewbox ini
                 showViewbox(nav);
               }
             }
           };
 
-          // Fungsi untuk menampilkan viewbox
-          const showViewbox = (nav) => {
-            closeAllModals();
-            positionViewbox(nav.item, nav.viewbox);
-
-            if (nav.name === "anchored") {
-              nav.viewbox.style.display = "block";
-            } else {
-              nav.viewbox.classList.add("visible");
-            }
-
-            activeModal = nav.viewbox;
-          };
-
-          // Fungsi untuk menutup viewbox
-          const closeViewbox = (nav) => {
-            if (nav.name === "anchored") {
-              nav.viewbox.style.display = "none";
-            } else {
-              nav.viewbox.classList.remove("visible");
-            }
-            activeModal = null;
-          };
-
-          // Event listener untuk teks navigasi (toggle viewbox)
+          // Event listener untuk teks (toggle viewbox)
           if (text) {
             text.addEventListener("click", toggleViewbox);
           }
 
-          // Event listener untuk icon (hanya expand menu)
+          // Event listener untuk ikon (expand menu)
           if (icon) {
             icon.addEventListener("click", (e) => {
               e.stopPropagation();
@@ -7135,40 +7240,68 @@
             });
           }
 
-          // Tambahkan event listener untuk tombol close jika ada
-          const closeBtn = nav.viewbox.querySelector(
-            ".profile-control-btn, .modal-close-btn"
-          );
-          if (closeBtn) {
-            closeBtn.addEventListener("click", (e) => {
+          // Khusus untuk profile: handler collapse
+          if (nav.name === "profile" && nav.collapseBtn && nav.content) {
+            nav.collapseBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              nav.content.classList.toggle("hidden");
+              nav.collapseBtn
+                .querySelector(".profile-chevron-icon")
+                ?.classList.toggle("rotated");
+              isProfileContentCollapsed = !isProfileContentCollapsed;
+            });
+          }
+
+          // Event listener untuk tombol close
+          if (nav.closeBtn) {
+            nav.closeBtn.addEventListener("click", (e) => {
               e.stopPropagation();
               closeViewbox(nav);
             });
           }
         });
 
-        // Close modal saat klik di luar
+        // Fitur toggle sidebar
+        if (sidebarToggleBtn) {
+          sidebarToggleBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (navMenu.classList.contains("expanded")) {
+              // Tutup sidebar dan semua viewbox
+              navMenu.classList.remove("expanded");
+              menuState = "collapsed";
+              closeAllModals();
+            } else {
+              // Buka sidebar dan tampilkan viewbox terakhir (atau profile sebagai default)
+              navMenu.classList.add("expanded");
+              menuState = "expanded";
+              setTimeout(() => {
+                const navToOpen =
+                  lastActiveViewbox ||
+                  navItems.find((nav) => nav.name === "profile");
+                if (navToOpen && navToOpen.viewbox) {
+                  showViewbox(navToOpen);
+                }
+              }, 300); // Tunggu animasi expand
+            }
+          });
+        }
+
+        // Menutup modal saat klik di luar
         document.addEventListener("click", (e) => {
           let clickedInsideModal = false;
           navItems.forEach((nav) => {
             if (
               nav.viewbox &&
-              (nav.viewbox.contains(e.target) ||
-                (nav.item && nav.item.contains(e.target)))
+              (nav.viewbox.contains(e.target) || nav.item?.contains(e.target))
             ) {
               clickedInsideModal = true;
             }
           });
-
-          if (!clickedInsideModal) {
+          if (!clickedInsideModal && !navMenu.contains(e.target)) {
             closeAllModals();
           }
         });
       }
-
-      // Panggil fungsi setup saat DOM siap
-      document.addEventListener("DOMContentLoaded", setupNavigationToggle);
-
       // close sidebar fungsi semua sidebar
     </script>
 
