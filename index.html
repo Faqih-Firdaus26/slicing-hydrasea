@@ -26,6 +26,7 @@
     />
     <style>
       :root {
+        /* Dark theme (default) */
         --background-color: #212529;
         --text-color: white;
         --modal-background: rgba(33, 37, 41, 0.6);
@@ -33,16 +34,25 @@
         --border-color: rgba(255, 255, 255, 0.1);
         --input-background: white;
         --input-text: #333;
+        --viewbox-background: #212529;
+        --viewbox-text: white;
+        --viewbox-border: rgba(255, 255, 255, 0.1);
+        --viewbox-hover: rgba(255, 255, 255, 0.1);
       }
 
+      /* Light theme */
       body.light-mode {
-        --background-color: #f5f5f5;
-        --text-color: #333;
-        --modal-background: rgba(245, 245, 245, 0.9);
+        --background-color: #ffffff;
+        --text-color: #333333;
+        --modal-background: rgba(255, 255, 255, 0.9);
         --item-hover: rgba(0, 0, 0, 0.05);
         --border-color: rgba(0, 0, 0, 0.1);
-        --input-background: white;
-        --input-text: #333;
+        --input-background: #ffffff;
+        --input-text: #333333;
+        --viewbox-background: #ffffff;
+        --viewbox-text: #333333;
+        --viewbox-border: #e9ecef;
+        --viewbox-hover: #f8f9fa;
       }
 
       body.light-mode .sidebar {
@@ -64,6 +74,44 @@
       body.light-mode .nav-icon {
         fill: #444;
         stroke: #444;
+      }
+
+      body.light-mode #vesselInfo,
+      body.light-mode #searchResultModal {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--viewbox-border);
+      }
+
+      body.light-mode #vesselInfo .vessel-info-header,
+      body.light-mode #searchResultModal .search-result-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid var(--viewbox-border);
+      }
+
+      body.light-mode #vesselInfo table,
+      body.light-mode #searchResultModal table {
+        color: var(--viewbox-text);
+      }
+
+      body.light-mode #vesselInfo tr,
+      body.light-mode #searchResultModal tr {
+        border-bottom: 1px solid var(--viewbox-border);
+      }
+
+      body.light-mode #vesselInfo td,
+      body.light-mode #searchResultModal td {
+        padding: 8px;
+      }
+
+      /* Style for close buttons in light mode */
+      body.light-mode .close-vessel-info,
+      body.light-mode #closeSearchResult {
+        color: #6c757d;
+      }
+
+      body.light-mode .close-vessel-info:hover,
+      body.light-mode #closeSearchResult:hover {
+        color: #343a40;
       }
 
       /* Modal untuk konfirmasi delete */
@@ -221,6 +269,8 @@
         flex: 1;
         justify-content: flex-end;
       }
+
+      /* search */
       .search-container {
         background-color: rgba(33, 37, 41, 0.6);
         border-radius: 5px;
@@ -230,7 +280,9 @@
         align-items: center;
         padding: 5px 15px;
         margin-left: auto;
+        position: relative; /* penting untuk modal di dalam */
       }
+
       .search-input {
         border: none;
         background: transparent;
@@ -238,12 +290,325 @@
         outline: none;
         color: white;
       }
+
       .search-input::placeholder {
         color: rgba(255, 255, 255, 0.7);
       }
+
       .search-icon {
         color: white;
+        cursor: pointer;
       }
+
+      /* === MODAL === */
+
+      .search-container {
+        position: relative;
+      }
+
+      /* 2. Modal sekarang absolute ke .search-container */
+      #searchResultModal {
+        display: none; /* toggle via .active */
+        position: absolute;
+        top: calc(100% + 4px); /* 4px jarak ke bawah input */
+        right: 10px; /* sejajar dengan ujung kanan input */
+        width: 550px; /* sama persis Figma */
+        background: #e0e0e0; /* grey ringan */
+        border-radius: 5px; /* sudut bawah 5px */
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        z-index: 3000;
+        padding: 0; /* padding dipindah ke dalam elemen header & table */
+        margin-top: -40px; /* hapus margin-top */
+        overflow: visible;
+      }
+
+      /* 3. Tampilnya */
+      #searchResultModal.active {
+        display: block;
+      }
+
+      #searchResultModal.hidden {
+        display: none;
+      }
+
+      .search-result-modal {
+        position: fixed;
+        top: 70px;
+        right: 40px;
+        z-index: 1200;
+      }
+
+      /* 4. Header “Search Result” */
+      .search-result-header {
+        background: #e0e0e0;
+        color: #333;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 8px 12px;
+        margin: 0; /* pastikan tidak ada celah */
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+
+      /* Tabel container */
+      .search-result-table-container {
+        background: #ffffff;
+        padding: 8px 12px;
+        margin: 8px 12px; /* Reduce margin to make white box bigger */
+        width: calc(
+          100% - 24px
+        ); /* Make white box fill more of the gray modal */
+        margin-bottom: 10px; /* top right bottom left: increase bottom margin */
+
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      /* Tabel */
+      .search-result-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+        color: #333;
+      }
+
+      .search-result-table thead th {
+        padding: 8px 12px;
+        border-bottom: 2px solid #ddd;
+        text-align: left;
+      }
+
+      .search-result-table tbody td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .search-result-table tbody tr:hover {
+        background: #f5f5f5;
+      }
+
+      /* close search */
+
+      /* Arrow Icon positioning */
+      #arrowIcon {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 999;
+        cursor: pointer; /* tambahkan ini */
+      }
+
+      #arrowButton {
+        pointer-events: auto; /* Ini wajib supaya SVG bisa diklik */
+      }
+
+      /* Vessel Info Styles */
+      #vesselInfo {
+        position: absolute;
+        top: calc(100% - 30px); /* Lebih dekat ke search */
+        right: 10px; /* Ada jarak 100px dari kanan */
+        background-color: var(--modal-background);
+        border-radius: 5px;
+        padding: 10px;
+        width: 360px;
+        color: white;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: scale(0.9);
+        transform-origin: top right;
+      }
+
+      #vesselInfo.hidden {
+        display: none;
+      }
+
+      .vessel-card {
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 5px;
+        padding: 6px; /* lebih kecil */
+      }
+
+      .vessel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .flag-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .flag-icon {
+        width: 22px; /* sedikit kecil */
+        height: 14px;
+      }
+
+      .vessel-header h2 {
+        font-size: 13px;
+        margin: 0;
+        color: white;
+      }
+
+      .close-vessel-info {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      .vessel-info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3px;
+        margin-bottom: 8px;
+        padding: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+
+      .info-item label {
+        font-size: 9px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .info-item span {
+        font-size: 10px;
+        font-weight: 500;
+      }
+
+      /* Vessel Image */
+      .vessel-image-container {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%;
+        overflow: hidden;
+      }
+
+      .vessel-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 3px;
+      }
+
+      /* Vessel Detail */
+      .detail-item {
+        display: grid;
+        grid-template-columns: 70px 1fr; /* label 70px */
+        align-items: center;
+        padding: 4px 6px;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+        margin-bottom: 3px;
+      }
+
+      .detail-item label {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .detail-item span {
+        font-size: 12px;
+        color: white;
+        font-weight: 500;
+      }
+
+      /* Vessel Table */
+      .vessel-table {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 12px;
+      }
+
+      .vessel-table th {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: normal;
+        text-align: left;
+        padding: 6px 3px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .vessel-table td {
+        font-size: 11px;
+        color: white;
+        padding: 6px 3px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .vessel-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* @media (max-width: 900px) {
+        .search-result-modal,
+        #vesselInfo {
+          left: 50%;
+          transform: translateX(-50%);
+          right: auto;
+        }
+        .search-result-modal {
+          top: 60px;
+        }
+        #vesselInfo {
+          top: 260px;
+        }
+      } */
+
+      vesselInfo,
+      #searchResultModal {
+        background-color: var(--viewbox-background);
+        color: var(--viewbox-text);
+        border: 1px solid var(--viewbox-border);
+      }
+
+      #vesselInfo .vessel-info-header,
+      #searchResultModal .search-result-header {
+        border-bottom: 1px solid var(--viewbox-border);
+      }
+
+      #vesselInfo .vessel-info-content,
+      #searchResultModal .search-result-content {
+        background-color: var(--viewbox-background);
+      }
+
+      #vesselInfo .vessel-info-item:hover,
+      #searchResultModal .search-result-item:hover {
+        background-color: var(--viewbox-hover);
+      }
+
+      /* Update input fields within modals */
+      #vesselInfo input,
+      #searchResultModal input {
+        background-color: var(--input-background);
+        color: var(--input-text);
+        border: 1px solid var(--viewbox-border);
+      }
+
+      /* Update buttons within modals */
+      #vesselInfo button,
+      #searchResultModal button {
+        background-color: var(--viewbox-background);
+        color: var(--viewbox-text);
+        border: 1px solid var(--viewbox-border);
+      }
+
+      #vesselInfo button:hover,
+      #searchResultModal button:hover {
+        background-color: var(--viewbox-hover);
+      }
+
+      /* close vessel info */
+
       .controls-container {
         position: fixed;
         bottom: 20px;
@@ -598,6 +963,12 @@
           padding-right: 5px;
           -webkit-overflow-scrolling: touch;
         }
+
+        .profile-modal {
+          width: 320px;
+          left: 200px;
+          top: 85px;
+        }
       }
 
       @media screen and (max-width: 480px) {
@@ -669,6 +1040,20 @@
           width: 14px;
           height: 14px;
         }
+
+        .profile-modal {
+          width: 300px;
+          max-width: calc(100vw - 20px);
+          left: 10px; /* Geser ke kiri untuk muat di layar */
+          top: 85px;
+          padding: 8px;
+        }
+        /* .profile-modal.collapsed {
+          width: 300px;
+          max-width: calc(100vw - 20px);
+          left: 10px;
+          top: 85px;
+        } */
       }
 
       /* Media query untuk orientasi landscape pada perangkat mobile */
@@ -679,6 +1064,14 @@
           flex-direction: row;
           flex-wrap: wrap;
           max-width: calc(100% - 100px);
+        }
+
+        .profile-modal {
+          width: 320px;
+          left: 200px;
+          top: 85px;
+          min-height: 260px;
+          max-height: 320px;
         }
 
         .control-btn {
@@ -721,7 +1114,6 @@
         }
       }
 
-      /* Filter Modal Styles */
       .filter-modal {
         position: fixed;
         left: 200px;
@@ -789,7 +1181,6 @@
         gap: 10px;
         margin-bottom: 10px;
         align-items: center;
-        justify-content: flex-start; /* Ensure items are left-aligned */
       }
 
       .filter-row:not(:first-child) {
@@ -840,7 +1231,7 @@
 
       /* Pastikan semua select di baris pertama dan baris berikutnya sejajar */
       .filter-row:first-child .filter-group {
-        left: 0;
+        margin-left: 78px;
       }
 
       /* Gaya untuk panah dropdown */
@@ -923,7 +1314,49 @@
         z-index: 2000;
         min-width: 320px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        min-height: 320px; /* Memastikan ukuran konsisten */
+        min-height: 320px;
+        max-height: 80vh;
+        overflow-y: auto;
+        transition: all 0.3s ease;
+      }
+
+      .geofence-modal.collapsed {
+        min-height: 50px !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        min-width: 280px !important;
+        width: 280px !important;
+        max-width: 280px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease;
+      }
+
+      .geofence-modal.collapsed .geofence-content {
+        display: none !important;
+      }
+      .geofence-modal.collapsed .geofence-chevron-icon {
+        transform: rotate(180deg);
+        transition: transform 0.3s;
+      }
+
+      .geofence-detail-modal.collapsed {
+        min-height: 50px !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        min-width: 280px !important;
+        width: 280px !important;
+        max-width: 280px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease;
+      }
+
+      .geofence-detail-modal.collapsed .geofence-detail-content {
+        display: none !important;
+      }
+
+      .geofence-detail-modal.collapsed .geofence-chevron-icon {
+        transform: rotate(180deg);
+        transition: transform 0.3s;
       }
 
       .geofence-modal.visible {
@@ -1048,8 +1481,7 @@
         min-height: 320px;
         max-height: 80vh;
         overflow-y: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
+        transition: all 0.3s ease;
       }
 
       .geofence-detail-modal::-webkit-scrollbar {
@@ -1076,6 +1508,7 @@
       }
 
       .geofence-input-label {
+        margin-top: 15px;
         display: block;
         margin-bottom: 5px;
         color: white;
@@ -1285,6 +1718,25 @@
         opacity: 0.8;
       }
 
+      .bookmark-modal.collapsed {
+        min-height: 50px !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        min-width: 280px !important;
+        width: 280px !important;
+        max-width: 280px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease;
+      }
+
+      .bookmark-modal.collapsed .bookmark-content {
+        display: none !important;
+      }
+      .bookmark-modal.collapsed .bookmark-chevron-icon {
+        transform: rotate(180deg);
+        transition: transform 0.3s;
+      }
+
       /* Modal detail bookmark */
       .bookmark-detail-modal {
         position: fixed;
@@ -1329,7 +1781,7 @@
 
       .bookmark-input-label {
         display: block;
-        margin-bottom: 5px;
+        margin-top: 15px;
         color: white;
         font-size: 12px;
       }
@@ -1393,6 +1845,26 @@
       /* Pastikan ukuran modal konsisten */
       .bookmark-modal {
         min-height: 150px;
+      }
+
+      .bookmark-detail-modal.collapsed {
+        min-height: 50px !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        min-width: 280px !important;
+        width: 280px !important;
+        max-width: 280px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease;
+      }
+
+      .bookmark-detail-modal.collapsed .bookmark-detail-content {
+        display: none !important;
+      }
+
+      .bookmark-detail-modal.collapsed .bookmark-chevron-icon {
+        transform: rotate(180deg);
+        transition: transform 0.3s;
       }
 
       /* Gaya untuk popup ENC */
@@ -1560,6 +2032,159 @@
       .enc-content.hidden {
         display: none;
       }
+
+      /* Profile Modal Styles */
+      .profile-modal {
+        position: fixed;
+        left: 200px;
+        top: 85px;
+        background-color: var(--modal-background);
+        border-radius: 5px;
+        padding: 12px;
+        display: none;
+        z-index: 2000;
+        width: 320px;
+        max-width: calc(100vw - 20px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        min-height: 320px;
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        transition: all 0.3s ease;
+      }
+
+      .profile-modal::-webkit-scrollbar {
+        display: none;
+      }
+
+      .profile-modal.visible {
+        display: block !important;
+      }
+
+      .profile-modal.collapsed {
+        min-height: 50px !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        width: 280px !important;
+        max-width: calc(100vw - 20px);
+        overflow: hidden !important;
+        transition: all 0.3s ease;
+      }
+
+      .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .profile-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+      }
+
+      .profile-controls {
+        display: flex;
+        gap: 5px;
+      }
+
+      .profile-control-btn {
+        background: none;
+        border: none;
+        padding: 2px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .profile-control-btn i {
+        font-size: 12px;
+      }
+
+      #profileCollapseIcon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      #profileCollapseIcon.rotated {
+        transform: rotate(180deg);
+      }
+
+      #profileContent.hidden {
+        display: none;
+      }
+
+      .profile-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+
+      .profile-form input {
+        padding: 5px 8px;
+        font-size: 12px;
+        background-color: var(--input-background);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--input-text);
+        border-radius: 3px;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .profile-form label {
+        color: white;
+        margin-bottom: 5px;
+        font-size: 12px;
+        display: block;
+      }
+
+      .profile-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .profile-btn-cancel,
+      .profile-btn-submit {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+        color: white;
+      }
+
+      .profile-btn-cancel {
+        background-color: #dc3545;
+      }
+
+      .profile-btn-submit {
+        background-color: #0d6efd;
+      }
+
+      .profile-modal.collapsed {
+        min-height: 50px !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        min-width: 280px !important;
+        width: 280px !important;
+        max-width: 280px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease;
+      }
+
+      .profile-modal.collapsed #profile-content {
+        display: none !important;
+      }
+      .profile-modal.collapsed .profile-chevron-icon {
+        /* transform: rotate(180deg); */
+        transition: transform 0.3s;
+      }
+
+      /* penutup profiles modal */
 
       /* Antena Modal Styles */
       .antena-modal {
@@ -2010,12 +2635,12 @@
         top: 85px;
         background-color: rgba(33, 37, 41, 0.6);
         border-radius: 5px;
-        padding: 12px;
+        padding: 15px;
         display: none;
         z-index: 2000;
-        width: 340px;
+        width: 400px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        min-height: 150px;
+        min-height: 200px;
         max-height: 80vh;
         overflow-y: auto;
         scrollbar-width: none;
@@ -2040,8 +2665,8 @@
 
       .anchored-vessel-title {
         font-weight: bold;
+        font-size: 12px;
         color: white;
-        font-size: 14px;
       }
 
       .anchored-vessel-controls {
@@ -2055,11 +2680,9 @@
         padding: 2px;
         cursor: pointer;
         color: white;
-        font-size: 18px;
       }
 
-      /* Animasi untuk chevron ikon */
-      #anchoredVesselCollapseIcon {
+      Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
         transition: transform 0.3s ease;
         display: inline-block;
       }
@@ -2076,53 +2699,36 @@
       .anchored-vessel-form {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 12px;
       }
 
       .anchored-vessel-form-row {
         display: flex;
         align-items: center;
         background-color: white;
-        border-radius: 3px;
-        padding: 5px 10px; /* Tambah padding kanan untuk ruang lebih */
-        margin-bottom: 4px;
-        height: 32px; /* Sedikit tambah tinggi untuk keseimbangan */
-      }
-
-      .anchored-vessel-form-row input[type="text"],
-      .anchored-vessel-form-row select {
-        font-size: 12px;
-        padding: 3px 7px;
-        border-radius: 3px;
-        border: 1px solid #ccc;
-        height: 24px;
-        min-width: 0;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-bottom: 5px;
+        height: 42px;
       }
 
       .anchored-vessel-label {
-        width: 80px;
+        width: 120px;
         color: #333;
-        font-size: 12px;
+        font-size: 15px;
         font-weight: normal;
-        margin-right: 10px; /* Tambah margin untuk jarak lebih dari dropdown */
-      }
-
-      .anchored-vessel-form-row.station-area-row .anchored-vessel-label {
-        font-size: 14px;
-        font-weight: bold;
-        color: #222;
       }
 
       .anchored-vessel-checkbox-group {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 20px;
       }
 
       .anchored-vessel-checkbox-wrapper {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 8px;
       }
 
       .anchored-vessel-checkbox-wrapper input[type="checkbox"] {
@@ -2133,16 +2739,37 @@
       }
 
       .anchored-vessel-checkbox-wrapper label {
-        font-size: 12px;
+        cursor: pointer;
+        color: #333;
+        font-size: 15px;
+      }
+
+      .anchored-vessel-modal.collapsed {
+        min-height: 50px !important;
+        height: 50px !important;
+        max-height: 50px !important;
+        min-width: 280px !important;
+        width: 280px !important;
+        max-width: 280px !important;
+        overflow: hidden !important;
+        transition: all 0.3s ease;
+      }
+
+      .anchored-vessel-modal.collapsed .anchored-vessel-content {
+        display: none !important;
+      }
+      .anchored-vessel-modal.collapsed .anchored-vessel-chevron-icon {
+        transform: rotate(180deg);
+        transition: transform 0.3s;
       }
 
       .station-area-dropdown {
-        width: 100%;
+        width: 50%;
       }
 
       .station-area-dropdown select {
         width: 100%;
-        padding: 3px 30px 3px 7px; /* Tambah padding kanan untuk ikon chevron */
+        padding: 6px 10px;
         border-radius: 4px;
         border: 1px solid #ccc;
         background-color: white;
@@ -2151,27 +2778,25 @@
         background-repeat: no-repeat;
         background-position: right 10px center;
         background-size: 12px;
-        font-size: 12px; /* Perbesar font untuk kejelasan */
+        font-size: 14px;
         color: #333;
-        line-height: 1.5; /* Pastikan teks terpusat vertikal */
       }
 
       .date-input-group {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px; /* Reduced from 8px */
         width: 100%;
       }
 
       .date-input-group input[type="date"] {
-        padding: 3px 7px;
-        border-radius: 3px;
+        padding: 4px 8px; /* Reduced from 6px 10px */
+        border-radius: 4px;
         border: 1px solid #ccc;
         background-color: white;
-        width: 100px;
-        font-size: 12px;
+        width: 100%;
+        font-size: 12px; /* Reduced from 14px */
         color: #333;
-        height: 24px;
       }
 
       .swap-date-btn {
@@ -2180,29 +2805,45 @@
         justify-content: center;
         background-color: #f0f0f0;
         border: 1px solid #dadada;
-        border-radius: 3px;
-        min-width: 22px;
-        height: 24px;
+        border-radius: 4px;
+        min-width: 34px;
+        height: 34px;
         cursor: pointer;
         padding: 0;
-        font-size: 12px;
       }
 
       .anchored-vessel-btn-group {
         display: flex;
         justify-content: flex-end;
-        gap: 6px;
-        margin-top: 10px;
+        gap: 10px;
+        margin-top: 15px;
       }
 
       .anchored-vessel-btn-cancel {
         background-color: #dc3545;
         color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 18px;
+        cursor: pointer;
+        font-weight: normal;
+        font-size: 14px;
       }
 
       .anchored-vessel-btn-submit {
         background-color: #007bff;
         color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 18px;
+        cursor: pointer;
+        font-weight: normal;
+        font-size: 14px;
+      }
+
+      /* Gaya untuk ENC content hidden */
+      .enc-content.hidden {
+        display: none;
       }
 
       .anchored-vessel-btn-cancel,
@@ -2366,203 +3007,22 @@
         background-color: rgba(255, 255, 255, 0.05);
       }
 
-      .profile-modal {
-        position: fixed;
-        left: 170px; /* Default position matching others */
-        top: 40px;
-        background-color: rgba(33, 37, 41, 0.6);
-        border-radius: 5px;
-        padding: 15px;
-        width: 350px;
-        max-width: 90vw;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        max-height: 80vh;
-        overflow-y: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        color: white;
-        z-index: 2100;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        transform: none;
-        margin: 0;
-        will-change: transform;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
+      /* close style */
 
-      .profile-modal::-webkit-scrollbar {
-        display: none;
-      }
-
-      .profile-modal.visible {
-        display: block;
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .profile-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-        /* padding-bottom: 10px; */
-        /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
-      }
-
-      .profile-title {
-        font-weight: bold;
-        font-size: 14px;
-        color: white;
-      }
-
-      .profile-controls {
-        display: flex;
-        gap: 5px;
-      }
-
-      .profile-control-btn {
-        background: none;
-        border: none;
-        padding: 2px;
-        cursor: pointer;
-        color: white;
-        /* opacity: 0.7; */
-        /* transition: opacity 0.2s; */
-      }
-
-      .profile-modal.collapsed {
-        min-height: 50px !important;
-        height: auto !important;
-        transition: all 0.3s ease;
-        /* Optionally, reduce padding for a tighter collapsed look */
-        padding-bottom: 0;
-        padding-top: 0;
-      }
-
-      .profile-control-btn:hover {
-        opacity: 1;
-      }
-
-      .profile-content {
-        max-height: 500px;
-        overflow: hidden;
-        transition: max-height 0.3s ease, padding 0.3s ease;
-        padding: 10px 0;
-      }
-
-      .profile-content.hidden {
-        /* max-height: 0;
-        padding-top: 0;
-        padding-bottom: 0; */
-        display: none;
-      }
-
-      .profile-chevron-icon.rotated {
-        transform: rotate(180deg);
-        transition: transform 0.3s ease;
-      }
-
-      .profile-chevron-icon {
-        transition: transform 0.3s ease;
-      }
-
-      .profile-form input {
-        padding: 5px 8px;
-        font-size: 12px;
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #333;
-        border-radius: 3px;
-        width: 100%;
-        margin-bottom: 8px;
-      }
-
-      .profile-form label {
-        color: white;
-        margin-bottom: 5px;
-        font-size: 12px;
-        display: block;
-      }
-
-      .profile-form-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      .profile-btn {
-        padding: 4px 10px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        font-size: 11px;
-        transition: opacity 0.2s;
-      }
-
-      .profile-btn:hover {
-        opacity: 0.9;
-      }
-
-      .profile-btn-cancel {
-        background-color: #dc3545;
-        color: white;
-      }
-
-      .profile-btn-submit {
-        background-color: #0d6efd;
-        color: white;
-      }
-
-      .profile-form .row {
-        margin-bottom: 5px;
-      }
-
-      /* Responsive adjustments for profile modal */
-      @media (max-width: 1024px) {
-        .profile-modal {
-          left: 120px;
-          width: 320px;
-          max-width: 95vw;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .profile-modal {
-          left: 20px;
-          right: 20px;
-          width: auto;
-          max-width: calc(100% - 40px);
-          top: 20px;
-          padding: 10px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .profile-modal {
-          left: 5px;
-          right: 5px;
-          width: auto;
-          max-width: calc(100% - 10px);
-          top: 10px;
-          padding: 8px;
-          border-radius: 4px;
-        }
-      }
-
-      /* ... existing code ... */
       /* Gaya umum untuk semua modal saat collapsed */
       .control-modal.collapsed,
+      /* .profile-modal.collapsed, */
+      .anchored-vessel-modal.collapsed,
       .filter-modal.collapsed,
+      /* .profile-modal.collapsed, */
       .geofence-modal.collapsed,
       .geofence-detail-modal.collapsed,
       .bookmark-modal.collapsed,
       .bookmark-detail-modal.collapsed,
+      /* .profile-modal.collapsed, */
       .enc-modal.collapsed,
       .antena-modal.collapsed,
       .station-modal.collapsed,
-      .anchored-vessel-modal.collapsed,
       .anomaly-modal.collapsed {
         min-height: 50px !important;
         height: auto !important;
@@ -2587,10 +3047,13 @@
       /* Animasi perubahan ukuran modal */
       .control-modal,
       .filter-modal,
+      .profile-modal,
+      .profile-modal,
       .geofence-modal,
       .geofence-detail-modal,
       .bookmark-modal,
       .bookmark-detail-modal,
+      .profile-modal,
       .enc-modal,
       .antena-modal,
       .station-modal,
@@ -2602,6 +3065,7 @@
       /* ... existing code ... */
       /* Pastikan modal content selector sesuai dengan semua modal */
       .filter-content.hidden,
+      .profile-content.hidden,
       .geofence-content.hidden,
       .bookmark-content.hidden,
       .enc-content.hidden,
@@ -2665,8 +3129,10 @@
 
       /* Memperkecil ukuran elemen pada semua modal box */
       .filter-title,
+      .profile-title,
       .geofence-title,
       .bookmark-title,
+      .profile-title,
       .enc-title,
       .antena-title,
       .station-title,
@@ -2677,6 +3143,7 @@
       }
 
       .filter-control-btn,
+      .profile-control-btn,
       .geofence-control-btn,
       .bookmark-control-btn,
       .enc-control-btn,
@@ -2692,8 +3159,11 @@
       }
 
       .filter-control-btn i,
+      .porfile-control-btn i,
       .geofence-control-btn i,
       .bookmark-control-btn i,
+      .bookmark-control-btn i,
+      .profile-control-btn i,
       .enc-control-btn i,
       .antena-control-btn i,
       .station-control-btn i,
@@ -2703,8 +3173,10 @@
 
       /* Ukuran teks dan input */
       .filter-select,
+      .profile-select,
       .geofence-input,
       .geofence-textarea,
+      .profile-input,
       .bookmark-input,
       .enc-active-cell input,
       .antena-input,
@@ -2716,6 +3188,7 @@
 
       /* Ukuran search input */
       .geofence-search input,
+      .profile-search input,
       .bookmark-search input,
       .enc-search input,
       .antena-search-container input,
@@ -2728,6 +3201,7 @@
 
       /* Ukuran ikon search */
       .geofence-search-btn i,
+      .profile-search-btn i,
       .bookmark-search-btn i,
       .enc-search-btn i,
       .antena-search-btn i,
@@ -2753,11 +3227,12 @@
 
       /* Ukuran tombol aksi */
       .geofence-btn,
-      .bookmark-btn,
-      .enc-view-btn,
-      .antena-btn.btn-danger,
-      .antena-edit-btn,
-      .station-btn {
+              .bookmark-btn,
+              /* .profile-btn, */
+              .enc-view-btn,
+              .antena-btn.btn-danger,
+              .antena-edit-btn,
+              .station-btn {
         width: 22px;
         height: 22px;
         font-size: 10px;
@@ -2765,6 +3240,7 @@
 
       /* Ukuran row action buttons */
       .filter-submit,
+      .profile-submit,
       .antena-btn-submit,
       .antena-btn-cancel,
       .geofence-action-btn {
@@ -2775,6 +3251,8 @@
       /* Mengecilkan tinggi modal */
       .filter-content,
       .geofence-content,
+      .profile-content,
+      .anchored-vessel-content,
       .bookmark-content,
       .enc-content,
       .antena-content,
@@ -2812,11 +3290,12 @@
       }
 
       .filter-modal,
-      .geofence-modal,
+      .profile-modal .geofence-modal,
       .geofence-detail-modal,
       .bookmark-modal,
       .bookmark-detail-modal,
       .enc-modal,
+      .profile-modal,
       .antena-modal,
       .station-modal,
       .anomaly-modal {
@@ -2825,6 +3304,7 @@
       }
 
       .filter-header,
+      .profile-header,
       .geofence-header,
       .bookmark-header,
       .enc-header,
@@ -2890,6 +3370,7 @@
 
       /* Memperkecil gap antar controls */
       .geofence-controls,
+      .profile-controls,
       .bookmark-controls,
       .enc-controls,
       .antena-controls,
@@ -2937,11 +3418,13 @@
 
       /* Update modal backgrounds to use variables */
       .filter-modal,
+      .profile-modal,
       .geofence-modal,
       .geofence-detail-modal,
       .bookmark-modal,
       .bookmark-detail-modal,
       .enc-modal,
+      .profile-modal,
       .antena-modal,
       .station-modal,
       .anomaly-modal,
@@ -2951,6 +3434,8 @@
 
       /* Update input styles to use variables */
       .filter-select,
+      .profile-select,
+      .profile-input,
       .geofence-input,
       .geofence-textarea,
       .bookmark-input,
@@ -3001,7 +3486,179 @@
         <div class="right-controls">
           <div class="search-container">
             <input type="text" class="search-input" placeholder="Search" />
-            <i class="bi bi-search search-icon"></i>
+            <i class="bi bi-search search-icon" id="mainSearchIcon"></i>
+          </div>
+          <div id="searchResultModal" class="search-result-modal">
+            <div class="search-result-header">Search Result</div>
+            <div class="search-result-table-container">
+              <table class="search-result-table">
+                <thead>
+                  <tr>
+                    <th>MMSI</th>
+                    <th>Name</th>
+                    <th>Callsign</th>
+                    <th>IMO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>123456789</td>
+                    <td>Vessel Name</td>
+                    <td>ABC1234</td>
+                    <td>9876543</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Icon Panah -->
+          <div id="arrowIcon">
+            <svg
+              width="400"
+              height="164"
+              viewBox="0 0 400 164"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M30.4332 158.623C30.1941 158.623 29.9574 158.576 29.7371 158.483C29.5168 158.39 29.3173 158.253 29.1504 158.082C28.9836 157.91 28.8527 157.707 28.7655 157.484C28.6784 157.261 28.6367 157.023 28.643 156.784V136.236C28.643 135.998 28.5487 135.77 28.3808 135.602C28.213 135.434 27.9853 135.34 27.7479 135.34H7.20646C6.82994 135.344 6.46125 135.232 6.15096 135.018C5.84067 134.805 5.60397 134.5 5.47332 134.147C5.32454 133.725 5.33858 133.263 5.51268 132.851C5.68678 132.439 6.00837 132.108 6.4143 131.921L49.3791 112.19C49.7111 112.038 50.0816 111.991 50.441 112.056C50.8004 112.12 51.1314 112.293 51.3898 112.551C51.6482 112.81 51.8215 113.141 51.8864 113.501C51.9514 113.86 51.905 114.231 51.7534 114.564L32.0612 157.576C31.9186 157.888 31.6893 158.153 31.4007 158.339C31.1121 158.525 30.7763 158.623 30.4332 158.623Z"
+                fill="#CCFF00"
+              />
+            </svg>
+          </div>
+
+          <!-- Vessel Info Card -->
+          <div id="vesselInfo" class="hidden">
+            <div class="vessel-card">
+              <!-- Header with flag and name -->
+              <div class="vessel-header">
+                <div class="flag-name">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 14.6296L11.5712 22.1296L16.3333 16.713L8 14.6296ZM24.6667 14.6296L21.0954 22.1296L16.3333 16.713L24.6667 14.6296ZM11.75 22.1296H20.9167L16.3333 16.713L11.75 22.1296Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M16.3333 16.713L11.5712 22.1296L8 14.6296L16.3333 16.713ZM16.3333 16.713L21.0954 22.1296L24.6667 14.6296L16.3333 16.713ZM16.3333 16.713L20.9167 22.1296H11.75L16.3333 16.713Z"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M11.333 15.4631L16.333 6.29639L21.333 15.4631"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <h2>PATRIA NAWASENA 1</h2>
+                </div>
+                <button class="close-vessel-info">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+
+              <!-- Main vessel info in grid layout -->
+              <div class="vessel-info-grid">
+                <div class="info-item">
+                  <label>IMO</label>
+                  <span>9339466</span>
+                </div>
+                <div class="info-item">
+                  <label>MMSI</label>
+                  <span>525601816</span>
+                </div>
+                <div class="info-item">
+                  <label>Callsign</label>
+                  <span>YDHA3</span>
+                </div>
+              </div>
+
+              <!-- New Image Grid Section -->
+              <div class="vessel-image-grid">
+                <div class="vessel-image-container">
+                  <img
+                    src="https://asset.kompas.com/crops/ivd0ZNR3O6hpALR8OPaUAN1qGps=/284x0:928x430/1200x800/data/photo/2024/03/05/65e6969ed2a44.jpg"
+                    alt="Vessel Image"
+                    class="vessel-image"
+                  />
+                </div>
+              </div>
+
+              <!-- Vessel details in a more compact format -->
+              <div class="vessel-details">
+                <div class="detail-row">
+                  <div class="detail-item">
+                    <label>AIS Class</label>
+                    <span>A</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>Draught</label>
+                    <span>13.39999996853</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>Fix Dev</label>
+                    <span>-</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>Destination</label>
+                    <span>Lontar</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>ETA Destination</label>
+                    <span>Lontar</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>Width</label>
+                    <span>24 Meters</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-item">
+                    <label>Length</label>
+                    <span>166 Meters</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>Last Update</label>
+                    <span>2025-04-15 09:12:45</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Compact table for position history -->
+              <div class="vessel-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Time (GMT+7)</th>
+                      <th>Position</th>
+                      <th>Speed</th>
+                      <th>Cog</th>
+                      <th>Draught</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>01</td>
+                      <td>2025-04-09 10:25:06</td>
+                      <td>5° 53' 56" S<br />106° 24' 26" E</td>
+                      <td>0.0</td>
+                      <td>183.90</td>
+                      <td>13.3999961853</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           <!-- Controls -->
@@ -4543,109 +5200,135 @@
           <span class="nav-text">Profile</span>
 
           <!-- Profile Viewbox -->
-          <div class="profile-modal" id="profileViewbox">
+          <div class="profile-modal" id="profileModal">
             <div class="profile-header">
               <div class="profile-title">Profile Information</div>
               <div class="profile-controls">
-                <!-- Collapse Button - Added back -->
                 <button
+                  type="button"
                   class="profile-control-btn"
-                  id="collapseProfileViewbox"
+                  id="collapseProfileBtn"
                   title="Collapse"
                 >
-                  <svg
-                    class="profile-chevron-icon"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                  <i
+                    class="bi bi-chevron-down profile-chevron-icon"
+                    id="profileCollapseIcon"
+                  ></i>
                 </button>
-                <!-- Close Button -->
                 <button
+                  type="button"
                   class="profile-control-btn"
-                  id="closeProfileViewbox"
+                  id="closeProfileBtn"
                   title="Close"
                 >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
+                  <i class="bi bi-x"></i>
                 </button>
               </div>
             </div>
-            <div class="profile-content" id="profileViewboxContent">
-              <form class="profile-form">
-                <div class="row g-2">
-                  <div class="col-md-6">
-                    <label>Firstname</label>
-                    <input type="text" class="form-control" value="Admin" />
-                  </div>
-                  <div class="col-md-6">
-                    <label>Lastname</label>
-                    <input type="text" class="form-control" value="Farovon" />
-                  </div>
-                  <div class="col-md-6">
-                    <label>Username</label>
-                    <input type="text" class="form-control" value="Admin01" />
-                  </div>
-                  <div class="col-md-6">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      value="farovontechnology@gmail.com"
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label>Active Until</label>
-                    <input
-                      type="datetime-local"
-                      class="form-control"
-                      value="2026-12-31T01:11"
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label>Password</label>
-                    <input type="password" class="form-control" value="12345" />
-                  </div>
-                  <div class="col-md-6">
-                    <label>Phone</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      value="0822123456"
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label>Confirm Password</label>
-                    <input type="password" class="form-control" value="12345" />
-                  </div>
+
+            <form class="profile-form" id="profileContent">
+              <div class="row g-2">
+                <!-- Firstname -->
+                <div class="col-12 col-md-6">
+                  <label for="firstname">Firstname</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="firstname"
+                    name="firstname"
+                    value="Admin"
+                  />
                 </div>
-                <div class="profile-form-actions">
-                  <button type="button" class="profile-btn profile-btn-cancel">
-                    Cancel
-                  </button>
-                  <button type="submit" class="profile-btn profile-btn-submit">
-                    Submit
-                  </button>
+                <!-- Email -->
+                <div class="col-12 col-md-6">
+                  <label for="email">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    value="farovontechnology@gmail.com"
+                  />
                 </div>
-              </form>
-            </div>
+                <!-- Lastname -->
+                <div class="col-12 col-md-6">
+                  <label for="lastname">Lastname</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lastname"
+                    name="lastname"
+                    value="Farovon"
+                  />
+                </div>
+                <!-- Password -->
+                <div class="col-12 col-md-6">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    value="12345"
+                  />
+                </div>
+                <!-- Username -->
+                <div class="col-12 col-md-6">
+                  <label for="username">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    value="Admin01"
+                  />
+                </div>
+                <!-- Confirm Password -->
+                <div class="col-12 col-md-6">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value="12345"
+                  />
+                </div>
+                <!-- Active Until -->
+                <div class="col-12 col-md-6">
+                  <label for="activeUntil">Active Until</label>
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    id="activeUntil"
+                    name="activeUntil"
+                    value="2026-12-31T01:11"
+                  />
+                </div>
+                <!-- Spacer -->
+                <div class="w-50"></div>
+                <!-- Phone -->
+                <div class="col-12 col-md-6">
+                  <label for="phone">Phone</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    value="0822123456"
+                  />
+                </div>
+              </div>
+              <!-- Form Actions -->
+              <div class="profile-form-actions">
+                <button type="button" class="profile-btn profile-btn-cancel">
+                  Cancel
+                </button>
+                <button type="submit" class="profile-btn profile-btn-submit">
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -4681,23 +5364,17 @@
           const viewportWidth = window.innerWidth;
           const viewportHeight = window.innerHeight;
 
-          // Hitung posisi yang tepat, pastikan tidak melebihi viewport
           let leftPosition = rect.right + 10;
-
-          // Jika modal akan keluar dari viewport, posisikan di sebelah kiri
           if (leftPosition + modalWidth > viewportWidth - 20) {
             leftPosition = Math.max(20, rect.left - modalWidth - 10);
           }
 
-          // Set posisi vertical, pastikan tidak melebihi viewport
           let topPosition = rect.top;
           const modalHeight = targetModal.offsetHeight;
-
           if (topPosition + modalHeight > viewportHeight - 20) {
             topPosition = Math.max(20, viewportHeight - modalHeight - 20);
           }
 
-          // Set posisi modal
           targetModal.style.top = `${topPosition}px`;
           targetModal.style.left = `${leftPosition}px`;
         }
@@ -4797,12 +5474,157 @@
           "bookmarkDetailContent"
         );
 
+        // Handle Profile Modal
+
+        // Element references
+        const profileItem = document.querySelector('[data-item="profile"]');
+        const profileIcon = profileItem.querySelector(".nav-icon");
+        const profileModal = document.getElementById("profileModal");
+        const closeProfileBtn = document.getElementById("closeProfileBtn");
+        const collapseProfileBtn =
+          document.getElementById("collapseProfileBtn");
+        const profileCollapseIcon = document.getElementById(
+          "profileCollapseIcon"
+        );
+        const profileForm = document.getElementById("profileContent");
+        const profileCancelBtn = document.querySelector(".profile-btn-cancel");
+        const profileSubmitBtn = document.querySelector(".profile-btn-submit");
+
+        // Show profile modal
+        function showProfileModal() {
+          closeAllActiveModals();
+
+          profileModal.classList.add("visible");
+          activeModal = profileModal;
+
+          profileContent.classList.remove("hidden");
+          profileCollapseIcon.classList.remove("rotated");
+          profileModal.classList.remove("collapsed");
+          profileModal.style.height = "auto";
+
+          positioning(profileItem, profileModal);
+        }
+
+        // Hide profile modal
+        function hideProfileModal() {
+          profileModal.classList.remove("visible");
+          activeModal = null;
+        }
+
+        // Handle submit form
+        function handleProfileSubmit(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const formData = {
+            firstname: profileForm.firstname.value.trim(),
+            lastname: profileForm.lastname.value.trim(),
+            username: profileForm.username.value.trim(),
+            email: profileForm.email.value.trim(),
+            password: profileForm.password.value.trim(),
+            confirmPassword: profileForm.confirmPassword.value.trim(),
+            activeUntil: profileForm.activeUntil.value,
+            phone: profileForm.phone.value.trim(),
+          };
+
+          // Validation
+          if (Object.values(formData).some((value) => !value)) {
+            alert("Semua field harus diisi!");
+            return;
+          }
+
+          if (formData.password !== formData.confirmPassword) {
+            alert("Password dan Confirm Password harus sama!");
+            return;
+          }
+
+          console.log("Profile submitted:", formData);
+
+          hideProfileModal();
+        }
+
+        // Expand menu and show modal
+        profileIcon.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+          }
+        });
+
+        // Click profile item
+        profileItem.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (!navMenu.classList.contains("expanded")) {
+            navMenu.classList.add("expanded");
+            menuState = "expanded";
+            setTimeout(showProfileModal, 300);
+          } else {
+            if (profileModal.classList.contains("visible")) {
+              hideProfileModal();
+            } else {
+              showProfileModal();
+            }
+          }
+        });
+
+        // Close and Cancel
+        closeProfileBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          hideProfileModal();
+        });
+
+        profileCancelBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          hideProfileModal();
+        });
+
+        // Submit form
+        profileForm.addEventListener("submit", handleProfileSubmit);
+
+        // Prevent modal from closing when clicking inside inputs
+        profileModal.addEventListener("click", (e) => e.stopPropagation());
+
+        document.querySelectorAll("#profileModal input").forEach((input) => {
+          ["click", "focus", "input"].forEach((eventType) => {
+            input.addEventListener(eventType, (e) => e.stopPropagation());
+          });
+        });
+
+        // Update position on resize
+        window.addEventListener("resize", () => {
+          if (profileModal.classList.contains("visible")) {
+            positioning(profileItem, profileModal);
+          }
+        });
+
+        // Close profile modal if other nav item clicked
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          if (item.getAttribute("data-item") !== "profile") {
+            item.addEventListener("click", () => {
+              if (profileModal.classList.contains("visible")) {
+                hideProfileModal();
+              }
+            });
+          }
+        });
+
+        // Setup collapse functionality
+        setupCollapseFunction(
+          collapseProfileBtn,
+          profileModal,
+          profileContent,
+          profileCollapseIcon
+        );
+
+        // Fungsi untuk menampilkan Profile Modal Handler
+
         // Fungsi untuk menampilkan geofence modal
         function showGeofenceModal() {
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .anchored-vessel-modal"
+              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .anchored-vessel-modal, .profile-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -4953,12 +5775,26 @@
           }
         });
 
+        // Event listener untuk tombol collapse geofence detail
+        collapseGeofenceDetailBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          geofenceDetailModal.classList.toggle("collapsed");
+          geofenceDetailCollapseIcon.classList.toggle("rotated");
+
+          // Juga toggle visibility content
+          if (geofenceDetailModal.classList.contains("collapsed")) {
+            geofenceDetailContent.style.display = "none";
+          } else {
+            geofenceDetailContent.style.display = "block";
+          }
+        });
+
         // Fungsi untuk menampilkan filter modal
         function showFilterModal() {
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
+              ".control-modal, .filter-modal, .antena-modal, .geofence-modal, .geofence-detail-modal, .station-modal,  .bookmark-modal, .bookmark-detail-modal,  .anomaly-modal, .enc-modal, .anchored-vessel-modal, .profile-modal, .logout-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -4986,34 +5822,34 @@
           const newRow = document.createElement("div");
           newRow.className = "filter-row";
           newRow.innerHTML = `
-            <div class="filter-group">
-              <select class="filter-select condition-select">
-                <option>AND</option>
-                <option>OR</option>
-              </select>
-              <select class="filter-select type-select">
-                <option>Type</option>
-                <option>Vessel Type</option>
-                <option>Flag</option>
-                <option>Name</option>
-              </select>
-              <select class="filter-select operator-select">
-                <option>=</option>
-                <option>></option>
-                <option><</option>
-                <option>!=</option>
-              </select>
-              <select class="filter-select value-select">
-                <option>Anti-Pollution</option>
-                <option>Fishing Vessel</option>
-                <option>Cargo</option>
-                <option>Passenger</option>
-              </select>
-            </div>
-            <button class="filter-delete">
-              <i class="bi bi-trash"></i>
-            </button>
-          `;
+                  <div class="filter-group">
+                    <select class="filter-select condition-select">
+                      <option>AND</option>
+                      <option>OR</option>
+                    </select>
+                    <select class="filter-select type-select">
+                      <option>Type</option>
+                      <option>Vessel Type</option>
+                      <option>Flag</option>
+                      <option>Name</option>
+                    </select>
+                    <select class="filter-select operator-select">
+                      <option>=</option>
+                      <option>></option>
+                      <option><</option>
+                      <option>!=</option>
+                    </select>
+                    <select class="filter-select value-select">
+                      <option>Anti-Pollution</option>
+                      <option>Fishing Vessel</option>
+                      <option>Cargo</option>
+                      <option>Passenger</option>
+                    </select>
+                  </div>
+                  <button class="filter-delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                `;
           document.querySelector(".filter-content").appendChild(newRow);
 
           // Tambahkan event listener ke dropdown baru
@@ -5253,7 +6089,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .anchored-vessel-modal"
+              ".control-modal, .filter-modal, .antena-modal, .geofence-modal, .geofence-detail-modal, .station-modal,  .bookmark-modal, .bookmark-detail-modal,  .anomaly-modal, .enc-modal, .anchored-vessel-modal, .profile-modal, .logout-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -5351,12 +6187,18 @@
         // Event listener untuk tombol collapse bookmark detail
         collapseBookmarkDetailBtn.addEventListener("click", function (e) {
           e.stopPropagation();
-          if (bookmarkDetailContent.classList.contains("hidden")) {
-            bookmarkDetailContent.classList.remove("hidden");
-            bookmarkDetailCollapseIcon.classList.remove("rotated");
+
+          // Toggle class 'collapsed' pada modal
+          bookmarkDetailModal.classList.toggle("collapsed");
+
+          // Toggle class 'rotated' pada ikon chevron
+          bookmarkDetailCollapseIcon.classList.toggle("rotated");
+
+          // Toggle visibility content
+          if (bookmarkDetailModal.classList.contains("collapsed")) {
+            bookmarkDetailContent.style.display = "none";
           } else {
-            bookmarkDetailContent.classList.add("hidden");
-            bookmarkDetailCollapseIcon.classList.add("rotated");
+            bookmarkDetailContent.style.display = "block";
           }
         });
 
@@ -5435,7 +6277,7 @@
           // Tutup semua modal yang terbuka
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .antena-modal, .anchored-vessel-modal"
+              ".control-modal, .filter-modal, .antena-modal, .geofence-modal, .geofence-detail-modal, .station-modal,  .bookmark-modal, .bookmark-detail-modal,  .anomaly-modal, .enc-modal, .anchored-vessel-modal, .profile-modal, .logout-modal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
@@ -5743,10 +6585,10 @@
             const actionBtns = document.createElement("div");
             actionBtns.className = "antena-action-btns";
             actionBtns.innerHTML = `
-              <button class="antena-edit-btn" title="Edit">
-                <i class="bi bi-pencil"></i>
-              </button>
-            `;
+                    <button class="antena-edit-btn" title="Edit">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                  `;
             actionCell.appendChild(actionBtns);
 
             // Tambahkan event listener untuk tombol edit
@@ -5805,13 +6647,24 @@
 
         // Menutup semua modal yang aktif
         function closeAllActiveModals() {
+          // Menutup semua modal dengan class tertentu
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal"
+              ".control-modal, .filter-modal, .antena-modal, .geofence-modal, .geofence-detail-modal, .station-modal, .bookmark-modal, .bookmark-detail-modal, .anomaly-modal, .enc-modal, .anchored-vessel-modal, .profile-modal, .logout-modal, #vesselInfo, .search-result-modal, #searchResultModal"
             )
             .forEach((modal) => {
               modal.classList.remove("visible");
             });
+
+          // Khusus untuk anchoredVesselModal yang menggunakan style display
+          const anchoredVesselModal = document.querySelector(
+            ".anchored-vessel-modal"
+          );
+          if (anchoredVesselModal) {
+            anchoredVesselModal.style.display = "none";
+          }
+
+          // Pastikan activeModal di-set ke null untuk menghindari konflik
           activeModal = null;
         }
 
@@ -6041,13 +6894,13 @@
             const actionBtns = document.createElement("div");
             actionBtns.className = "station-action-btns";
             actionBtns.innerHTML = `
-              <button class="station-edit-btn" title="Edit">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="station-btn btn-danger" title="Delete">
-                <i class="bi bi-trash-fill"></i>
-              </button>
-            `;
+                    <button class="station-edit-btn" title="Edit">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="station-btn btn-danger" title="Delete">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  `;
             actionCell.appendChild(actionBtns);
 
             // Tambahkan event listener untuk tombol edit dan delete
@@ -6128,36 +6981,22 @@
             });
           });
 
-        // Update closeAllActiveModals function untuk include station-modal
-        function closeAllActiveModals() {
+        function closeAllModals() {
           document
             .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal"
+              ".control-modal, .filter-modal, .antena-modal, .geofence-modal, .geofence-detail-modal, .station-modal, .bookmark-modal, .bookmark-detail-modal, .anomaly-modal, .enc-modal, .anchored-vessel-modal, .profile-modal, .logout-modal, #vesselInfo, #arrowIcon, .search-result-modal"
             )
-            .forEach((modal) => {
+            .forEach(function (modal) {
               modal.classList.remove("visible");
+              modal.classList.add("hidden");
+              // Jika modal pakai style display
+              modal.style.display = "none";
             });
-
-          // Khusus untuk anchoredVesselModal yang menggunakan style display
-          if (anchoredVesselModal) {
-            anchoredVesselModal.style.display = "none";
-          }
-
-          activeModal = null;
-        }
-
-        function closeAllModals() {
-          // Tutup modal yang menggunakan class visible
-          const modals = document.querySelectorAll(
-            ".profile-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .station-modal, .antena-modal, .enc-modal, .anchored-vessel-modal, .anomaly-modal"
+          // Khusus anchoredVesselModal
+          var anchoredVesselModal = document.getElementById(
+            "anchoredVesselModal"
           );
-          modals.forEach((modal) => {
-            modal.classList.remove("visible");
-            modal.style.display = "none"; // Pastikan display juga none
-          });
-
-          // Reset active modal
-          activeModal = null;
+          if (anchoredVesselModal) anchoredVesselModal.style.display = "none";
         }
 
         // Update navigasi item listener untuk menutup modal station
@@ -6381,24 +7220,6 @@
             }
           });
         });
-
-        // Update closeAllActiveModals function untuk include anomaly-modal
-        function closeAllActiveModals() {
-          document
-            .querySelectorAll(
-              ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, .bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, .station-modal, .anchored-vessel-modal, .anomaly-modal"
-            )
-            .forEach((modal) => {
-              modal.classList.remove("visible");
-            });
-
-          // Khusus untuk anchoredVesselModal yang menggunakan style display
-          if (anchoredVesselModal) {
-            anchoredVesselModal.style.display = "none";
-          }
-
-          activeModal = null;
-        }
 
         // Event listener untuk icon Anomaly (hanya untuk expand)
         anomalyIcon.addEventListener("click", function (e) {
@@ -6894,175 +7715,9 @@
         });
       });
 
-      // Handle Profile modal
-      const profileItem = document.querySelector('[data-item="profile"]');
-      const profileIcon = profileItem.querySelector(".nav-icon");
-      const profileText = profileItem.querySelector(".nav-text");
-      const profileViewbox = document.getElementById("profileViewbox");
-      const closeProfileBtn = document.getElementById("closeProfileViewbox");
-      const collapseProfileBtn = document.getElementById(
-        "collapseProfileViewbox"
-      );
-      const profileContent = document.getElementById("profileViewboxContent");
-      const profileChevron = collapseProfileBtn.querySelector(
-        ".profile-chevron-icon"
-      );
-
-      // State variables
-      let isProfileViewboxOpen = false;
-      let isProfileContentCollapsed = false;
-
-      // Event listener for profile text (opens viewbox)
-      profileText.addEventListener("click", function (e) {
-        e.stopPropagation();
-        toggleProfileViewbox();
-      });
-
-      // Event listener for profile icon (only expands menu)
-      profileIcon.addEventListener("click", function (e) {
-        e.stopPropagation();
-        if (!navMenu.classList.contains("expanded")) {
-          navMenu.classList.add("expanded");
-          menuState = "expanded";
-        }
-      });
-
-      // Close button handler
-      closeProfileBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        closeProfileViewbox();
-      });
-
-      // Close when clicking outside
-      document.addEventListener("click", function (e) {
-        if (
-          !profileViewbox.contains(e.target) &&
-          !profileText.contains(e.target)
-        ) {
-          closeProfileViewbox();
-        }
-      });
-
-      // Toggle viewbox visibility
-      function toggleProfileViewbox() {
-        if (isProfileViewboxOpen) {
-          closeProfileViewbox();
-        } else {
-          openProfileViewbox();
-        }
-      }
-
-      // Open profile viewbox
-      function openProfileViewbox() {
-        // Close all other modals first
-        closeAllActiveModals();
-
-        // Position the viewbox
-        positionProfileViewbox();
-
-        // Expand content if collapsed
-        if (isProfileContentCollapsed) {
-          toggleProfileContent();
-        }
-
-        // Show viewbox
-        profileViewbox.classList.add("visible");
-        isProfileViewboxOpen = true;
-        activeModal = profileViewbox;
-      }
-
-      // Close profile viewbox
-      function closeProfileViewbox() {
-        profileViewbox.classList.remove("visible");
-        isProfileViewboxOpen = false;
-        activeModal = null;
-      }
-
-      // Toggle content collapse
-      function toggleProfileContent() {
-        profileContent.classList.toggle("hidden");
-        profileChevron.classList.toggle("rotated");
-        isProfileContentCollapsed = !isProfileContentCollapsed;
-      }
-
-      // Position the viewbox
-      function positionProfileViewbox() {
-        const anchoredItem = document.querySelector('[data-item="anchored"]');
-        if (anchoredItem) {
-          const anchoredRect = anchoredItem.getBoundingClientRect();
-          profileViewbox.style.left = "170px"; // Adjusted left position
-          profileViewbox.style.top = `${anchoredRect.top}px`;
-        } else {
-          // Fallback position
-          profileViewbox.style.left = "170px";
-          profileViewbox.style.top = "40px";
-        }
-      }
-
-      // Enhanced closeAllActiveModals function
-      function closeAllActiveModals() {
-        document
-          .querySelectorAll(
-            ".control-modal, .filter-modal, .geofence-modal, .geofence-detail-modal, " +
-              ".bookmark-modal, .bookmark-detail-modal, .enc-modal, .antena-modal, " +
-              ".station-modal, .anchored-vessel-modal, .anomaly-modal, .profile-modal"
-          )
-          .forEach((modal) => {
-            modal.classList.remove("visible");
-          });
-
-        // Handle special cases
-        if (anchoredVesselModal) {
-          anchoredVesselModal.style.display = "none";
-        }
-
-        activeModal = null;
-      }
-
-      // Update nav item click handlers to properly close other modals
-      document.querySelectorAll(".nav-item").forEach((item) => {
-        const itemType = item.getAttribute("data-item");
-
-        if (itemType !== "profile") {
-          item.addEventListener("click", function () {
-            if (profileViewbox.classList.contains("visible")) {
-              closeProfileViewbox();
-            }
-          });
-        }
-      });
-      //close profile
-
-      //Fungsi untuk membuka tutup semua sidebar pada viewbox
-      document.addEventListener("DOMContentLoaded", setupNavigationToggle);
-
-      /**
-       * Mengatur toggle navigasi untuk sidebar dan viewbox terkait, termasuk fitur buka/tutup sidebar.
-       */
       function setupNavigationToggle() {
-        // Elemen sidebar utama
-        const navMenu = document.querySelector(".nav-menu"); // Sesuaikan selector jika berbeda
-        if (!navMenu) {
-          console.error("Nav menu element not found!");
-          return;
-        }
-
-        // State untuk sidebar dan viewbox
-        let menuState = "collapsed";
-        let activeModal = null;
-        let isProfileContentCollapsed = false;
-        let lastActiveViewbox = null; // Melacak viewbox terakhir yang dibuka
-
-        // Daftar item navigasi dan viewbox terkait
+        // Daftar semua item navigasi yang memiliki viewbox
         const navItems = [
-          {
-            name: "profile",
-            item: document.querySelector('[data-item="profile"]'),
-            viewbox: document.getElementById("profileViewbox"),
-            content: document.getElementById("profileViewboxContent"),
-            collapseBtn: document.getElementById("collapseProfileViewbox"),
-            closeBtn: document.getElementById("closeProfileViewbox"),
-          },
           {
             name: "filter",
             item: document.querySelector('[data-item="filter"]'),
@@ -7105,20 +7760,11 @@
           },
         ];
 
-        // Validasi elemen navigasi
-        navItems.forEach((nav) => {
-          if (!nav.item) {
-            console.warn(`Nav item for ${nav.name} not found!`);
-          }
-          if (!nav.viewbox) {
-            console.warn(`Viewbox for ${nav.name} not found!`);
-          }
-        });
+        // Variabel untuk melacak viewbox aktif
+        let activeViewbox = null;
 
-        /**
-         * Menutup semua modal/viewbox yang aktif.
-         */
-        function closeAllModals() {
+        // Fungsi untuk menutup semua viewbox
+        function closeAllViewboxes() {
           navItems.forEach((nav) => {
             if (nav.viewbox) {
               if (nav.name === "anchored") {
@@ -7126,183 +7772,240 @@
               } else {
                 nav.viewbox.classList.remove("visible");
               }
-              // Reset state collapse untuk profile
-              if (nav.name === "profile" && nav.content && nav.collapseBtn) {
-                nav.content.classList.remove("hidden");
-                nav.collapseBtn
-                  .querySelector(".profile-chevron-icon")
-                  ?.classList.remove("rotated");
-                isProfileContentCollapsed = false;
-              }
             }
           });
-          activeModal = null;
-          navMenu.classList.remove("modal-active");
+          activeViewbox = null;
         }
 
-        /**
-         * Memposisikan viewbox relatif terhadap item navigasi atau anchored vessel (untuk profile).
-         * @param {HTMLElement} item - Elemen navigasi.
-         * @param {HTMLElement} viewbox - Elemen viewbox.
-         */
+        // Fungsi untuk memposisikan viewbox
         function positionViewbox(item, viewbox) {
-          if (!item || !viewbox) return;
-          if (viewbox.id === "profileViewbox") {
-            const anchoredItem = document.querySelector(
-              '[data-item="anchored"]'
-            );
-            if (anchoredItem) {
-              const anchoredRect = anchoredItem.getBoundingClientRect();
-              viewbox.style.left = "170px";
-              viewbox.style.top = `${anchoredRect.top}px`;
-            } else {
-              // Fallback jika anchored item tidak ditemukan
-              viewbox.style.left = "170px";
-              viewbox.style.top = "40px";
-            }
-          } else {
-            const rect = item.getBoundingClientRect();
-            viewbox.style.left = `${rect.right + 10}px`;
-            viewbox.style.top = `${rect.top}px`;
-          }
+          const rect = item.getBoundingClientRect();
+          viewbox.style.left = `${rect.right + 10}px`;
+          viewbox.style.top = `${rect.top}px`;
         }
 
-        /**
-         * Menampilkan viewbox untuk item navigasi.
-         * @param {Object} nav - Objek navigasi.
-         */
-        function showViewbox(nav) {
-          closeAllModals();
-          positionViewbox(nav.item, nav.viewbox);
-          if (nav.name === "anchored") {
-            nav.viewbox.style.display = "block";
-          } else {
-            nav.viewbox.classList.add("visible");
-          }
-          activeModal = nav.viewbox;
-          lastActiveViewbox = nav; // Simpan viewbox terakhir yang dibuka
-          navMenu.classList.add("modal-active");
-        }
-
-        /**
-         * Menutup viewbox untuk item navigasi.
-         * @param {Object} nav - Objek navigasi.
-         */
-        function closeViewbox(nav) {
-          if (nav.name === "anchored") {
-            nav.viewbox.style.display = "none";
-          } else {
-            nav.viewbox.classList.remove("visible");
-          }
-          activeModal = null;
-          navMenu.classList.remove("modal-active");
-        }
-
-        // Setup event listener untuk setiap item navigasi
+        // Setup untuk setiap item navigasi
         navItems.forEach((nav) => {
           if (!nav.item || !nav.viewbox) return;
 
-          const icon = nav.item.querySelector(".nav-icon");
-          const text = nav.item.querySelector(".nav-text");
-
-          /**
-           * Toggle viewbox untuk item navigasi.
-           * @param {Event} e - Event klik.
-           */
+          // Handler untuk toggle viewbox
           const toggleViewbox = (e) => {
             e.stopPropagation();
-            if (!navMenu.classList.contains("expanded")) {
-              navMenu.classList.add("expanded");
-              menuState = "expanded";
-              setTimeout(() => showViewbox(nav), 300); // Tunggu animasi expand
+
+            // Jika viewbox ini sedang aktif, tutup
+            if (activeViewbox === nav.viewbox) {
+              closeViewbox(nav);
             } else {
-              if (activeModal === nav.viewbox) {
-                closeViewbox(nav);
-              } else {
-                showViewbox(nav);
-              }
+              // Jika tidak, tampilkan viewbox ini
+              showViewbox(nav);
             }
           };
 
-          // Event listener untuk teks (toggle viewbox)
-          if (text) {
-            text.addEventListener("click", toggleViewbox);
-          }
+          // Fungsi untuk menampilkan viewbox
+          const showViewbox = (nav) => {
+            closeAllViewboxes();
+            positionViewbox(nav.item, nav.viewbox);
 
-          // Event listener untuk ikon (expand menu)
-          if (icon) {
-            icon.addEventListener("click", (e) => {
-              e.stopPropagation();
-              if (!navMenu.classList.contains("expanded")) {
-                navMenu.classList.add("expanded");
-                menuState = "expanded";
-              }
-            });
-          }
-
-          // Khusus untuk profile: handler collapse
-          if (nav.name === "profile" && nav.collapseBtn && nav.content) {
-            nav.collapseBtn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              nav.content.classList.toggle("hidden");
-              nav.collapseBtn
-                .querySelector(".profile-chevron-icon")
-                ?.classList.toggle("rotated");
-              isProfileContentCollapsed = !isProfileContentCollapsed;
-            });
-          }
-
-          // Event listener untuk tombol close
-          if (nav.closeBtn) {
-            nav.closeBtn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              closeViewbox(nav);
-            });
-          }
-        });
-
-        // Fitur toggle sidebar
-        if (sidebarToggleBtn) {
-          sidebarToggleBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            if (navMenu.classList.contains("expanded")) {
-              // Tutup sidebar dan semua viewbox
-              navMenu.classList.remove("expanded");
-              menuState = "collapsed";
-              closeAllModals();
+            if (nav.name === "anchored") {
+              nav.viewbox.style.display = "block";
             } else {
-              // Buka sidebar dan tampilkan viewbox terakhir (atau profile sebagai default)
-              navMenu.classList.add("expanded");
-              menuState = "expanded";
-              setTimeout(() => {
-                const navToOpen =
-                  lastActiveViewbox ||
-                  navItems.find((nav) => nav.name === "profile");
-                if (navToOpen && navToOpen.viewbox) {
-                  showViewbox(navToOpen);
-                }
-              }, 300); // Tunggu animasi expand
+              nav.viewbox.classList.add("visible");
+            }
+
+            activeViewbox = nav.viewbox;
+          };
+
+          // Fungsi untuk menutup viewbox
+          const closeViewbox = (nav) => {
+            if (nav.name === "anchored") {
+              nav.viewbox.style.display = "none";
+            } else {
+              nav.viewbox.classList.remove("visible");
+            }
+            activeViewbox = null;
+          };
+
+          // Event listener untuk item navigasi (toggle viewbox)
+          nav.item.addEventListener("click", toggleViewbox);
+        });
+      }
+
+      // Panggil fungsi setup saat DOM siap
+      document.addEventListener("DOMContentLoaded", setupNavigationToggle); // close sidebar fungsi semua sidebar
+
+      // fungsi pemanggilan search result
+      const modal = document.getElementById("searchResultModal");
+      const backdrop = document.getElementById("searchResultBackdrop");
+      const closeBtn = document.getElementById("closeSearchResult");
+      const searchIcon = document.getElementById("mainSearchIcon");
+      const searchInput = document.querySelector(".search-input");
+      const searchContainer = document.querySelector(".search-container");
+
+      // Show modal on search icon or input click
+      function showModal() {
+        modal.classList.add("active");
+        if (backdrop) backdrop.classList.add("active");
+      }
+
+      // Hide modal
+      function hideModal() {
+        modal.classList.remove("active");
+        if (backdrop) backdrop.classList.remove("active");
+      }
+
+      if (searchIcon) {
+        searchIcon.addEventListener("click", function (e) {
+          e.stopPropagation();
+          showModal();
+        });
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener("click", function (e) {
+          e.stopPropagation();
+          showModal();
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          hideModal();
+        });
+      }
+
+      if (backdrop) {
+        backdrop.addEventListener("click", function () {
+          hideModal();
+        });
+      }
+
+      // Hide modal when clicking outside the search container/modal
+      document.addEventListener("click", function (e) {
+        if (
+          modal.classList.contains("active") &&
+          !searchContainer.contains(e.target) &&
+          !modal.contains(e.target)
+        ) {
+          hideModal();
+        }
+      });
+
+      //  Handle Icon Vessel buka tutup
+      document.addEventListener("DOMContentLoaded", function () {
+        const arrowIcon = document.getElementById("arrowIcon");
+        const vesselInfo = document.getElementById("vesselInfo");
+        const closeVesselButton = document.querySelector(".close-vessel-info");
+        const searchIcon = document.getElementById("mainSearchIcon");
+        const searchInput = document.querySelector(".search-input");
+        const searchResultModal = document.getElementById("searchResultModal");
+
+        // --- Global Active Modal ---
+        let activeModal = null;
+
+        // --- Close Semua Modal ---
+        function closeAllActiveModals() {
+          if (vesselInfo) {
+            vesselInfo.classList.add("hidden");
+            vesselInfo.classList.remove("active");
+            vesselInfo.style.display = "none";
+          }
+          if (searchResultModal) {
+            searchResultModal.classList.add("hidden");
+            searchResultModal.classList.remove("active");
+            searchResultModal.style.display = "none";
+          }
+          activeModal = null;
+        }
+
+        // --- Open Specific Modal ---
+        function openModal(modal) {
+          closeAllActiveModals();
+          if (modal) {
+            modal.classList.remove("hidden");
+            modal.classList.add("active");
+            modal.style.display = "";
+            activeModal = modal;
+          }
+        }
+
+        // --- Arrow Icon Click (Open Vessel Info) ---
+        if (arrowIcon) {
+          arrowIcon.addEventListener("click", function (event) {
+            event.stopPropagation();
+            if (activeModal === vesselInfo) {
+              closeAllActiveModals();
+            } else {
+              openModal(vesselInfo);
             }
           });
         }
 
-        // Menutup modal saat klik di luar
-        document.addEventListener("click", (e) => {
-          let clickedInsideModal = false;
-          navItems.forEach((nav) => {
-            if (
-              nav.viewbox &&
-              (nav.viewbox.contains(e.target) || nav.item?.contains(e.target))
-            ) {
-              clickedInsideModal = true;
+        // --- Search Icon Click (Open Search Result) ---
+        if (searchIcon) {
+          searchIcon.addEventListener("click", function (event) {
+            event.stopPropagation();
+            if (activeModal === searchResultModal) {
+              closeAllActiveModals();
+            } else {
+              openModal(searchResultModal);
             }
           });
-          if (!clickedInsideModal && !navMenu.contains(e.target)) {
-            closeAllModals();
+        }
+
+        // --- Search Input Click (Also Open Search Result) ---
+        if (searchInput) {
+          searchInput.addEventListener("click", function (event) {
+            event.stopPropagation();
+            if (activeModal !== searchResultModal) {
+              openModal(searchResultModal);
+            }
+          });
+        }
+
+        // --- Click Table Row (Buka Vessel Info) ---
+        const tableRow = document.querySelector("tbody tr");
+        if (tableRow) {
+          tableRow.addEventListener("click", function (event) {
+            event.stopPropagation();
+            openModal(vesselInfo);
+          });
+        }
+
+        // --- Close Button di Vessel Info ---
+        if (closeVesselButton) {
+          closeVesselButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+            closeAllActiveModals();
+          });
+        }
+
+        // --- Klik Luar Modal Tutup Semua ---
+        document.addEventListener("click", function (event) {
+          if (
+            vesselInfo &&
+            !vesselInfo.contains(event.target) &&
+            searchResultModal &&
+            !searchResultModal.contains(event.target) &&
+            arrowIcon &&
+            !arrowIcon.contains(event.target) &&
+            searchIcon &&
+            !searchIcon.contains(event.target) &&
+            searchInput &&
+            !searchInput.contains(event.target)
+          ) {
+            closeAllActiveModals();
           }
         });
-      }
-      // close sidebar fungsi semua sidebar
+
+        // --- Nav Item Click Tutup Semua Modal ---
+        document.querySelectorAll(".nav-item").forEach(function (item) {
+          item.addEventListener("click", function () {
+            closeAllActiveModals();
+            // Modal dari nav-item akan dibuka handler terpisah
+          });
+        });
+      });
     </script>
 
     <!-- Modal Konfirmasi Delete -->
