@@ -2038,13 +2038,14 @@
         position: fixed;
         left: 200px;
         top: 85px;
-        background-color: var(--modal-background);
+        background-color: rgba(33, 37, 41, 0.6);
         border-radius: 5px;
-        padding: 12px;
+        padding: 15px;
         display: none;
         z-index: 2000;
         width: 320px;
         max-width: calc(100vw - 20px);
+        /* min-width: 320px; */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         min-height: 320px;
         max-height: 80vh;
@@ -2052,6 +2053,7 @@
         scrollbar-width: none;
         -ms-overflow-style: none;
         transition: all 0.3s ease;
+        color: white;
       }
 
       .profile-modal::-webkit-scrollbar {
@@ -2059,10 +2061,11 @@
       }
 
       .profile-modal.visible {
-        display: block !important;
+        /* display: block !important; */
+        display: block;
       }
 
-      .profile-modal.collapsed {
+      /* .profile-modal.collapsed {
         min-height: 50px !important;
         height: 50px !important;
         max-height: 50px !important;
@@ -2070,7 +2073,7 @@
         max-width: calc(100vw - 20px);
         overflow: hidden !important;
         transition: all 0.3s ease;
-      }
+      } */
 
       .profile-header {
         display: flex;
@@ -2165,7 +2168,7 @@
         background-color: #0d6efd;
       }
 
-      .profile-modal.collapsed {
+      /* .profile-modal.collapsed {
         min-height: 50px !important;
         height: 50px !important;
         max-height: 50px !important;
@@ -2174,15 +2177,15 @@
         max-width: 280px !important;
         overflow: hidden !important;
         transition: all 0.3s ease;
-      }
+      } */
 
-      .profile-modal.collapsed #profile-content {
+      /* .profile-modal.collapsed #profile-content {
         display: none !important;
       }
-      .profile-modal.collapsed .profile-chevron-icon {
-        /* transform: rotate(180deg); */
-        transition: transform 0.3s;
-      }
+      .profile-modal.collapsed .profile-chevron-icon { */
+      /* transform: rotate(180deg); */
+      /* transition: transform 0.3s;
+      } */
 
       /* penutup profiles modal */
 
@@ -3011,7 +3014,7 @@
 
       /* Gaya umum untuk semua modal saat collapsed */
       .control-modal.collapsed,
-      /* .profile-modal.collapsed, */
+      .profile-modal.collapsed,
       .anchored-vessel-modal.collapsed,
       .filter-modal.collapsed,
       /* .profile-modal.collapsed, */
@@ -3048,12 +3051,12 @@
       .control-modal,
       .filter-modal,
       .profile-modal,
-      .profile-modal,
+      /* .profile-modal, */
       .geofence-modal,
       .geofence-detail-modal,
       .bookmark-modal,
       .bookmark-detail-modal,
-      .profile-modal,
+      /* .profile-modal, */
       .enc-modal,
       .antena-modal,
       .station-modal,
@@ -3129,7 +3132,7 @@
 
       /* Memperkecil ukuran elemen pada semua modal box */
       .filter-title,
-      .profile-title,
+      /* .profile-title, */
       .geofence-title,
       .bookmark-title,
       .profile-title,
@@ -3159,7 +3162,7 @@
       }
 
       .filter-control-btn i,
-      .porfile-control-btn i,
+      /* .porfile-control-btn i, */
       .geofence-control-btn i,
       .bookmark-control-btn i,
       .bookmark-control-btn i,
