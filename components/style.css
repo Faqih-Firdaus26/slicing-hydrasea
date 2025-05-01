@@ -1,0 +1,3683 @@
+:root {
+  /* Dark theme (default) */
+  --background-color: #212529;
+  --text-color: white;
+  --modal-background: rgba(33, 37, 41, 0.6);
+  --item-hover: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --input-background: white;
+  --input-text: #333;
+}
+
+/* Light theme */
+body.light-mode {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --modal-background: rgba(255, 255, 255, 0.9);
+  --item-hover: rgba(0, 0, 0, 0.05);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --input-background: #ffffff;
+  --input-text: #333333;
+}
+
+body.light-mode .sidebar {
+  background-color: white;
+  color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .nav-item {
+  color: #444;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .nav-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .nav-icon path,
+body.light-mode .nav-icon {
+  fill: #444;
+  stroke: #444;
+}
+
+/* Modal untuk konfirmasi delete */
+.confirm-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 3000;
+  width: 300px;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.confirm-modal.visible {
+  display: block;
+  opacity: 1;
+}
+
+.confirm-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.confirm-message {
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 14px;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.confirm-cancel,
+.confirm-delete {
+  padding: 5px 15px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.confirm-cancel {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.confirm-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2999;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modal-backdrop.visible {
+  display: block;
+  opacity: 1;
+}
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  /* font-family: ; */
+}
+.map-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-color: skyblue;
+}
+.top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px;
+  z-index: 1000;
+}
+.left-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.brand-container {
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+}
+.hamburger-container {
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  width: 40px;
+}
+.brand {
+  font-weight: bold;
+  color: white;
+  font-size: 1rem;
+}
+.hamburger-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+/* Fixed hamburger/X icon display */
+.hamburger-btn .bi-list {
+  display: block;
+}
+.hamburger-btn .bi-x-lg {
+  display: none;
+}
+.hamburger-btn.active .bi-list {
+  display: none;
+}
+.hamburger-btn.active .bi-x-lg {
+  display: block;
+}
+.right-controls {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* search */
+.search-wrapper {
+  position: relative;
+  z-index: 2000;
+}
+
+.search-container {
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  width: 500px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  margin-left: auto;
+  position: relative;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  flex-grow: 1;
+  outline: none;
+  color: white;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-icon {
+  color: white;
+  cursor: pointer;
+}
+
+/* === MODAL === */
+
+/* 2. Modal sekarang absolute ke .search-container */
+
+.searchResultContainer.active {
+  display: block;
+}
+
+/* Modal */
+.searchResultModal {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 100%;
+  max-width: 550px;
+  background: var(--modal-bg);
+  border-radius: 5px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  overflow: visible;
+  background-color: rgba(33, 37, 41, 0.6) !important;
+  backdrop-filter: none !important;
+  transform: scale(0.75);
+  transform-origin: top right;
+}
+
+/* Tampilkan modal */
+.searchResultModal.active {
+  display: block;
+}
+
+/* Opsional: hidden toggle class */
+.searchResultModal.hidden {
+  display: none;
+}
+
+/* Header */
+.search-result-header {
+  background-color: var(--modal-header-bg);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  margin: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  color: #ffffff;
+}
+
+/* Container tabel */
+.search-result-table-container {
+  background-color: #ffffff;
+  padding: 8px 12px;
+  margin: 0 12px 10px; /* top:0, left-right:12px, bottom:10px */
+  width: calc(100% - 24px);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* Tabel */
+.search-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: #333;
+  table-layout: fixed;
+}
+
+.search-result-table thead th {
+  padding: 8px 12px;
+  border-bottom: 2px solid #e0e0e0;
+  text-align: left;
+}
+
+.search-result-table tbody td {
+  background-color: #ffffff;
+
+  padding: 8px 12px;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+.search-result-table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* close search */
+
+/* Arrow Icon positioning */
+.arrowIcon {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  cursor: pointer; /* tambahkan ini */
+  border: 2px;
+}
+.arrowButton {
+  pointer-events: auto; /* Ini wajib supaya SVG bisa diklik */
+}
+
+.arrowIcon svg {
+  width: 50px;
+  height: 50px;
+}
+
+/* Vessel Info Styles */
+.vesselInfo-container {
+  position: relative;
+  z-index: 1000;
+  overflow: visible;
+  pointer-events: none;
+  /* Ditambahkan display none untuk menyembunyikan container saat awal */
+  display: none;
+}
+
+.vesselInfo {
+  position: absolute;
+  top: calc(100% + 20px);
+  right: 10px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  width: 280px;
+  color: white;
+  z-index: 1000;
+  pointer-events: auto;
+  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.6);
+  overflow: hidden;
+  /* Menambahkan transisi untuk efek smooth */
+  transition: opacity 0.3s ease;
+}
+
+.vesselInfo.hidden {
+  display: none !important;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vessel-card {
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.vessel-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.info-title {
+  display: flex;
+  background: #2c3034;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.info-title h2 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flag-name {
+  display: flex;
+  background: #2c3034;
+  align-items: center;
+  padding: 4px 6px;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.vessel-flag {
+  display: flex;
+  align-items: center;
+}
+
+.info-title svg {
+  width: 18px;
+  height: 18px;
+}
+
+.info-title h2 {
+  font-size: 13px;
+  margin: 0;
+  color: white;
+  font-weight: 500;
+}
+
+.close-vessel-info {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vessel-name {
+  font-size: 15px;
+  color: white;
+  margin: 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.vessel-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 8px;
+  padding: 6px;
+  background: #2c3034;
+  border-radius: 4px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2px;
+}
+
+.info-item span {
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+}
+
+/* Vessel Image */
+.vessel-image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.vessel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+/* Vessel Detail */
+.vessel-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-item {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  align-items: center;
+  padding: 4px 6px;
+  background: #2c3034;
+  border-radius: 4px;
+}
+
+.detail-item label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.detail-item span {
+  font-size: 10px;
+  color: white;
+  font-weight: 500;
+}
+
+/* Vessel Table */
+.vessel-table {
+  background: #2c3034;
+  border-radius: 4px;
+  padding: 6px;
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.vessel-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vessel-table th {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: normal;
+  text-align: left;
+  padding: 4px 3px;
+  border-bottom: 1px solid rgba(70, 70, 70, 0.3);
+}
+
+.vessel-table td {
+  font-size: 9px;
+  color: white;
+  padding: 4px 3px;
+  border-bottom: 1px solid rgba(70, 70, 70, 0.3);
+}
+/* close vessel info */
+
+.controls-container {
+  position: fixed;
+  bottom: 20px;
+  right: 70px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 5px 10px;
+  display: flex;
+  z-index: 1000;
+}
+.zoom-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 120px;
+  background-color: rgba(243, 244, 248, 0.7);
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  z-index: 1000;
+}
+.zoom-btn {
+  background: none;
+  border: none;
+  color: #1a3b5c;
+  font-size: 1.2rem;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.zoom-btn:hover {
+  background-color: rgba(175, 176, 179, 0.8);
+}
+.control-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  margin: 0 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Navigation Menu Styles */
+.nav-menu {
+  position: absolute;
+  top: 85px;
+  left: 10px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  width: 50px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease, width 0.3s ease;
+}
+
+.nav-menu::-webkit-scrollbar {
+  display: none;
+}
+.nav-menu.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.nav-item:hover {
+  background-color: rgba(52, 58, 64, 0.9);
+}
+.nav-icon {
+  font-size: 0.6rem;
+  min-width: 25px;
+  text-align: center;
+  flex-shrink: 0;
+  color: white;
+}
+.nav-text {
+  margin-left: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: absolute;
+  left: 40px;
+  pointer-events: none;
+  font-size: 12px;
+}
+.nav-menu.expanded {
+  width: 150px;
+}
+.nav-menu.expanded .nav-text {
+  opacity: 1;
+  transform: translateX(0);
+  position: static;
+  pointer-events: auto;
+}
+
+.control-modal {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 10px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: none;
+  z-index: 1001;
+  color: white;
+}
+
+.control-modal {
+  width: 220px;
+}
+/* Larger size for layer modal */
+#layerModal {
+  width: 280px;
+}
+.control-modal.visible {
+  display: block;
+}
+.modal-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: white;
+}
+.modal-content {
+  max-height: none;
+  font-size: 12px;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.checkbox-item input[type="checkbox"] {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.checkbox-item label {
+  margin-right: 5px;
+  flex: 1;
+  min-width: 100px;
+}
+.hours-input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+.dropdown-select {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 2px;
+  width: 120px;
+  margin-top: 5px;
+  margin-left: 25px;
+}
+
+.with-hours {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+/* Custom zoom control position */
+.leaflet-control-zoom {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  margin: 0 !important;
+  z-index: 999 !important;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .vesselInfo {
+    width: 240px;
+    right: 3px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .vessel-card {
+    padding: 8px;
+  }
+
+  .info-title h2 {
+    font-size: 12px;
+  }
+
+  .vessel-name {
+    font-size: 13px;
+  }
+
+  .info-item label {
+    font-size: 8px;
+  }
+
+  .info-item span {
+    font-size: 10px;
+  }
+
+  .detail-item {
+    grid-template-columns: 80px 1fr;
+    padding: 3px 5px;
+    margin-bottom: 4px;
+  }
+
+  .detail-item label {
+    font-size: 9px;
+  }
+
+  .detail-item span {
+    font-size: 9px;
+  }
+
+  .vessel-table {
+    padding: 4px;
+  }
+
+  .vessel-table th,
+  .vessel-table td {
+    font-size: 8px;
+    padding: 3px 2px;
+  }
+
+  .searchResultModal {
+    width: 320px;
+    max-width: 100%;
+    top: 10px;
+    max-height: 80vh;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .search-result-header {
+    font-size: 0.7rem;
+    padding: 4px 5px;
+  }
+
+  .search-result-table-container {
+    padding: 3px 3px;
+  }
+
+  .search-result-table {
+    font-size: 0.6rem;
+    table-layout: fixed;
+    word-break: break-word;
+  }
+
+  .search-result-table thead th,
+  .search-result-table tbody td {
+    padding: 1px 3px;
+  }
+
+  .search-container {
+    width: 200px;
+    height: 30px;
+    padding: 5px 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+    padding-right: 25px;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .brand {
+    font-size: 0.8rem;
+  }
+
+  .brand-container {
+    padding: 5px 10px;
+  }
+
+  .hamburger-container {
+    width: 35px;
+  }
+
+  .control-btn {
+    font-size: 1rem;
+    margin: 0 3px;
+    padding: 5px;
+  }
+
+  /* Memastikan kontrol tidak tumpang tindih dengan zoom */
+  .controls-container {
+    right: 80px;
+    padding: 5px;
+    gap: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: visible;
+    position: fixed;
+    bottom: 20px;
+    z-index: 1000;
+  }
+
+  /* Mengubah posisi zoom control */
+  .leaflet-control-zoom {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    margin: 0 !important;
+    z-index: 999 !important;
+  }
+
+  .control-modal {
+    width: 180px;
+    padding: 8px;
+    right: 0;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 10px;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Untuk scrolling yang lebih baik di iOS */
+  }
+
+  #layerModal {
+    width: 220px;
+  }
+
+  .checkbox-item {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .checkbox-item label {
+    font-size: 0.8rem;
+    min-width: 80px;
+    flex: 1;
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .hours-input {
+    width: 40px;
+  }
+
+  .dropdown-select {
+    width: 100px;
+    margin-left: 15px;
+  }
+
+  .nav-menu {
+    width: 40px;
+  }
+
+  .nav-menu.expanded {
+    width: 160px;
+  }
+
+  .nav-icon {
+    font-size: 0.7rem;
+    min-width: 25px;
+    /* color: white; */
+  }
+
+  .nav-text {
+    font-size: 0.7rem;
+    left: 35px;
+  }
+
+  .modal-title {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  /* Memastikan control navigation tetap terlihat */
+  .right-controls {
+    display: flex;
+    gap: 5px;
+    flex-wrap: nowrap;
+    overflow-x: visible;
+    position: relative;
+    z-index: 1000;
+  }
+
+  /* Memastikan control button tetap terlihat */
+  .control-btn svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+
+  .modal-content {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 5px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .profile-modal {
+    width: 320px;
+    left: 200px;
+    top: 85px;
+  }
+
+  #searchResultModal {
+    max-width: 90%;
+    right: 5%;
+    left: 5%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .vesselInfo {
+    width: 220px;
+    right: 2px;
+    top: calc(100% + 8px);
+    max-height: 50vh;
+  }
+
+  .vessel-card {
+    padding: 6px;
+  }
+
+  .info-title {
+    padding: 3px;
+  }
+
+  .info-title h2 {
+    font-size: 11px;
+  }
+
+  .info-title svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .close-vessel-info {
+    font-size: 14px;
+  }
+
+  .flag-name {
+    padding: 3px 4px;
+    margin-top: 6px;
+  }
+
+  .vessel-flag img {
+    width: 16px;
+    height: 10px;
+  }
+
+  .vessel-name {
+    font-size: 12px;
+  }
+
+  .vessel-info-grid {
+    padding: 4px;
+    margin-bottom: 6px;
+  }
+
+  .info-item label {
+    font-size: 7px;
+  }
+
+  .info-item span {
+    font-size: 9px;
+  }
+
+  .vessel-image-container {
+    margin-bottom: 6px;
+  }
+
+  .detail-item {
+    grid-template-columns: 70px 1fr;
+    padding: 2px 4px;
+    margin-bottom: 3px;
+  }
+
+  .detail-item label {
+    font-size: 8px;
+  }
+
+  .detail-item span {
+    font-size: 8px;
+  }
+
+  .vessel-table {
+    padding: 3px;
+    margin-top: 6px;
+  }
+
+  .vessel-table th,
+  .vessel-table td {
+    font-size: 7px;
+    padding: 2px 1px;
+  }
+
+  .searchResultModal {
+    width: 250px;
+    max-width: 100%;
+    top: 10px;
+    max-height: 80vh;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .search-result-header {
+    font-size: 0.6rem;
+    padding: 2px 3px;
+  }
+
+  .search-result-table-container {
+    padding: 3px 3px;
+  }
+
+  .search-result-table {
+    font-size: 0.6rem;
+    table-layout: fixed;
+    word-break: break-word;
+  }
+
+  .search-result-table thead th,
+  .search-result-table tbody td {
+    padding: 1px 3px;
+  }
+
+  .search-container {
+    width: 150px;
+    height: 28px;
+  }
+
+  /* Menyesuaikan posisi kontrol agar tidak tertutup zoom */
+  .controls-container {
+    right: 80px; /* Posisi lebih jauh dari tombol zoom */
+    gap: 3px;
+    padding: 3px;
+    bottom: 15px;
+    flex-wrap: wrap; /* Memungkinkan pembungkusan jika terlalu banyak tombol */
+    max-width: calc(100% - 100px); /* Mencegah menutupi layar terlalu banyak */
+  }
+
+  .control-btn {
+    padding: 3px;
+  }
+
+  .control-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .control-modal {
+    width: 160px;
+    right: 0;
+    /* Memastikan modal muncul di atas bukan di bawah pada mobile */
+    bottom: unset;
+    top: 100%;
+    margin-top: 10px;
+    margin-bottom: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #layerModal {
+    width: 200px;
+  }
+
+  .right-controls {
+    gap: 3px;
+  }
+
+  /* Menyesuaikan ukuran kontrol zoom pada mobile */
+  .leaflet-control-zoom a {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 16px !important;
+  }
+
+  .checkbox-item {
+    margin-bottom: 5px;
+  }
+
+  .checkbox-item label {
+    font-size: 0.75rem;
+    min-width: 70px;
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+  }
+
+  .profile-modal {
+    width: 300px;
+    max-width: calc(100vw - 20px);
+    left: 10px; /* Geser ke kiri untuk muat di layar */
+    top: 85px;
+    padding: 8px;
+  }
+  #searchResultModal {
+    max-width: 90%;
+    right: 5%;
+    left: 5%;
+  }
+}
+
+/* Media query untuk orientasi landscape pada perangkat mobile */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+  .vesselInfo {
+    width: 200px;
+    right: 2px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .vessel-card {
+    padding: 5px;
+  }
+
+  .vessel-header {
+    margin-bottom: 5px;
+  }
+
+  .info-title h2 {
+    font-size: 10px;
+  }
+
+  .info-title svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .flag-name {
+    padding: 2px 4px;
+    margin-top: 4px;
+  }
+
+  .vessel-name {
+    font-size: 11px;
+  }
+
+  .vessel-info-grid {
+    margin-bottom: 5px;
+    padding: 3px;
+  }
+
+  .info-item label {
+    font-size: 7px;
+    margin-bottom: 1px;
+  }
+
+  .info-item span {
+    font-size: 8px;
+  }
+
+  .vessel-image-container {
+    margin-bottom: 5px;
+  }
+
+  .detail-item {
+    grid-template-columns: 60px 1fr;
+    padding: 2px 3px;
+    margin-bottom: 2px;
+  }
+
+  .detail-item label {
+    font-size: 7px;
+  }
+
+  .detail-item span {
+    font-size: 7px;
+  }
+
+  .vessel-table {
+    padding: 2px;
+    margin-top: 4px;
+  }
+
+  .vessel-table th,
+  .vessel-table td {
+    font-size: 6px;
+    padding: 1px;
+  }
+
+  .searchResultModal {
+    width: 250px;
+    max-width: 100%;
+    top: 10px;
+    max-height: 80vh;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .search-result-header {
+    font-size: 0.6rem;
+    padding: 2px 3px;
+  }
+
+  .search-result-table-container {
+    padding: 3px 3px;
+  }
+
+  .search-result-table {
+    font-size: 0.6rem;
+    table-layout: fixed;
+    word-break: break-word;
+  }
+
+  .search-result-table thead th,
+  .search-result-table tbody td {
+    padding: 1px 3px;
+  }
+
+  .controls-container {
+    right: 80px;
+    bottom: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: calc(100% - 100px);
+  }
+
+  .profile-modal {
+    width: 320px;
+    left: 200px;
+    top: 85px;
+    min-height: 260px;
+    max-height: 320px;
+  }
+
+  .control-btn {
+    padding: 3px;
+    margin: 2px;
+  }
+
+  .control-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .leaflet-control-zoom {
+    bottom: 10px !important;
+    right: 10px !important;
+  }
+
+  .leaflet-control-zoom a {
+    width: 25px !important;
+    height: 25px !important;
+    line-height: 25px !important;
+  }
+
+  .control-modal {
+    width: 160px;
+    max-height: 80vh;
+    /* Dalam landscape, tampilkan di samping bukan di atas/bawah */
+    top: 0;
+    right: 100%;
+    margin-right: 10px;
+    margin-top: 0;
+  }
+
+  .nav-menu {
+    max-height: calc(100vh - 60px);
+  }
+
+  .modal-content {
+    max-height: 70vh;
+  }
+}
+
+.filter-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 280px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filter-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-modal.visible {
+  display: block !important;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.filter-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.filter-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+.filter-content {
+  max-height: 300px;
+  overflow-y: auto;
+  color: white;
+}
+
+.filter-content.hidden {
+  display: none;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.filter-row:not(:first-child) {
+  margin-top: 10px;
+  padding-top: 10px;
+  /* Menghapus garis pemisah */
+  /* border-top: 1px solid rgba(255, 255, 255, 0.2); */
+}
+
+.filter-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 1;
+}
+
+.filter-select {
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(52, 58, 64, 0.8);
+  font-size: 12px;
+  color: white;
+  position: relative;
+  z-index: 1;
+}
+
+.filter-select option {
+  background-color: #343a40;
+  color: white;
+}
+
+.filter-select.type-select {
+  width: 100px;
+}
+
+.filter-select.operator-select {
+  width: 50px;
+}
+
+.filter-select.value-select {
+  width: 120px;
+}
+
+.filter-select.condition-select {
+  width: 70px;
+}
+
+/* Pastikan semua select di baris pertama dan baris berikutnya sejajar */
+.filter-row:first-child .filter-group {
+  margin-left: 78px;
+}
+
+/* Gaya untuk panah dropdown */
+.filter-dropdown-btn {
+  margin-left: 5px;
+}
+
+.filter-delete {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-delete:hover {
+  color: #bd2130;
+}
+
+.filter-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.filter-submit {
+  background-color: rgba(52, 152, 219, 0.8);
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.filter-submit:hover {
+  background-color: rgba(52, 152, 219, 1);
+}
+
+/* Animasi rotasi untuk icon chevron */
+.rotate-icon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.rotate-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Gaya khusus saat content hidden */
+.filter-content.hidden {
+  display: none;
+}
+
+/* Pastikan ukuran filter modal konsisten */
+.filter-modal {
+  min-height: 150px;
+  transition: height 0.3s ease;
+}
+
+/* Pastikan tombol submit tetap terlihat meskipun filter content disembunyikan */
+.filter-action {
+  margin-top: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Gaya untuk popup Geofence */
+.geofence-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.5);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.geofence-modal.collapsed {
+  min-height: 50px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  min-width: 280px !important;
+  width: 280px !important;
+  max-width: 280px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease;
+}
+
+.geofence-modal.collapsed .geofence-content {
+  display: none !important;
+}
+.geofence-modal.collapsed .geofence-chevron-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
+
+.geofence-detail-modal.collapsed {
+  min-height: 50px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  min-width: 280px !important;
+  width: 280px !important;
+  max-width: 280px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease;
+}
+
+.geofence-detail-modal.collapsed .geofence-detail-content {
+  display: none !important;
+}
+
+.geofence-detail-modal.collapsed .geofence-chevron-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
+
+.geofence-modal.visible {
+  display: block;
+}
+
+.geofence-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.geofence-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
+
+.geofence-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.geofence-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+.geofence-search {
+  position: relative;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.geofence-search input {
+  padding: 5px 30px 5px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  width: 150px;
+}
+
+.geofence-search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.geofence-list {
+  margin-bottom: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.geofence-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.geofence-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.geofence-item-name {
+  flex-grow: 1;
+  color: white;
+}
+
+.geofence-item-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.geofence-btn {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.geofence-btn.btn-danger {
+  background-color: #333;
+}
+
+.geofence-btn:hover {
+  opacity: 0.8;
+}
+
+/* Modal detail geofence */
+.geofence-detail-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.5);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.geofence-detail-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.geofence-detail-modal.visible {
+  display: block;
+}
+
+.geofence-detail-content {
+  max-height: 250px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.geofence-detail-content::-webkit-scrollbar {
+  display: none;
+}
+
+.geofence-input-group {
+  margin-bottom: 10px;
+}
+
+.geofence-input-label {
+  margin-top: 15px;
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.geofence-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.geofence-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+  min-height: 60px;
+  resize: vertical;
+  box-sizing: border-box;
+  max-height: 120px;
+}
+
+.geofence-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.geofence-action-btn {
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.geofence-action-btn:hover {
+  opacity: 0.8;
+}
+
+.geofence-action-btn.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.geofence-action-btn.btn-submit {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Animasi tanda panah */
+.geofence-chevron-icon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.geofence-chevron-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Gaya untuk content hidden */
+.geofence-content.hidden {
+  display: none;
+}
+
+/* Pastikan ukuran modal konsisten */
+.geofence-modal {
+  min-height: 150px;
+}
+
+.filter-modal .filter-content {
+  min-height: 50px;
+}
+
+.filter-modal.content-hidden {
+  min-height: 50px;
+}
+
+/* Gaya untuk popup Bookmark */
+.bookmark-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 320px;
+}
+
+.bookmark-modal.visible {
+  display: block;
+}
+
+.bookmark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.bookmark-title {
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+}
+
+.bookmark-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.bookmark-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+.bookmark-search {
+  position: relative;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bookmark-search input {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  color: white;
+  width: 150px;
+}
+
+.bookmark-search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.bookmark-list {
+  margin-bottom: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bookmark-list::-webkit-scrollbar {
+  display: none;
+}
+
+.bookmark-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bookmark-item-name {
+  flex-grow: 1;
+  color: white;
+}
+
+.bookmark-item-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.bookmark-btn {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bookmark-btn.btn-danger {
+  background-color: #333;
+}
+
+.bookmark-btn:hover {
+  opacity: 0.8;
+}
+
+.bookmark-modal.collapsed {
+  min-height: 50px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  min-width: 280px !important;
+  width: 280px !important;
+  max-width: 280px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease;
+}
+
+.bookmark-modal.collapsed .bookmark-content {
+  display: none !important;
+}
+.bookmark-modal.collapsed .bookmark-chevron-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
+
+/* Modal detail bookmark */
+.bookmark-detail-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 260px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bookmark-detail-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.bookmark-detail-modal.visible {
+  display: block;
+}
+
+.bookmark-detail-content {
+  max-height: 250px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bookmark-detail-content::-webkit-scrollbar {
+  display: none;
+}
+
+.bookmark-input-group {
+  margin-bottom: 10px;
+}
+
+.bookmark-input-label {
+  display: block;
+  margin-top: 15px;
+  color: white;
+  font-size: 12px;
+}
+
+.bookmark-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.bookmark-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.bookmark-action-btn {
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.bookmark-action-btn:hover {
+  opacity: 0.8;
+}
+
+.bookmark-action-btn.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.bookmark-action-btn.btn-submit {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Animasi tanda panah */
+.bookmark-chevron-icon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.bookmark-chevron-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Gaya untuk content hidden */
+.bookmark-content.hidden {
+  display: none;
+}
+
+/* Pastikan ukuran modal konsisten */
+.bookmark-modal {
+  min-height: 150px;
+}
+
+.bookmark-detail-modal.collapsed {
+  min-height: 50px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  min-width: 280px !important;
+  width: 280px !important;
+  max-width: 280px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease;
+}
+
+.bookmark-detail-modal.collapsed .bookmark-detail-content {
+  display: none !important;
+}
+
+.bookmark-detail-modal.collapsed .bookmark-chevron-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
+
+/* Gaya untuk popup ENC */
+.enc-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 320px;
+  max-height: 80vh; /* Batasi tinggi maksimum */
+  overflow-y: auto; /* Tambahkan scroll jika terlalu panjang */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.enc-modal::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.enc-modal.visible {
+  display: block;
+}
+
+.enc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.enc-title {
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+}
+
+.enc-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.enc-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+.enc-search-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+
+.enc-active-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 12px;
+}
+
+.enc-active-cell input {
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+  width: 160px;
+}
+
+.enc-trash-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.enc-search {
+  position: relative;
+  margin-top: 10px;
+}
+
+.enc-search input {
+  padding: 4px 28px 4px 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(52, 58, 64, 0.8);
+  color: white;
+  width: 140px;
+}
+
+.enc-search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.enc-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+  font-size: 12px;
+}
+
+.enc-table th,
+.enc-table td {
+  padding: 8px 5px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.enc-table th {
+  font-weight: bold;
+}
+
+.enc-view-btn {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enc-view-btn:hover {
+  opacity: 0.8;
+}
+
+/* Pastikan ukuran modal konsisten */
+.enc-modal {
+  min-height: 150px;
+}
+
+/* Gaya untuk ENC chevron icon */
+.enc-chevron-icon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.enc-chevron-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Gaya untuk ENC content hidden */
+.enc-content.hidden {
+  display: none;
+}
+
+/* Profile Modal Styles */
+.profile-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: var(--modal-background);
+  border-radius: 5px;
+  padding: 12px;
+  display: none;
+  z-index: 2000;
+  width: 320px;
+  max-width: calc(100vw - 20px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  transition: all 0.3s ease;
+}
+
+.profile-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-modal.visible {
+  display: block !important;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.profile-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+.profile-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.profile-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+.profile-control-btn i {
+  font-size: 12px;
+}
+
+#profileCollapseIcon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+#profileCollapseIcon.rotated {
+  transform: rotate(180deg);
+}
+
+#profileContent.hidden {
+  display: none;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.profile-form input {
+  padding: 5px 8px;
+  font-size: 12px;
+  background-color: var(--input-background);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--input-text);
+  border-radius: 3px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.profile-form label {
+  color: white;
+  margin-bottom: 5px;
+  font-size: 12px;
+  display: block;
+}
+
+.profile-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.profile-btn-cancel,
+.profile-btn-submit {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  color: white;
+}
+
+.profile-btn-cancel {
+  background-color: #dc3545;
+}
+
+.profile-btn-submit {
+  background-color: #0d6efd;
+}
+
+/* penutup profiles modal */
+
+/* Antena Modal Styles */
+.antena-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  color: white;
+}
+
+.antena-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.antena-modal.visible {
+  display: block;
+}
+
+.antena-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.antena-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
+
+.antena-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.antena-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Antena Edit Form Styles */
+.antena-edit-form {
+  margin-bottom: 15px;
+  display: none;
+}
+
+.antena-edit-form.visible {
+  display: block;
+}
+
+.antena-form-group {
+  margin-bottom: 10px;
+}
+
+.antena-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+  font-size: 0.9em;
+}
+
+.antena-form-group input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+}
+
+.antena-required::after {
+  content: " *";
+  color: #ff4d4f;
+}
+
+.antena-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.antena-btn {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.antena-btn:hover {
+  opacity: 0.9;
+}
+
+.antena-btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.antena-btn-submit {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Antena Table Styles */
+.antena-search {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.antena-search-container {
+  position: relative;
+}
+
+.antena-search input {
+  padding: 5px 30px 5px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  width: 150px;
+}
+
+.antena-search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.antena-edit-btn {
+  background-color: #ff923e;
+  color: white;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.antena-edit-btn:hover {
+  background-color: #e67e22;
+}
+
+.antena-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.antena-table th,
+.antena-table td {
+  padding: 8px 5px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.antena-table th {
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.antena-action-btns {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.antena-status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Station Modal Styles */
+.station-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  color: white;
+}
+
+.station-edit-form {
+  margin-bottom: 15px;
+  display: none;
+}
+
+.station-form-group input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+}
+
+.station-btn-cancel,
+.station-btn-submit {
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.station-content {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.station-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.station-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.station-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.station-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+  font-size: 12px;
+}
+
+.station-table th,
+.station-table td {
+  padding: 8px 5px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.station-table th {
+  font-weight: bold;
+}
+
+.station-action-btns {
+  display: flex;
+  gap: 5px;
+}
+
+.station-edit-btn,
+.station-btn.btn-danger {
+  background-color: #ff923e;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.station-edit-btn:hover {
+  background-color: #e67e22;
+}
+
+.station-btn.btn-danger {
+  background-color: #333;
+}
+
+.station-btn.btn-danger:hover {
+  /* background-color: #bd2130; */
+  opacity: 0.8;
+}
+
+/* Station Edit Form Style */
+.station-edit-form {
+  margin-bottom: 15px;
+  display: none;
+}
+
+.station-edit-form.visible {
+  display: block;
+}
+
+.station-form-group {
+  margin-bottom: 10px;
+}
+
+.station-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+  font-size: 0.9em;
+}
+
+.station-required::after {
+  content: " *";
+  color: #ff4d4f;
+}
+
+.station-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+}
+
+.station-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.station-btn-cancel,
+.station-btn-submit {
+  padding: 5px 15px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.station-btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.station-btn-submit {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.station-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.station-modal.visible {
+  display: block;
+}
+
+.station-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.station-title {
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+}
+
+.station-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.station-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+.station-search {
+  position: relative;
+  margin: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.station-search input {
+  padding: 5px 30px 5px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  width: 150px;
+}
+
+.station-search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.station-btn-cancel:hover {
+  opacity: 0.9;
+}
+
+.station-btn-submit:hover {
+  opacity: 0.9;
+}
+
+/* Anchored Vessel Modal Styles */
+.anchored-vessel-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  color: white;
+}
+
+.anchored-vessel-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.anchored-vessel-modal.visible {
+  display: block;
+}
+
+.anchored-vessel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.anchored-vessel-title {
+  font-weight: bold;
+  font-size: 12px;
+  color: white;
+}
+
+.anchored-vessel-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.anchored-vessel-control-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: white;
+}
+
+Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+#anchoredVesselCollapseIcon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Style untuk konten yang di-collapse */
+#anchoredVesselContent.hidden {
+  display: none;
+}
+
+.anchored-vessel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.anchored-vessel-form-row {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  height: 42px;
+}
+
+.anchored-vessel-label {
+  width: 120px;
+  color: #333;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.anchored-vessel-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.anchored-vessel-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.anchored-vessel-checkbox-wrapper input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #007bff;
+}
+
+.anchored-vessel-checkbox-wrapper label {
+  cursor: pointer;
+  color: #333;
+  font-size: 15px;
+}
+
+.anchored-vessel-modal.collapsed {
+  min-height: 50px !important;
+  height: 50px !important;
+  max-height: 50px !important;
+  min-width: 280px !important;
+  width: 280px !important;
+  max-width: 280px !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease;
+}
+
+.anchored-vessel-modal.collapsed .anchored-vessel-content {
+  display: none !important;
+}
+.anchored-vessel-modal.collapsed .anchored-vessel-chevron-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
+
+.station-area-dropdown {
+  width: 50%;
+}
+
+.station-area-dropdown select {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.date-input-group {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Reduced from 8px */
+  width: 100%;
+}
+
+.date-input-group input[type="date"] {
+  padding: 4px 8px; /* Reduced from 6px 10px */
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  width: 100%;
+  font-size: 12px; /* Reduced from 14px */
+  color: #333;
+}
+
+.swap-date-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: 1px solid #dadada;
+  border-radius: 4px;
+  min-width: 34px;
+  height: 34px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.anchored-vessel-btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.anchored-vessel-btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.anchored-vessel-btn-submit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+/* Gaya untuk ENC content hidden */
+.enc-content.hidden {
+  display: none;
+}
+
+.anchored-vessel-btn-cancel,
+.anchored-vessel-btn-submit {
+  border-radius: 3px;
+  padding: 4px 12px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+/* Gaya untuk ENC content hidden */
+.enc-content.hidden {
+  display: none;
+}
+
+/* Anomaly Modal Styles */
+.anomaly-modal {
+  position: fixed;
+  left: 200px;
+  top: 85px;
+  background-color: rgba(33, 37, 41, 0.6);
+  border-radius: 5px;
+  padding: 15px;
+  display: none;
+  z-index: 2000;
+  min-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-height: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.anomaly-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.anomaly-modal.visible {
+  display: block;
+}
+
+.anomaly-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.anomaly-title {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.anomaly-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.anomaly-control-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.anomaly-content {
+  color: white;
+}
+
+.anomaly-content.hidden {
+  display: none;
+}
+
+.anomaly-search {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  width: 100%; /* Make search bar full width */
+  display: flex;
+  justify-content: flex-start; /* Align to the left */
+}
+
+.anomaly-search-container {
+  display: flex;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  /* justify-content: flex-end; */
+}
+
+.anomaly-search-container input {
+  border: none;
+  padding: 8px 12px;
+  flex-grow: 1;
+  outline: none;
+}
+
+.anomaly-search-btn {
+  background-color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.anomaly-filter-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.anomaly-filter-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.anomaly-filter-btn.active {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.anomaly-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.anomaly-table-container.hidden {
+  display: none;
+}
+
+.anomaly-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.anomaly-table th,
+.anomaly-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.anomaly-table th {
+  font-weight: 500;
+  color: #ccc;
+}
+
+.anomaly-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* close style */
+
+/* Gaya umum untuk semua modal saat collapsed */
+.control-modal.collapsed,
+.profile-modal.collapsed,
+.anchored-vessel-modal.collapsed,
+.filter-modal.collapsed,
+.geofence-modal.collapsed,
+.geofence-detail-modal.collapsed,
+.bookmark-modal.collapsed,
+.bookmark-detail-modal.collapsed,
+.enc-modal.collapsed,
+.antena-modal.collapsed,
+.station-modal.collapsed,
+.anomaly-modal.collapsed {
+  min-height: 50px !important;
+  height: auto !important;
+  transition: all 0.3s ease;
+}
+
+/* Animasi rotasi untuk semua icon chevron */
+.bi-chevron-down {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.bi-chevron-down.rotated {
+  transform: rotate(180deg);
+}
+
+/* Gaya untuk content hidden di semua modal */
+.modal-content.hidden {
+  display: none;
+}
+
+/* Animasi perubahan ukuran modal */
+.control-modal,
+.filter-modal,
+.profile-modal,
+.profile-modal,
+.geofence-modal,
+.geofence-detail-modal,
+.bookmark-modal,
+.bookmark-detail-modal,
+.profile-modal,
+.enc-modal,
+.antena-modal,
+.station-modal,
+.anchored-vessel-modal,
+.anomaly-modal {
+  transition: all 0.3s ease;
+}
+
+/* ... existing code ... */
+/* Pastikan modal content selector sesuai dengan semua modal */
+.filter-content.hidden,
+.profile-content.hidden,
+.geofence-content.hidden,
+.bookmark-content.hidden,
+.enc-content.hidden,
+.antena-content.hidden,
+.station-content.hidden,
+.anchored-vessel-content.hidden,
+.anomaly-content.hidden,
+#encTable.hidden {
+  display: none;
+}
+
+.filter-action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+}
+
+.filter-modal.collapsed .filter-action {
+  display: none; /* Menyembunyikan tombol submit saat collapsed */
+}
+
+/* Penyeragaman searchbar input untuk semua modal */
+.enc-search input,
+.anomaly-search-container input,
+.antena-search-container input,
+.station-search input,
+.bookmark-search input {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: white;
+  color: #333;
+  width: 150px;
+}
+
+.enc-search-container,
+.anomaly-search-container,
+.antena-search-container,
+.station-search,
+.bookmark-search {
+  position: relative;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.enc-content {
+  overflow-y: auto;
+  max-height: calc(80vh - 60px);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.enc-content::-webkit-scrollbar {
+  display: none;
+}
+
+.enc-content.hidden {
+  display: none;
+}
+
+/* Memperkecil ukuran elemen pada semua modal box */
+.filter-title,
+.profile-title,
+.geofence-title,
+.bookmark-title,
+.profile-title,
+.enc-title,
+.antena-title,
+.station-title,
+.anomaly-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+}
+
+.filter-control-btn,
+.profile-control-btn,
+.geofence-control-btn,
+.bookmark-control-btn,
+.enc-control-btn,
+.antena-control-btn,
+.station-control-btn,
+.anomaly-control-btn {
+  background: none;
+  border: none;
+  padding: 1px;
+  cursor: pointer;
+  color: white;
+  font-size: 12px;
+}
+
+.filter-control-btn i,
+.porfile-control-btn i,
+.geofence-control-btn i,
+.bookmark-control-btn i,
+.bookmark-control-btn i,
+.profile-control-btn i,
+.enc-control-btn i,
+.antena-control-btn i,
+.station-control-btn i,
+.anomaly-control-btn i {
+  font-size: 12px;
+}
+
+/* Ukuran teks dan input */
+.filter-select,
+.profile-select,
+.geofence-input,
+.geofence-textarea,
+.profile-input,
+.bookmark-input,
+.enc-active-cell input,
+.antena-input,
+.station-input,
+.anomaly-input {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+/* Ukuran search input */
+.geofence-search input,
+.profile-search input,
+.bookmark-search input,
+.enc-search input,
+.antena-search-container input,
+.station-search input,
+.anomaly-search-container input {
+  font-size: 12px;
+  padding: 4px 25px 4px 8px;
+  width: 130px;
+}
+
+/* Ukuran ikon search */
+.geofence-search-btn i,
+.profile-search-btn i,
+.bookmark-search-btn i,
+.enc-search-btn i,
+.antena-search-btn i,
+.station-search-btn i,
+.anomaly-search-btn i {
+  font-size: 11px;
+}
+
+/* Ukuran teks tabel */
+.geofence-item,
+.bookmark-item,
+.enc-table td,
+.enc-table th,
+.antena-table td,
+.antena-table th,
+.station-table td,
+.station-table th,
+.anomaly-table td,
+.anomaly-table th {
+  font-size: 12px;
+  padding: 5px 4px;
+}
+
+/* Ukuran tombol aksi */
+.geofence-btn,
+        .bookmark-btn,
+        /* .profile-btn, */
+        .enc-view-btn,
+        .antena-btn.btn-danger,
+        .antena-edit-btn,
+        .station-btn {
+  width: 22px;
+  height: 22px;
+  font-size: 10px;
+}
+
+/* Ukuran row action buttons */
+.filter-submit,
+.profile-submit,
+.antena-btn-submit,
+.antena-btn-cancel,
+.geofence-action-btn {
+  font-size: 12px;
+  padding: 4px 10px;
+}
+
+/* Mengecilkan tinggi modal */
+.filter-content,
+.geofence-content,
+.profile-content,
+.anchored-vessel-content,
+.bookmark-content,
+.enc-content,
+.antena-content,
+.station-content,
+.anomaly-content {
+  max-height: calc(70vh - 50px);
+}
+
+/* Ukuran label */
+.antena-form-group label,
+.geofence-input-label,
+.bookmark-input-label {
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+/* Margin antar elemen */
+.filter-row,
+.geofence-item,
+.bookmark-item,
+.antena-form-group,
+.geofence-input-group {
+  margin-bottom: 8px;
+}
+
+/* Ukuran tombol trash pada ENC */
+.enc-trash-btn {
+  padding: 2px;
+  font-size: 11px;
+}
+
+/* Ukuran active cell di ENC */
+.enc-active-cell span {
+  font-size: 11px;
+}
+
+.filter-modal,
+.profile-modal .geofence-modal,
+.geofence-detail-modal,
+.bookmark-modal,
+.bookmark-detail-modal,
+.enc-modal,
+.profile-modal,
+.antena-modal,
+.station-modal,
+.anomaly-modal {
+  min-width: 280px;
+  padding: 12px;
+}
+
+.filter-header,
+.profile-header,
+.geofence-header,
+.bookmark-header,
+.enc-header,
+.antena-header,
+.station-header,
+.anomaly-header {
+  margin-bottom: 8px;
+}
+
+/* Memperkecil ukuran modal tabel */
+.enc-table,
+.antena-table,
+.station-table,
+.anomaly-table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.enc-table th,
+.antena-table th,
+.station-table th,
+.anomaly-table th {
+  padding: 4px 2px;
+  font-size: 11px;
+  text-align: left;
+}
+
+/* Memperkecil spacing */
+.geofence-item-actions,
+.bookmark-item-actions,
+.antena-action-btns {
+  gap: 3px;
+}
+
+.geofence-actions,
+.bookmark-actions,
+.antena-form-actions,
+.filter-action {
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.enc-active-cell {
+  gap: 5px;
+  margin-bottom: 6px;
+}
+
+/* Padding dan margin container */
+.geofence-search,
+.bookmark-search,
+.enc-search-container,
+.antena-search-container,
+.station-search,
+.anomaly-search-container {
+  margin-bottom: 8px;
+}
+
+/* Memperkecil tinggi list */
+.geofence-list,
+.bookmark-list {
+  max-height: 120px;
+}
+
+/* Memperkecil gap antar controls */
+.geofence-controls,
+.profile-controls,
+.bookmark-controls,
+.enc-controls,
+.antena-controls,
+.station-controls,
+.anomaly-controls {
+  gap: 3px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.sidebar {
+  width: 60px;
+  height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: width 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: var(--text-color);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item:hover {
+  background-color: var(--item-hover);
+}
+
+/* Update modal backgrounds to use variables */
+.filter-modal,
+.profile-modal,
+.geofence-modal,
+.geofence-detail-modal,
+.bookmark-modal,
+.bookmark-detail-modal,
+.enc-modal,
+.profile-modal,
+.antena-modal,
+.station-modal,
+.anomaly-modal,
+.anchored-vessel-modal {
+  background-color: var(--modal-background);
+}
+
+/* Update input styles to use variables */
+.filter-select,
+.profile-select,
+.profile-input,
+.geofence-input,
+.geofence-textarea,
+.bookmark-input,
+.enc-active-cell input,
+.antena-input,
+.station-input,
+.anomaly-input,
+.geofence-search input,
+.bookmark-search input,
+.enc-search input,
+.antena-search-container input,
+.station-search input,
+.anomaly-search-container input {
+  background-color: var(--input-background);
+  color: var(--input-text);
+}
+
+/* Fungsi dari sidebar bisa buka tutup viewbox */
+.viewbox-class {
+  position: fixed;
+  display: none; /* atau opacity: 0 untuk transition */
+  /* tambahan styling lainnya */
+}
+
+.viewbox-class.visible {
+  display: block; /* atau opacity: 1 */
+}
