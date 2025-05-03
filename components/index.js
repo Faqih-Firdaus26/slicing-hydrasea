@@ -1,14 +1,45 @@
+let lightLayer, darkLayer;
+
 document.addEventListener("DOMContentLoaded", function () {
   // Inisialisasi peta
   const map = L.map("map", {
-    zoomControl: true, // Mengaktifkan kontrol zoom default
+    zoomControl: true,
   }).setView([-6.2088, 106.8456], 10);
 
-  // Menambahkan tile layer OpenStreetMap
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "© OpenStreetMap contributors",
-  }).addTo(map);
+  // Layer untuk light mode (OpenStreetMap default)
+  const lightLayer = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+      attribution: "© OpenStreetMap contributors",
+    }
+  );
+
+  // Layer untuk dark mode (CartoDB Dark Matter)
+  const darkLayer = L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    {
+      maxZoom: 19,
+      attribution: "© OpenStreetMap contributors, © CARTO",
+    }
+  );
+
+  // Tambahkan layer default (light mode)
+  function updateMapTheme(isDark) {
+    // Hapus semua tile layer yang ada
+    map.eachLayer((layer) => {
+      if (layer instanceof L.TileLayer) {
+        map.removeLayer(layer);
+      }
+    });
+
+    // Tambahkan layer sesuai tema
+    if (isDark) {
+      darkLayer.addTo(map);
+    } else {
+      lightLayer.addTo(map);
+    }
+  }
 
   // Fungsi untuk positioning modal relatif ke elemen sumber
   function positioning(sourceElement, targetModal) {
@@ -2269,6 +2300,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const lightCheckbox = document.getElementById("light");
   const darkCheckbox = document.getElementById("dark");
 
+  const currentTheme = localStorage.getItem("themeMode") || "dark";
+  if (currentTheme === "light") {
+    lightCheckbox.checked = true;
+    updateMapTheme(false);
+  } else {
+    darkCheckbox.checked = true;
+    updateMapTheme(true);
+  }
+
   // Set default mode (dark)
   let currentMode = localStorage.getItem("themeMode") || "dark";
   if (currentMode === "light") {
@@ -2287,11 +2327,17 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.classList.add("light-mode");
       darkCheckbox.checked = false;
       localStorage.setItem("themeMode", "light");
+      // Tambahkan ini:
+      map.removeLayer(darkLayer);
+      lightLayer.addTo(map);
     } else {
       if (!darkCheckbox.checked) {
         darkCheckbox.checked = true;
         document.body.classList.remove("light-mode");
         localStorage.setItem("themeMode", "dark");
+        // Tambahkan ini:
+        map.removeLayer(lightLayer);
+        darkLayer.addTo(map);
       }
     }
   });
@@ -2302,11 +2348,17 @@ document.addEventListener("DOMContentLoaded", function () {
       document.body.classList.remove("light-mode");
       lightCheckbox.checked = false;
       localStorage.setItem("themeMode", "dark");
+      // Tambahkan ini:
+      map.removeLayer(lightLayer);
+      darkLayer.addTo(map);
     } else {
       if (!lightCheckbox.checked) {
         lightCheckbox.checked = true;
         document.body.classList.add("light-mode");
         localStorage.setItem("themeMode", "light");
+        // Tambahkan ini:
+        map.removeLayer(darkLayer);
+        lightLayer.addTo(map);
       }
     }
   });

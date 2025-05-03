@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Hydrasea</title>
+    <title>Seatrack</title>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -24,6 +24,11 @@
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="components/index.js"></script>
     <link rel="stylesheet" href="components/style.css" />
   </head>
@@ -32,7 +37,7 @@
       <div class="top-bar">
         <div class="left-controls">
           <div class="brand-container">
-            <span class="brand">Hydrasea</span>
+            <span class="brand">Seatrack</span>
           </div>
 
           <!-- Hamburger in its own container, 5px below -->
@@ -503,6 +508,7 @@
             </div>
           </div>
         </div>
+
         <div class="nav-item" data-item="antenna">
           <!-- <i class="bi bi-broadcast nav-icon"></i> -->
           <svg
@@ -1730,26 +1736,6 @@
             </div>
           </div>
         </div>
-        <div class="nav-item" data-item="logout">
-          <!-- <i class="bi bi-box-arrow-right nav-icon"></i> -->
-          <svg
-            class="nav-icon"
-            width="23"
-            height="24"
-            viewBox="0 0 23 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0 2.96429C0 2.31072 0.259629 1.68392 0.721773 1.22177C1.18392 0.759629 1.81072 0.5 2.46429 0.5L13.9643 0.5C14.6179 0.5 15.2447 0.759629 15.7068 1.22177C16.1689 1.68392 16.4286 2.31072 16.4286 2.96429V6.14979C15.762 6.68371 15.3295 7.45621 15.2227 8.30357H9.44643C8.96101 8.30357 8.48034 8.39918 8.03187 8.58495C7.5834 8.77071 7.80357 9.04299 7.80357 9.50005C7.80357 9.96457 7.90453 10.4236 8.10683 10.8454C8.30913 11.2672 8.59131 11.6594 8.93455 11.9929C9.26779 12.3264 9.66001 12.6086 10.0818 12.8109C10.5036 13.0132 10.9626 13.1142 11.4271 13.1142C11.8916 13.1142 12.3506 13.0132 12.7724 12.8109C13.1942 12.6086 13.5864 12.3264 13.9199 11.9929C14.2534 11.6594 14.5356 11.2672 14.7379 10.8454C14.9402 10.4236 15.0412 9.96457 15.0412 9.50005C15.0412 9.03553 14.9402 8.57657 14.7379 8.15475C14.5356 7.73293 14.2534 7.34071 13.9199 7.00727C13.5864 6.67383 13.1942 6.39165 12.7724 6.18935C12.3506 5.98705 11.8916 5.88609 11.4271 5.88609Z"
-              fill="white"
-            />
-          </svg>
-
-          <span class="nav-text">Log Out</span>
-        </div>
         <div class="nav-item" data-item="profile">
           <svg
             class="nav-icon"
@@ -1761,23 +1747,18 @@
           >
             <path
               d="M9.50004 10.9583C12.1464 10.9583 14.2917 8.81303 14.2917 6.16667C14.2917 3.5203 12.1464 1.375 9.50004 1.375C6.85368 1.375 4.70837 3.5203 4.70837 6.16667C4.70837 8.81303 6.85368 10.9583 9.50004 10.9583Z"
-              fill="white"
-              stroke="white"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
             />
             <path
               d="M17.1667 18.625C17.1667 16.5917 16.359 14.6417 14.9212 13.2039C13.4834 11.7661 11.5334 10.9584 9.50004 10.9584C7.46671 10.9584 5.51667 11.7661 4.07889 13.2039C2.64111 14.6417 1.83337 16.5917 1.83337 18.625"
-              stroke="white"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
             />
             <path
               d="M9.50004 10.9584C7.46671 10.9584 5.51667 11.7661 4.07889 13.2039C2.64111 14.6417 1.83337 16.5917 1.83337 18.625H17.1667C17.1667 16.5917 16.359 14.6417 14.9212 13.2039C13.4834 11.7661 11.5334 10.9584 9.50004 10.9584Z"
-              fill="white"
-              stroke="white"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -1799,6 +1780,7 @@
                   <i
                     class="bi bi-chevron-down profile-chevron-icon"
                     id="profileCollapseIcon"
+                    class="profileCollapseIcon"
                   ></i>
                 </button>
                 <button
@@ -1917,8 +1899,28 @@
             </form>
           </div>
         </div>
+        <div class="nav-item" data-item="logout">
+          <!-- <i class="bi bi-box-arrow-right nav-icon"></i> -->
+          <svg
+            class="nav-icon"
+            width="19"
+            height="20"
+            viewBox="0 0 19 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0 2.96429C0 2.31072 0.259629 1.68392 0.721773 1.22177C1.18392 0.759629 1.81072 0.5 2.46429 0.5L13.9643 0.5C14.6179 0.5 15.2447 0.759629 15.7068 1.22177C16.1689 1.68392 16.4286 2.31072 16.4286 2.96429V6.14979C15.762 6.68371 15.3295 7.45621 15.2227 8.30357H9.44643C8.96101 8.30357 8.48034 8.39918 8.03187 8.58495C7.5834 8.77071 7.80357 9.04299 7.80357 9.50005C7.80357 9.96457 7.90453 10.4236 8.10683 10.8454C8.30913 11.2672 8.59131 11.6594 8.93455 11.9929C9.26779 12.3264 9.66001 12.6086 10.0818 12.8109C10.5036 13.0132 10.9626 13.1142 11.4271 13.1142C11.8916 13.1142 12.3506 13.0132 12.7724 12.8109C13.1942 12.6086 13.5864 12.3264 13.9199 11.9929C14.2534 11.6594 14.5356 11.2672 14.7379 10.8454C14.9402 10.4236 15.0412 9.96457 15.0412 9.50005C15.0412 9.03553 14.9402 8.57657 14.7379 8.15475C14.5356 7.73293 14.2534 7.34071 13.9199 7.00727C13.5864 6.67383 13.1942 6.39165 12.7724 6.18935C12.3506 5.98705 11.8916 5.88609 11.4271 5.88609Z"
+              fill="white"
+            />
+          </svg>
+
+          <span class="nav-text">Log Out</span>
+        </div>
       </div>
-      <div id="map"></div>
+      <div id="map" class="map"></div>
     </div>
 
     <!-- Bootstrap JS Bundle with Popper -->

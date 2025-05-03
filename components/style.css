@@ -1,44 +1,62 @@
-:root {
-  /* Dark theme (default) */
-  --background-color: #212529;
-  --text-color: white;
-  --modal-background: rgba(33, 37, 41, 0.6);
-  --item-hover: rgba(255, 255, 255, 0.1);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --input-background: white;
-  --input-text: #333;
-}
-
 /* Light theme */
 body.light-mode {
-  --background-color: #ffffff;
-  --text-color: #333333;
-  --modal-background: rgba(255, 255, 255, 0.9);
-  --item-hover: rgba(0, 0, 0, 0.05);
-  --border-color: rgba(0, 0, 0, 0.1);
+  --background-color: #212529;
+  --background: #2c3034;
+  --text-color: #ffffff;
+  --secondary-text-color: #cccccc;
+  --modal-background: rgba(33, 37, 41, 0.6);
+  --modal-border: rgba(33, 37, 41, 0.6);
+  --item-hover: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.1);
   --input-background: #ffffff;
   --input-text: #333333;
+  --button-background: rgba(33, 37, 41, 0.6);
+  --button-text: #ffffff;
+  --button-hover: rgba(33, 37, 41, 0.6);
+  --table-header-bg: rgba(33, 37, 41, 0.6);
+  --table-row-bg: rgba(33, 37, 41, 0.6);
+  --table-row-hover: rgba(33, 37, 41, 0.6);
+  --icon-fill: #ffffff;
+  --danger-color: #dc3545;
+  --card-background: rgba(33, 37, 41, 0.6);
+  --shadow-color: rgba(33, 37, 41, 0.6);
 }
 
-body.light-mode .sidebar {
-  background-color: white;
-  color: #333;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+/* Dark theme (default) */
+:root {
+  --background-color: #f3f4f8b2;
+  --background: #f3f4f8b2;
+  --text-color: #333333;
+  --secondary-text-color: #666666;
+  --modal-background: rgba(255, 255, 255, 0.95);
+  --modal-border: #cccccc;
+  --item-hover: rgba(0, 0, 0, 0.05);
+  --border-color: rgba(0, 0, 0, 0.2);
+  --input-background: #ffffff;
+  --input-text: #333333;
+  --button-background: #e0e0e0;
+  --button-text: #333333;
+  --button-hover: #d0d0d0;
+  --table-header-bg: #f8f9fa;
+  --table-row-bg: #ffffff;
+  --table-row-hover: #f1f1f1;
+  --icon-fill: #333333;
+  --danger-color: #dc3545;
+  --card-background: #f3f4f8b2;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+/* Smooth transitions for theme changes */
+:root,
+body.light-mode {
+  transition: all 0.3s ease;
 }
 
-body.light-mode .nav-item {
-  color: #444;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-body.light-mode .nav-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-body.light-mode .nav-icon path,
-body.light-mode .nav-icon {
-  fill: #444;
-  stroke: #444;
+/* General styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 /* Modal untuk konfirmasi delete */
@@ -132,8 +150,22 @@ html {
   position: relative;
   height: 100vh;
   width: 100%;
-  background-color: skyblue;
+  background-color: var(--background-color);
 }
+/* Style untuk control layer di peta */
+.leaflet-control-layers {
+  background-color: var(--modal-background);
+  color: var(--text-color);
+}
+
+.leaflet-control-layers label {
+  color: var(--text-color);
+}
+
+.leaflet-control-layers-selector {
+  accent-color: var(--button-background);
+}
+
 .top-bar {
   position: absolute;
   top: 0;
@@ -150,31 +182,32 @@ html {
   flex-direction: column;
   gap: 5px;
 }
-.brand-container {
-  background-color: rgba(33, 37, 41, 0.6);
+.brand-container .brand {
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
   border-radius: 5px;
   padding: 5px 15px;
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-color);
+  /* opacity: 70%; */
 }
 .hamburger-container {
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 5px;
   display: flex;
   align-items: center;
   width: 40px;
+  opacity: 70%;
 }
-.brand {
-  font-weight: bold;
-  color: white;
-  font-size: 1rem;
-}
+
 .hamburger-btn {
-  background: none;
-  border: none;
-  color: white;
+  background-color: var(--button-background);
+  border: 1px solid var(--border-color);
+  color: var(--button-text);
   font-size: 1rem;
   padding: 0;
   cursor: pointer;
@@ -182,6 +215,7 @@ html {
   text-align: center;
   display: flex;
   justify-content: center;
+  opacity: 70%;
 }
 /* Fixed hamburger/X icon display */
 .hamburger-btn .bi-list {
@@ -196,6 +230,11 @@ html {
 .hamburger-btn.active .bi-x-lg {
   display: block;
 }
+
+.hamburger-btn:hover {
+  background-color: var(--button-hover);
+}
+
 .right-controls {
   display: flex;
   gap: 10px;
@@ -210,7 +249,8 @@ html {
 }
 
 .search-container {
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   width: 500px;
   height: 35px;
@@ -219,22 +259,23 @@ html {
   padding: 5px 15px;
   margin-left: auto;
   position: relative;
+  opacity: 70%;
 }
 
 .search-input {
+  color: var(--text-color);
   border: none;
-  background: transparent;
+  background-color: transparent;
   flex-grow: 1;
   outline: none;
-  color: white;
 }
 
 .search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--secondary-text-color);
 }
 
 .search-icon {
-  color: white;
+  color: var(--icon-fill);
   cursor: pointer;
 }
 
@@ -247,24 +288,6 @@ html {
 }
 
 /* Modal */
-.searchResultModal {
-  display: none;
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  width: 100%;
-  max-width: 550px;
-  background: var(--modal-bg);
-  border-radius: 5px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-  padding: 0;
-  overflow: visible;
-  background-color: rgba(33, 37, 41, 0.6) !important;
-  backdrop-filter: none !important;
-  transform: scale(0.75);
-  transform-origin: top right;
-}
-
 /* Tampilkan modal */
 .searchResultModal.active {
   display: block;
@@ -273,6 +296,25 @@ html {
 /* Opsional: hidden toggle class */
 .searchResultModal.hidden {
   display: none;
+}
+
+/* Modal */
+.searchResultModal {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 100%;
+  max-width: 550px;
+  border-radius: 5px;
+  padding: 0;
+  overflow: visible;
+  backdrop-filter: none !important;
+  transform: scale(0.75);
+  transform-origin: top right;
+  background-color: var(--modal-background);
+  border: 1px solid var(--modal-border);
+  color: var(--text-color);
 }
 
 /* Header */
@@ -284,7 +326,7 @@ html {
   margin: 0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 
 /* Container tabel */
@@ -308,7 +350,7 @@ html {
 
 .search-result-table thead th {
   padding: 8px 12px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--border-color);
   text-align: left;
 }
 
@@ -320,7 +362,7 @@ html {
 }
 
 .search-result-table tbody tr:hover {
-  background-color: #f0f0f0;
+  background-color: var(--table-row-hover);
 }
 
 /* close search */
@@ -334,6 +376,7 @@ html {
   z-index: 1000;
   cursor: pointer; /* tambahkan ini */
   border: 2px;
+  fill: var(--icon-fill);
 }
 .arrowButton {
   pointer-events: auto; /* Ini wajib supaya SVG bisa diklik */
@@ -345,6 +388,7 @@ html {
 }
 
 /* Vessel Info Styles */
+/* Vessel info container (exact structure as provided) */
 .vesselInfo-container {
   position: relative;
   z-index: 1000;
@@ -352,19 +396,22 @@ html {
   pointer-events: none;
   /* Ditambahkan display none untuk menyembunyikan container saat awal */
   display: none;
+  background-color: var(--modal-background);
+  border: 1px solid var(--modal-border);
+  color: var(--text-color);
 }
 
 .vesselInfo {
   position: absolute;
   top: calc(100% + 20px);
   right: 10px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--modal-background);
   border-radius: 5px;
+  border: 1px solid var(--modal-border);
   width: 280px;
-  color: white;
+  color: var(--text-color);
   z-index: 1000;
   pointer-events: auto;
-  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.6);
   overflow: hidden;
   /* Menambahkan transisi untuk efek smooth */
   transition: opacity 0.3s ease;
@@ -378,9 +425,14 @@ html {
 }
 
 .vessel-card {
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--card-background);
   border-radius: 5px;
   padding: 10px;
+}
+
+.vessel-card h2,
+.vessel-card h3 {
+  color: var(--text-color);
 }
 
 .vessel-header {
@@ -391,7 +443,7 @@ html {
 
 .info-title {
   display: flex;
-  background: #2c3034;
+  background: var(--table-row-bg);
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -405,7 +457,7 @@ html {
 
 .flag-name {
   display: flex;
-  background: #2c3034;
+  background: var(--table-row-bg);
   align-items: center;
   padding: 4px 6px;
   gap: 10px;
@@ -425,14 +477,14 @@ html {
 .info-title h2 {
   font-size: 13px;
   margin: 0;
-  color: white;
+  color: var(--text-color);
   font-weight: 500;
 }
 
 .close-vessel-info {
   background: none;
   border: none;
-  color: white;
+  color: var(--icon-fill);
   cursor: pointer;
   font-size: 18px;
   padding: 0;
@@ -441,9 +493,13 @@ html {
   justify-content: center;
 }
 
+.close-vessel-info:hover {
+  color: var(--danger-color);
+}
+
 .vessel-name {
   font-size: 15px;
-  color: white;
+  color: var(--text-color);
   margin: 0;
   font-weight: 600;
   display: flex;
@@ -455,7 +511,7 @@ html {
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: 8px;
   padding: 6px;
-  background: #2c3034;
+  background: var(--table-row-bg);
   border-radius: 4px;
 }
 
@@ -466,14 +522,14 @@ html {
 
 .info-item label {
   font-size: 9px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--secondary-text-color);
   margin-bottom: 2px;
 }
 
 .info-item span {
   font-size: 11px;
   font-weight: 500;
-  color: white;
+  color: var(--text-color);
 }
 
 /* Vessel Image */
@@ -511,24 +567,24 @@ html {
   grid-template-columns: 90px 1fr;
   align-items: center;
   padding: 4px 6px;
-  background: #2c3034;
+  background: var(--table-row-bg);
   border-radius: 4px;
 }
 
 .detail-item label {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--secondary-text-color);
 }
 
 .detail-item span {
   font-size: 10px;
-  color: white;
+  color: var(--text-color);
   font-weight: 500;
 }
 
 /* Vessel Table */
 .vessel-table {
-  background: #2c3034;
+  background: var(--table-row-bg);
   border-radius: 4px;
   padding: 6px;
   margin-top: 8px;
@@ -542,18 +598,18 @@ html {
 
 .vessel-table th {
   font-size: 9px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--secondary-text-color);
   font-weight: normal;
   text-align: left;
   padding: 4px 3px;
-  border-bottom: 1px solid rgba(70, 70, 70, 0.3);
+  border-bottom: 1px solid var(--table-border);
 }
 
 .vessel-table td {
   font-size: 9px;
-  color: white;
+  color: var(--text-color);
   padding: 4px 3px;
-  border-bottom: 1px solid rgba(70, 70, 70, 0.3);
+  border-bottom: 1px solid var(--table-border);
 }
 /* close vessel info */
 
@@ -561,12 +617,53 @@ html {
   position: fixed;
   bottom: 20px;
   right: 70px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--button-background);
   border-radius: 5px;
   padding: 5px 10px;
   display: flex;
   z-index: 1000;
 }
+
+.control-modal {
+  position: absolute;
+  width: 200px; /* Compromise between 220px and 180px, adjustable */
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  max-height: 60vh; /* Limits height to 60% of viewport */
+  overflow-y: auto; /* Enables scrolling for overflow content */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  background-color: var(--modal-background); /* Uses theme variable */
+  border: 1px solid var(--modal-border); /* Theme-consistent border */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px var(--shadow-color); /* Theme-consistent shadow */
+  color: var(--text-color); /* Theme-consistent text color */
+  display: none; /* Hidden by default, shown via JavaScript */
+  z-index: 1001; /* Ensures modal appears above other elements */
+}
+.control-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--button-text);
+  font-size: 1.2rem;
+  margin: 0 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.controls-container .control-btn svg path {
+  fill: var(--icon-fill);
+}
+
+.controls-container .control-btn:hover {
+  background-color: var(--button-hover);
+}
+
+.control-modal.visible {
+  display: block;
+}
+
 .zoom-controls {
   position: fixed;
   bottom: 20px;
@@ -594,15 +691,6 @@ html {
 }
 .zoom-btn:hover {
   background-color: rgba(175, 176, 179, 0.8);
-}
-.control-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.2rem;
-  margin: 0 5px;
-  cursor: pointer;
-  position: relative;
 }
 
 /* Navigation Menu Styles */
@@ -672,39 +760,38 @@ html {
   pointer-events: auto;
 }
 
-.control-modal {
-  position: absolute;
-  bottom: 100%;
-  right: 0;
-  margin-bottom: 10px;
-  background-color: rgba(33, 37, 41, 0.6);
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  display: none;
-  z-index: 1001;
-  color: white;
-}
-
-.control-modal {
-  width: 220px;
-}
 /* Larger size for layer modal */
 #layerModal {
   width: 280px;
 }
-.control-modal.visible {
-  display: block;
-}
+
 .modal-title {
   font-weight: bold;
   margin-bottom: 10px;
-  color: white;
+  color: var(--text-color);
 }
 .modal-content {
   max-height: none;
   font-size: 12px;
 }
+.modal-content label {
+  color: var(--text-color);
+}
+.modal-content input[type="checkbox"] {
+  background-color: var(--input-background);
+  border: 1px solid var(--border-color);
+}
+.modal-content .hours-input {
+  background-color: var(--input-background);
+  color: var(--input-text);
+  border: 1px solid var(--border-color);
+}
+.modal-content .dropdown-select {
+  background-color: var(--input-background);
+  color: var(--input-text);
+  border: 1px solid var(--border-color);
+}
+
 .checkbox-item {
   display: flex;
   align-items: center;
@@ -746,7 +833,28 @@ html {
 #map {
   height: 100%;
   width: 100%;
+  background: var(--background-color);
 }
+
+/* Navigation menu */
+.nav-menu {
+  background-color: var(--card-background);
+  border-right: 1px solid var(--border-color);
+}
+.nav-item {
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+}
+.nav-item:hover {
+  background-color: var(--item-hover);
+}
+.nav-icon path {
+  fill: var(--icon-fill);
+}
+.nav-text {
+  color: var(--text-color);
+}
+/* Close Navigation menu */
 
 /* Custom zoom control position */
 .leaflet-control-zoom {
@@ -759,6 +867,14 @@ html {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
+  .profile-modal {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+  }
+
   .vesselInfo {
     width: 240px;
     right: 3px;
@@ -868,10 +984,6 @@ html {
     padding: 5px 10px;
   }
 
-  .hamburger-container {
-    width: 35px;
-  }
-
   .control-btn {
     font-size: 1rem;
     margin: 0 3px;
@@ -898,18 +1010,6 @@ html {
     right: 20px !important;
     margin: 0 !important;
     z-index: 999 !important;
-  }
-
-  .control-modal {
-    width: 180px;
-    padding: 8px;
-    right: 0;
-    position: absolute;
-    bottom: 100%;
-    margin-bottom: 10px;
-    max-height: 60vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Untuk scrolling yang lebih baik di iOS */
   }
 
   #layerModal {
@@ -990,12 +1090,6 @@ html {
     overflow-y: auto;
     padding-right: 5px;
     -webkit-overflow-scrolling: touch;
-  }
-
-  .profile-modal {
-    width: 320px;
-    left: 200px;
-    top: 85px;
   }
 
   #searchResultModal {
@@ -1143,19 +1237,6 @@ html {
     height: 18px;
   }
 
-  .control-modal {
-    width: 160px;
-    right: 0;
-    /* Memastikan modal muncul di atas bukan di bawah pada mobile */
-    bottom: unset;
-    top: 100%;
-    margin-top: 10px;
-    margin-bottom: 0;
-    max-height: 60vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
   #layerModal {
     width: 200px;
   }
@@ -1186,13 +1267,6 @@ html {
     height: 14px;
   }
 
-  .profile-modal {
-    width: 300px;
-    max-width: calc(100vw - 20px);
-    left: 10px; /* Geser ke kiri untuk muat di layar */
-    top: 85px;
-    padding: 8px;
-  }
   #searchResultModal {
     max-width: 90%;
     right: 5%;
@@ -1315,14 +1389,6 @@ html {
     max-width: calc(100% - 100px);
   }
 
-  .profile-modal {
-    width: 320px;
-    left: 200px;
-    top: 85px;
-    min-height: 260px;
-    max-height: 320px;
-  }
-
   .control-btn {
     padding: 3px;
     margin: 2px;
@@ -1344,16 +1410,6 @@ html {
     line-height: 25px !important;
   }
 
-  .control-modal {
-    width: 160px;
-    max-height: 80vh;
-    /* Dalam landscape, tampilkan di samping bukan di atas/bawah */
-    top: 0;
-    right: 100%;
-    margin-right: 10px;
-    margin-top: 0;
-  }
-
   .nav-menu {
     max-height: calc(100vh - 60px);
   }
@@ -1367,7 +1423,7 @@ html {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -1399,7 +1455,7 @@ html {
 .filter-title {
   font-weight: bold;
   font-size: 14px;
-  color: white;
+  color: var(--text-color);
 }
 
 .filter-controls {
@@ -1412,13 +1468,13 @@ html {
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 .filter-content {
   max-height: 300px;
   overflow-y: auto;
-  color: white;
+  color: var(--text-color);
 }
 
 .filter-content.hidden {
@@ -1449,17 +1505,17 @@ html {
 .filter-select {
   padding: 4px 8px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   background-color: rgba(52, 58, 64, 0.8);
   font-size: 12px;
-  color: white;
+  color: var(--text-color);
   position: relative;
   z-index: 1;
 }
 
 .filter-select option {
-  background-color: #343a40;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .filter-select.type-select {
@@ -1493,7 +1549,7 @@ html {
   border: none;
   padding: 4px;
   cursor: pointer;
-  color: white;
+  color: #dc3545;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1510,8 +1566,8 @@ html {
 }
 
 .filter-submit {
-  background-color: rgba(52, 152, 219, 0.8);
-  color: white;
+  background-color: #007bff;
+  color: var(--text-color);
   border: none;
   padding: 4px 10px;
   border-radius: 5px;
@@ -1520,7 +1576,24 @@ html {
 }
 
 .filter-submit:hover {
-  background-color: rgba(52, 152, 219, 1);
+  background-color: #007bff;
+}
+
+.filter-modal .filter-content {
+  min-height: 50px;
+}
+
+.filter-modal.content-hidden {
+  min-height: 50px;
+}
+.filter-action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+}
+
+.filter-modal.collapsed .filter-action {
+  display: none; /* Menyembunyikan tombol submit saat collapsed */
 }
 
 /* Animasi rotasi untuk icon chevron */
@@ -1551,19 +1624,22 @@ html {
   z-index: 1;
 }
 
+/* Pastikan ukuran modal konsisten */
+
 /* Gaya untuk popup Geofence */
 .geofence-modal {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.5);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
   z-index: 2000;
   min-width: 320px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  min-height: 320px;
+  min-height: 150px;
+  /* min-height: 320px; */
   max-height: 80vh;
   overflow-y: auto;
   transition: all 0.3s ease;
@@ -1622,7 +1698,7 @@ html {
 .geofence-title {
   font-weight: bold;
   font-size: 14px;
-  color: white;
+  color: var(--text-color);
 }
 
 .geofence-controls {
@@ -1635,7 +1711,7 @@ html {
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 .geofence-search {
@@ -1648,9 +1724,9 @@ html {
 .geofence-search input {
   padding: 5px 30px 5px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   width: 150px;
 }
 
@@ -1661,7 +1737,7 @@ html {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
 }
 
@@ -1681,12 +1757,12 @@ html {
   display: flex;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .geofence-item-name {
   flex-grow: 1;
-  color: white;
+  color: var(--text-color);
 }
 
 .geofence-item-actions {
@@ -1695,7 +1771,7 @@ html {
 }
 
 .geofence-btn {
-  background-color: #0077cc;
+  background-color: #0565ff;
   color: white;
   border: none;
   width: 24px;
@@ -1708,7 +1784,7 @@ html {
 }
 
 .geofence-btn.btn-danger {
-  background-color: #333;
+  background-color: rgba(30, 30, 30, 0.7);
 }
 
 .geofence-btn:hover {
@@ -1720,7 +1796,7 @@ html {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.5);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -1760,7 +1836,7 @@ html {
   margin-top: 15px;
   display: block;
   margin-bottom: 5px;
-  color: white;
+  color: var(--text-color);
   font-size: 12px;
 }
 
@@ -1768,9 +1844,9 @@ html {
   width: 100%;
   padding: 8px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: white;
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   box-sizing: border-box;
 }
 
@@ -1778,9 +1854,9 @@ html {
   width: 100%;
   padding: 8px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: white;
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   min-height: 60px;
   resize: vertical;
   box-sizing: border-box;
@@ -1809,12 +1885,12 @@ html {
 
 .geofence-action-btn.btn-cancel {
   background-color: #dc3545;
-  color: white;
+  color: var(--text-color);
 }
 
 .geofence-action-btn.btn-submit {
   background-color: #0d6efd;
-  color: white;
+  color: var(--text-color);
 }
 
 /* Animasi tanda panah */
@@ -1832,25 +1908,12 @@ html {
   display: none;
 }
 
-/* Pastikan ukuran modal konsisten */
-.geofence-modal {
-  min-height: 150px;
-}
-
-.filter-modal .filter-content {
-  min-height: 50px;
-}
-
-.filter-modal.content-hidden {
-  min-height: 50px;
-}
-
 /* Gaya untuk popup Bookmark */
 .bookmark-modal {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -1873,7 +1936,7 @@ html {
 
 .bookmark-title {
   font-weight: bold;
-  color: white;
+  color: var(--text-color);
   font-size: 14px;
 }
 
@@ -1887,7 +1950,7 @@ html {
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 .bookmark-search {
@@ -1900,9 +1963,9 @@ html {
 .bookmark-search input {
   padding: 5px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   background-color: transparent;
-  color: white;
+  color: var(--text-color);
   width: 150px;
 }
 
@@ -1913,7 +1976,7 @@ html {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
 }
 
@@ -1933,12 +1996,12 @@ html {
   display: flex;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .bookmark-item-name {
   flex-grow: 1;
-  color: white;
+  color: var(--text-color);
 }
 
 .bookmark-item-actions {
@@ -1948,7 +2011,7 @@ html {
 
 .bookmark-btn {
   background-color: #0077cc;
-  color: white;
+  color: var(--text-color);
   border: none;
   width: 24px;
   height: 24px;
@@ -1960,7 +2023,7 @@ html {
 }
 
 .bookmark-btn.btn-danger {
-  background-color: #333;
+  background-color: var(--background-color);
 }
 
 .bookmark-btn:hover {
@@ -1991,7 +2054,7 @@ html {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -2031,7 +2094,7 @@ html {
 .bookmark-input-label {
   display: block;
   margin-top: 15px;
-  color: white;
+  color: var(--text-color);
   font-size: 12px;
 }
 
@@ -2039,9 +2102,9 @@ html {
   width: 100%;
   padding: 8px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: white;
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   box-sizing: border-box;
 }
 
@@ -2068,12 +2131,12 @@ html {
 
 .bookmark-action-btn.btn-cancel {
   background-color: #dc3545;
-  color: white;
+  color: var(--text-color);
 }
 
 .bookmark-action-btn.btn-submit {
   background-color: #0d6efd;
-  color: white;
+  color: var(--text-color);
 }
 
 /* Animasi tanda panah */
@@ -2121,7 +2184,7 @@ html {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -2152,7 +2215,7 @@ html {
 
 .enc-title {
   font-weight: bold;
-  color: white;
+  color: var(--text-color);
   font-size: 14px;
 }
 
@@ -2166,7 +2229,7 @@ html {
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 .enc-search-container {
@@ -2181,15 +2244,15 @@ html {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: white;
+  color: var(--text-color);
   font-size: 12px;
 }
 
 .enc-active-cell input {
   padding: 4px 8px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: white;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
   color: #333;
   width: 160px;
 }
@@ -2197,7 +2260,7 @@ html {
 .enc-trash-btn {
   background: none;
   border: none;
-  color: white;
+  color: var(--text-color);
   cursor: pointer;
   font-size: 14px;
 }
@@ -2210,9 +2273,9 @@ html {
 .enc-search input {
   padding: 4px 28px 4px 8px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: rgba(52, 58, 64, 0.8);
-  color: white;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   width: 140px;
 }
 
@@ -2223,14 +2286,14 @@ html {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
 }
 
 .enc-table {
   width: 100%;
   border-collapse: collapse;
-  color: white;
+  color: var(--text-color);
   font-size: 12px;
 }
 
@@ -2238,7 +2301,7 @@ html {
 .enc-table td {
   padding: 8px 5px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .enc-table th {
@@ -2247,7 +2310,7 @@ html {
 
 .enc-view-btn {
   background-color: #0077cc;
-  color: white;
+  color: var(--text-color);
   border: none;
   width: 24px;
   height: 24px;
@@ -2302,7 +2365,6 @@ html {
   -ms-overflow-style: none;
   transition: all 0.3s ease;
 }
-
 .profile-modal::-webkit-scrollbar {
   display: none;
 }
@@ -2321,7 +2383,7 @@ html {
 .profile-title {
   font-size: 14px;
   font-weight: bold;
-  color: white;
+  color: var(--text-color);
 }
 
 .profile-controls {
@@ -2334,19 +2396,19 @@ html {
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 .profile-control-btn i {
   font-size: 12px;
 }
 
-#profileCollapseIcon {
+.profileCollapseIcon {
   transition: transform 0.3s ease;
   display: inline-block;
 }
 
-#profileCollapseIcon.rotated {
+.profileCollapseIcon.rotated {
   transform: rotate(180deg);
 }
 
@@ -2364,16 +2426,16 @@ html {
 .profile-form input {
   padding: 5px 8px;
   font-size: 12px;
-  background-color: var(--input-background);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--input-text);
+  /* background-color: var(--background-color); */
+  border: 1px solid var(--border-color);
+  /* color: var(--text-color); */
   border-radius: 3px;
   width: 100%;
   margin-bottom: 8px;
 }
 
 .profile-form label {
-  color: white;
+  color: var(--text-color);
   margin-bottom: 5px;
   font-size: 12px;
   display: block;
@@ -2393,7 +2455,7 @@ html {
   border-radius: 3px;
   cursor: pointer;
   font-size: 12px;
-  color: white;
+  color: var(--text-color);
 }
 
 .profile-btn-cancel {
@@ -2401,7 +2463,7 @@ html {
 }
 
 .profile-btn-submit {
-  background-color: #0d6efd;
+  background-color: #007bff;
 }
 
 /* penutup profiles modal */
@@ -2411,7 +2473,7 @@ html {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -2477,7 +2539,7 @@ html {
 .antena-form-group label {
   display: block;
   margin-bottom: 5px;
-  color: white;
+  color: var(--text-color);
   font-size: 0.9em;
 }
 
@@ -2539,9 +2601,9 @@ html {
 .antena-search input {
   padding: 5px 30px 5px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(var(--background-color));
+  color: var(--text-color);
   width: 150px;
 }
 
@@ -2552,13 +2614,13 @@ html {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
 }
 
 .antena-edit-btn {
   background-color: #ff923e;
-  color: white;
+  color: var(--text-color);
   border: none;
   padding: 3px 8px;
   border-radius: 3px;
@@ -2583,8 +2645,8 @@ html {
 .antena-table td {
   padding: 8px 5px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 
 .antena-table th {
@@ -2593,6 +2655,12 @@ html {
 }
 
 .antena-action-btns {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.antena-btn.btn-danger {
   display: flex;
   gap: 5px;
   justify-content: center;
@@ -2610,7 +2678,7 @@ html {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -2622,7 +2690,7 @@ html {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  color: white;
+  color: var(--text-color);
 }
 
 .station-edit-form {
@@ -2634,9 +2702,9 @@ html {
   width: 100%;
   padding: 8px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: white;
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .station-btn-cancel,
@@ -2664,14 +2732,14 @@ html {
 }
 
 .station-content::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--background-color);
   border-radius: 3px;
 }
 
 .station-table {
   width: 100%;
   border-collapse: collapse;
-  color: white;
+  color: var(--text-color);
   font-size: 12px;
 }
 
@@ -2679,7 +2747,7 @@ html {
 .station-table td {
   padding: 8px 5px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .station-table th {
@@ -2694,7 +2762,7 @@ html {
 .station-edit-btn,
 .station-btn.btn-danger {
   background-color: #ff923e;
-  color: white;
+  color: var(--text-color);
   border: none;
   width: 24px;
   height: 24px;
@@ -2710,7 +2778,7 @@ html {
 }
 
 .station-btn.btn-danger {
-  background-color: #333;
+  background-color: var(--background-color);
 }
 
 .station-btn.btn-danger:hover {
@@ -2735,7 +2803,7 @@ html {
 .station-form-group label {
   display: block;
   margin-bottom: 5px;
-  color: white;
+  color: var(--text-color);
   font-size: 0.9em;
 }
 
@@ -2748,9 +2816,9 @@ html {
   width: 100%;
   padding: 8px 10px;
   border-radius: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: white;
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .station-form-actions {
@@ -2771,12 +2839,12 @@ html {
 
 .station-btn-cancel {
   background-color: #dc3545;
-  color: white;
+  color: var(--text-color);
 }
 
 .station-btn-submit {
   background-color: #0d6efd;
-  color: white;
+  color: var(--text-color);
 }
 
 .station-modal::-webkit-scrollbar {
@@ -2796,7 +2864,7 @@ html {
 
 .station-title {
   font-weight: bold;
-  color: white;
+  color: var(--text-color);
   font-size: 14px;
 }
 
@@ -2810,7 +2878,7 @@ html {
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 .station-search {
@@ -2823,9 +2891,9 @@ html {
 .station-search input {
   padding: 5px 30px 5px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   width: 150px;
 }
 
@@ -2836,7 +2904,7 @@ html {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-color);
   cursor: pointer;
 }
 
@@ -2853,7 +2921,7 @@ html {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -2865,7 +2933,7 @@ html {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  color: white;
+  color: var(--text-color);
 }
 
 .anchored-vessel-modal::-webkit-scrollbar {
@@ -2886,7 +2954,7 @@ html {
 .anchored-vessel-title {
   font-weight: bold;
   font-size: 12px;
-  color: white;
+  color: var(--text-color);
 }
 
 .anchored-vessel-controls {
@@ -2899,7 +2967,7 @@ html {
   border: none;
   padding: 2px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
@@ -2925,7 +2993,6 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 .anchored-vessel-form-row {
   display: flex;
   align-items: center;
-  background-color: white;
   border-radius: 5px;
   padding: 10px 15px;
   margin-bottom: 5px;
@@ -2934,7 +3001,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 
 .anchored-vessel-label {
   width: 120px;
-  color: #333;
+  color: var(--text-color);
   font-size: 15px;
   font-weight: normal;
 }
@@ -2960,7 +3027,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 
 .anchored-vessel-checkbox-wrapper label {
   cursor: pointer;
-  color: #333;
+  color: var(--text-color);
   font-size: 15px;
 }
 
@@ -2991,15 +3058,15 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
   width: 100%;
   padding: 6px 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: white;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 12px;
   font-size: 14px;
-  color: #333;
+  color: var(--text-color);
 }
 
 .date-input-group {
@@ -3012,19 +3079,18 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 .date-input-group input[type="date"] {
   padding: 4px 8px; /* Reduced from 6px 10px */
   border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: white;
+  border: 1px solid var(--border-color);
   width: 100%;
   font-size: 12px; /* Reduced from 14px */
-  color: #333;
+  /* color: var(--text-color); */
 }
 
 .swap-date-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
-  border: 1px solid #dadada;
+  /* background-color: var(--background-color); */
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   min-width: 34px;
   height: 34px;
@@ -3041,7 +3107,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 
 .anchored-vessel-btn-cancel {
   background-color: #dc3545;
-  color: white;
+  color: var(--text-color);
   border: none;
   border-radius: 4px;
   padding: 8px 18px;
@@ -3052,7 +3118,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 
 .anchored-vessel-btn-submit {
   background-color: #007bff;
-  color: white;
+  color: var(--text-color);
   border: none;
   border-radius: 4px;
   padding: 8px 18px;
@@ -3086,7 +3152,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
   position: fixed;
   left: 200px;
   top: 85px;
-  background-color: rgba(33, 37, 41, 0.6);
+  background-color: var(--background-color);
   border-radius: 5px;
   padding: 15px;
   display: none;
@@ -3116,7 +3182,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 }
 
 .anomaly-title {
-  color: white;
+  color: var(--text-color);
   font-size: 14px;
   font-weight: bold;
 }
@@ -3129,13 +3195,13 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 .anomaly-control-btn {
   background: none;
   border: none;
-  color: white;
+  color: var(--text-color);
   cursor: pointer;
   padding: 2px;
 }
 
 .anomaly-content {
-  color: white;
+  color: var(--text-color);
 }
 
 .anomaly-content.hidden {
@@ -3152,7 +3218,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 
 .anomaly-search-container {
   display: flex;
-  background: white;
+  background: var(--background);
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 10px;
@@ -3167,7 +3233,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 }
 
 .anomaly-search-btn {
-  background-color: white;
+  background-color: #ffffff;
   border: none;
   padding: 8px 12px;
   cursor: pointer;
@@ -3181,9 +3247,9 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 }
 
 .anomaly-filter-btn {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
   border-radius: 4px;
   padding: 6px 12px;
   cursor: pointer;
@@ -3215,37 +3281,19 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 .anomaly-table td {
   padding: 8px 12px;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .anomaly-table th {
   font-weight: 500;
-  color: #ccc;
+  color: var(--text-color);
 }
 
 .anomaly-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--background-color);
 }
 
 /* close style */
-
-/* Gaya umum untuk semua modal saat collapsed */
-.control-modal.collapsed,
-.profile-modal.collapsed,
-.anchored-vessel-modal.collapsed,
-.filter-modal.collapsed,
-.geofence-modal.collapsed,
-.geofence-detail-modal.collapsed,
-.bookmark-modal.collapsed,
-.bookmark-detail-modal.collapsed,
-.enc-modal.collapsed,
-.antena-modal.collapsed,
-.station-modal.collapsed,
-.anomaly-modal.collapsed {
-  min-height: 50px !important;
-  height: auto !important;
-  transition: all 0.3s ease;
-}
 
 /* Animasi rotasi untuk semua icon chevron */
 .bi-chevron-down {
@@ -3262,16 +3310,31 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
   display: none;
 }
 
+/* Gaya umum untuk semua modal saat collapsed */
+.control-modal.collapsed,
+.anchored-vessel-modal.collapsed,
+.filter-modal.collapsed,
+.geofence-modal.collapsed,
+.geofence-detail-modal.collapsed,
+.bookmark-modal.collapsed,
+.bookmark-detail-modal.collapsed,
+.enc-modal.collapsed,
+.antena-modal.collapsed,
+.station-modal.collapsed,
+.anomaly-modal.collapsed,
+.profile-modal.collapsed {
+  min-height: 50px !important;
+  height: auto !important;
+  transition: all 0.3s ease;
+}
+
 /* Animasi perubahan ukuran modal */
 .control-modal,
 .filter-modal,
-.profile-modal,
-.profile-modal,
 .geofence-modal,
 .geofence-detail-modal,
 .bookmark-modal,
 .bookmark-detail-modal,
-.profile-modal,
 .enc-modal,
 .antena-modal,
 .station-modal,
@@ -3295,16 +3358,6 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
   display: none;
 }
 
-.filter-action {
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px 0;
-}
-
-.filter-modal.collapsed .filter-action {
-  display: none; /* Menyembunyikan tombol submit saat collapsed */
-}
-
 /* Penyeragaman searchbar input untuk semua modal */
 .enc-search input,
 .anomaly-search-container input,
@@ -3313,9 +3366,9 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 .bookmark-search input {
   padding: 5px 10px;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: white;
-  color: #333;
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
   width: 150px;
 }
 
@@ -3357,7 +3410,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 .anomaly-title {
   font-size: 13px;
   font-weight: bold;
-  color: white;
+  color: var(--text-color);
 }
 
 .filter-control-btn,
@@ -3372,16 +3425,27 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
   border: none;
   padding: 1px;
   cursor: pointer;
-  color: white;
+  color: var(--icon-fill);
+  background-color: transparent;
   font-size: 12px;
+}
+.filter-control-btn:hover,
+.antena-control-btn:hover,
+.geofence-control-btn:hover,
+.station-control-btn:hover,
+.bookmark-control-btn:hover,
+.anomaly-control-btn:hover,
+.anchored-vessel-control-btn:hover,
+.enc-control-btn:hover,
+.profile-control-btn:hover {
+  color: var(--danger-color);
 }
 
 .filter-control-btn i,
-.porfile-control-btn i,
+.profile-control-btn i,
 .geofence-control-btn i,
 .bookmark-control-btn i,
 .bookmark-control-btn i,
-.profile-control-btn i,
 .enc-control-btn i,
 .antena-control-btn i,
 .station-control-btn i,
@@ -3402,6 +3466,9 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 .anomaly-input {
   font-size: 12px;
   padding: 4px 8px;
+  background-color: var(--input-background);
+  color: var(--input-text);
+  border: 1px solid var(--border-color);
 }
 
 /* Ukuran search input */
@@ -3419,7 +3486,7 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 
 /* Ukuran ikon search */
 .geofence-search-btn i,
-.profile-search-btn i,
+/* .profile-search-btn i, */
 .bookmark-search-btn i,
 .enc-search-btn i,
 .antena-search-btn i,
@@ -3445,12 +3512,12 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 
 /* Ukuran tombol aksi */
 .geofence-btn,
-        .bookmark-btn,
-        /* .profile-btn, */
-        .enc-view-btn,
-        .antena-btn.btn-danger,
-        .antena-edit-btn,
-        .station-btn {
+.bookmark-btn,
+/* .profile-btn, */
+.enc-view-btn,
+.antena-btn.btn-danger,
+.antena-edit-btn,
+.station-btn {
   width: 22px;
   height: 22px;
   font-size: 10px;
@@ -3465,7 +3532,6 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
   font-size: 12px;
   padding: 4px 10px;
 }
-
 /* Mengecilkan tinggi modal */
 .filter-content,
 .geofence-content,
@@ -3508,12 +3574,12 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 }
 
 .filter-modal,
-.profile-modal .geofence-modal,
+.profile-modal,
+.geofence-modal,
 .geofence-detail-modal,
 .bookmark-modal,
 .bookmark-detail-modal,
 .enc-modal,
-.profile-modal,
 .antena-modal,
 .station-modal,
 .anomaly-modal {
@@ -3553,7 +3619,8 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
 /* Memperkecil spacing */
 .geofence-item-actions,
 .bookmark-item-actions,
-.antena-action-btns {
+.antena-action-btns,
+.antena-btn.btn-danger {
   gap: 3px;
 }
 
@@ -3642,7 +3709,6 @@ body {
 .bookmark-modal,
 .bookmark-detail-modal,
 .enc-modal,
-.profile-modal,
 .antena-modal,
 .station-modal,
 .anomaly-modal,
@@ -3669,6 +3735,7 @@ body {
 .anomaly-search-container input {
   background-color: var(--input-background);
   color: var(--input-text);
+  border: 1px solid var(--border-color);
 }
 
 /* Fungsi dari sidebar bisa buka tutup viewbox */
