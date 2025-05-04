@@ -1,0 +1,47 @@
+/* Light theme */
+body.light-mode {
+    --background-color: #212529;
+    --background: #2c3034;
+    --text-color: #ffffff;
+    --secondary-text-color: #cccccc;
+    --modal-background: rgba(33, 37, 41, 0.6);
+    --modal-border: rgba(33, 37, 41, 0.6);
+    --item-hover: rgba(255, 255, 255, 0.1);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --input-background: #ffffff;
+    --input-text: #333333;
+    --button-background: rgba(33, 37, 41, 0.6);
+    --button-text: #ffffff;
+    --button-hover: rgba(33, 37, 41, 0.6);
+    --table-header-bg: rgba(33, 37, 41, 0.6);
+    --table-row-bg: rgba(33, 37, 41, 0.6);
+    --table-row-hover: rgba(33, 37, 41, 0.6);
+    --icon-fill: #ffffff;
+    --danger-color: #dc3545;
+    --card-background: rgba(33, 37, 41, 0.6);
+    --shadow-color: rgba(33, 37, 41, 0.6);
+  }
+  
+  /* Dark theme (default) */
+  :root {
+    --background-color: #f3f4f8b2;
+    --background: #f3f4f8b2;
+    --text-color: #333333;
+    --secondary-text-color: #666666;
+    --modal-background: rgba(255, 255, 255, 0.95);
+    --modal-border: #cccccc;
+    --item-hover: rgba(0, 0, 0, 0.05);
+    --border-color: rgba(0, 0, 0, 0.2);
+    --input-background: #ffffff;
+    --input-text: #333333;
+    --button-background: #e0e0e0;
+    --button-text: #333333;
+    --button-hover: #d0d0d0;
+    --table-header-bg: #f8f9fa;
+    --table-row-bg: #ffffff;
+    --table-row-hover: #f1f1f1;
+    --icon-fill: #333333;
+    --danger-color: #dc3545;
+    --card-background: #f3f4f8b2;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+  }

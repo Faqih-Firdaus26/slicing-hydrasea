@@ -1,50 +1,3 @@
-/* Light theme */
-body.light-mode {
-  --background-color: #212529;
-  --background: #2c3034;
-  --text-color: #ffffff;
-  --secondary-text-color: #cccccc;
-  --modal-background: rgba(33, 37, 41, 0.6);
-  --modal-border: rgba(33, 37, 41, 0.6);
-  --item-hover: rgba(255, 255, 255, 0.1);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --input-background: #ffffff;
-  --input-text: #333333;
-  --button-background: rgba(33, 37, 41, 0.6);
-  --button-text: #ffffff;
-  --button-hover: rgba(33, 37, 41, 0.6);
-  --table-header-bg: rgba(33, 37, 41, 0.6);
-  --table-row-bg: rgba(33, 37, 41, 0.6);
-  --table-row-hover: rgba(33, 37, 41, 0.6);
-  --icon-fill: #ffffff;
-  --danger-color: #dc3545;
-  --card-background: rgba(33, 37, 41, 0.6);
-  --shadow-color: rgba(33, 37, 41, 0.6);
-}
-
-/* Dark theme (default) */
-:root {
-  --background-color: #f3f4f8b2;
-  --background: #f3f4f8b2;
-  --text-color: #333333;
-  --secondary-text-color: #666666;
-  --modal-background: rgba(255, 255, 255, 0.95);
-  --modal-border: #cccccc;
-  --item-hover: rgba(0, 0, 0, 0.05);
-  --border-color: rgba(0, 0, 0, 0.2);
-  --input-background: #ffffff;
-  --input-text: #333333;
-  --button-background: #e0e0e0;
-  --button-text: #333333;
-  --button-hover: #d0d0d0;
-  --table-header-bg: #f8f9fa;
-  --table-row-bg: #ffffff;
-  --table-row-hover: #f1f1f1;
-  --icon-fill: #333333;
-  --danger-color: #dc3545;
-  --card-background: #f3f4f8b2;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-}
 /* Smooth transitions for theme changes */
 :root,
 body.light-mode {
@@ -315,6 +268,8 @@ html {
   background-color: var(--modal-background);
   border: 1px solid var(--modal-border);
   color: var(--text-color);
+  opacity: 70%;
+
 }
 
 /* Header */
@@ -388,7 +343,7 @@ html {
 }
 
 /* Vessel Info Styles */
-/* Vessel info container (exact structure as provided) */
+/* Vessel Info Styles */
 .vesselInfo-container {
   position: relative;
   z-index: 1000;
@@ -403,7 +358,7 @@ html {
 
 .vesselInfo {
   position: absolute;
-  top: calc(100% + 20px);
+  top: calc(100% + 10px);
   right: 10px;
   background-color: var(--modal-background);
   border-radius: 5px;
@@ -413,8 +368,9 @@ html {
   z-index: 1000;
   pointer-events: auto;
   overflow: hidden;
-  /* Menambahkan transisi untuk efek smooth */
   transition: opacity 0.3s ease;
+  opacity: 70%;
+
 }
 
 .vesselInfo.hidden {
@@ -427,7 +383,7 @@ html {
 .vessel-card {
   background-color: var(--card-background);
   border-radius: 5px;
-  padding: 10px;
+  padding: 6px;
 }
 
 .vessel-card h2,
@@ -438,7 +394,7 @@ html {
 .vessel-header {
   display: flex;
   flex-direction: column;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .info-title {
@@ -459,9 +415,9 @@ html {
   display: flex;
   background: var(--table-row-bg);
   align-items: center;
-  padding: 4px 6px;
-  gap: 10px;
-  margin-top: 10px;
+  padding: 2px 4px;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 .vessel-flag {
@@ -475,7 +431,7 @@ html {
 }
 
 .info-title h2 {
-  font-size: 13px;
+  font-size: 12px;
   margin: 0;
   color: var(--text-color);
   font-weight: 500;
@@ -498,7 +454,7 @@ html {
 }
 
 .vessel-name {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-color);
   margin: 0;
   font-weight: 600;
@@ -509,8 +465,8 @@ html {
 .vessel-info-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 8px;
-  padding: 6px;
+  margin-bottom: 4px;
+  padding: 4px;
   background: var(--table-row-bg);
   border-radius: 4px;
 }
@@ -536,9 +492,9 @@ html {
 .vessel-image-container {
   position: relative;
   width: 100%;
-  padding-top: 56.25%;
+  padding-top: 50%;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .vessel-image {
@@ -566,7 +522,7 @@ html {
   display: grid;
   grid-template-columns: 90px 1fr;
   align-items: center;
-  padding: 4px 6px;
+  padding: 2px 4px;
   background: var(--table-row-bg);
   border-radius: 4px;
 }
@@ -586,8 +542,8 @@ html {
 .vessel-table {
   background: var(--table-row-bg);
   border-radius: 4px;
-  padding: 6px;
-  margin-top: 8px;
+  padding: 4px;
+  margin-top: 4px;
   overflow-x: auto;
 }
 
@@ -622,6 +578,8 @@ html {
   padding: 5px 10px;
   display: flex;
   z-index: 1000;
+  opacity: 70%;
+
 }
 
 .control-modal {
@@ -641,6 +599,7 @@ html {
   color: var(--text-color); /* Theme-consistent text color */
   display: none; /* Hidden by default, shown via JavaScript */
   z-index: 1001; /* Ensures modal appears above other elements */
+
 }
 .control-btn {
   background: none;
@@ -1435,6 +1394,7 @@ html {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  opacity: 70%;
 }
 
 .filter-modal::-webkit-scrollbar {
@@ -1643,6 +1603,8 @@ html {
   max-height: 80vh;
   overflow-y: auto;
   transition: all 0.3s ease;
+  opacity: 70%;
+
 }
 
 .geofence-modal.collapsed {
@@ -1921,6 +1883,8 @@ html {
   min-width: 320px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   min-height: 320px;
+  opacity: 70%;
+
 }
 
 .bookmark-modal.visible {
@@ -2196,6 +2160,8 @@ html {
   overflow-y: auto; /* Tambahkan scroll jika terlalu panjang */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  opacity: 70%;
+
 }
 
 .enc-modal::-webkit-scrollbar {
@@ -2364,6 +2330,8 @@ html {
   scrollbar-width: none;
   -ms-overflow-style: none;
   transition: all 0.3s ease;
+  opacity: 70%;
+
 }
 .profile-modal::-webkit-scrollbar {
   display: none;
@@ -2485,7 +2453,8 @@ html {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  color: white;
+  color: var(--text-color);
+  opacity: 70%;
 }
 
 .antena-modal::-webkit-scrollbar {
@@ -2691,6 +2660,8 @@ html {
   scrollbar-width: none;
   -ms-overflow-style: none;
   color: var(--text-color);
+  opacity: 70%;
+
 }
 
 .station-edit-form {
@@ -2934,6 +2905,8 @@ html {
   scrollbar-width: none;
   -ms-overflow-style: none;
   color: var(--text-color);
+  opacity: 70%;
+
 }
 
 .anchored-vessel-modal::-webkit-scrollbar {
@@ -3164,6 +3137,8 @@ Animasi untuk chevron ikon #anchoredVesselCollapseIcon {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  opacity: 70%;
+
 }
 
 .anomaly-modal::-webkit-scrollbar {
